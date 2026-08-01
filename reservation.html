@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
   <title>Réservation — 100P Location</title>
   <meta name="description" content="Récapitulatif de votre réservation 100P Location. Paiement sur place, sans frais cachés." />
+  <!-- Partage social : Open Graph + Twitter Card -->
+  <link rel="canonical" href="https://100p-location.fr/reservation.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="100P Location" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Réservation — 100P Location" />
+  <meta property="og:description" content="Récapitulatif de votre réservation 100P Location. Paiement sur place, sans frais cachés." />
+  <meta property="og:url" content="https://100p-location.fr/reservation.html" />
+  <meta property="og:image" content="https://100p-location.fr/og-100p.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Deux voitures sans permis 100P Location devant le panneau VICHY" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Réservation — 100P Location" />
+  <meta name="twitter:description" content="Récapitulatif de votre réservation 100P Location. Paiement sur place, sans frais cachés." />
+  <meta name="twitter:image" content="https://100p-location.fr/og-100p.jpg" />
+
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -154,6 +172,9 @@
       .final-modal__panel { padding: 40px 24px 28px; }
     }
   </style>
+
+  <!-- Mesure d'audience (chargee apres consentement uniquement) -->
+  <script src="assets/tracking.js" defer></script>
 </head>
 
 <body>
@@ -249,7 +270,7 @@
               </li>
               <li>
                 <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
-                Kilométrage illimité
+                Forfait kilométrique inclus
               </li>
               <li>
                 <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
@@ -342,21 +363,21 @@
             <h2 class="booking-card__title">Détail du tarif</h2>
 
             <div class="booking-tariff__row">
-              <span id="tarif-location-label">Location · 1 jour</span>
-              <span id="tarif-location-price">49,00 €</span>
+              <span id="tarif-location-label">Location</span>
+              <span id="tarif-location-price">—</span>
             </div>
             <div class="booking-tariff__row">
               <span>Assurance tous risques<span class="info" aria-label="Incluse">i</span></span>
               <span>Incluse</span>
             </div>
             <div class="booking-tariff__row">
-              <span>Kilométrage illimité</span>
+              <span>Forfait kilométrique</span>
               <span>Inclus</span>
             </div>
 
             <div class="booking-tariff__total">
               <span class="booking-tariff__total-label">Total</span>
-              <span class="booking-tariff__total-amount" id="tarif-total">49,00 €</span>
+              <span class="booking-tariff__total-amount" id="tarif-total">—</span>
             </div>
 
             <button class="booking-tariff__cta" type="button" id="open-final-modal">
@@ -493,6 +514,16 @@
           img: 'Aixam.png',
           sub: 'Quadricycle · ou similaire',
           places: 2, autonomy: '4.3 L/100 km', luggage: 2
+        },
+        'Aixam Minauto': {
+          img: 'minauto.jpg',
+          sub: 'Quadricycle · ou similaire',
+          places: 2, autonomy: '4.3 L/100 km', luggage: 2
+        },
+        'Fiat Topolino': {
+          img: 'topolino3.png',
+          sub: 'Quadricycle léger électrique · ville et proximité',
+          places: 2, autonomy: 'Électrique', luggage: 1
         }
       };
 
@@ -597,7 +628,8 @@
       }
 
       var days = calculateDays(data.date_depart, data.heure_depart, data.date_retour, data.heure_retour);
-      var pricePerDay   = parseInt(sessionStorage.getItem('selectedVehiclePrice') || '49', 10);
+      // Repli sur l'Aixam City Sport (30 EUR/jour, grille officielle du 17/07/2026)
+      var pricePerDay   = parseInt(sessionStorage.getItem('selectedVehiclePrice') || '30', 10);
       var deliveryFee   = parseInt(sessionStorage.getItem('deliveryFee')   || '0', 10);
       var conducteurFee = parseInt(sessionStorage.getItem('conducteurFee') || '0', 10);
       var finalTotal    = parseInt(sessionStorage.getItem('finalTotal')    || '0', 10);
@@ -630,7 +662,10 @@
         var lbl = document.createElement('span');
         lbl.textContent = label;
         var val = document.createElement('span');
-        val.textContent = amount.toFixed(2).replace('.', ',') + ' €';
+        // amount accepte un nombre (montant formate) ou une chaine (mention libre)
+        val.textContent = typeof amount === 'number'
+          ? amount.toFixed(2).replace('.', ',') + ' €'
+          : amount;
         row.appendChild(lbl);
         row.appendChild(val);
         totalRow.parentNode.insertBefore(row, totalRow);
@@ -645,8 +680,13 @@
       if (conducteurFee > 0) {
         insertTariffRow('tarif-conducteur-row', 'Conducteur supplémentaire · ' + days + ' jour' + (days > 1 ? 's' : ''), conducteurFee);
       }
+      // Livraison : le tarif depend de la distance (160 EUR sous 100 km, 300 EUR sous
+      // 200 km, devis au-dela, offerte des 4 mois). Il n'est jamais affiche en ligne :
+      // la ligne annonce un chiffrage a la confirmation, sans montant.
       if (deliveryFee > 0) {
         insertTariffRow('tarif-delivery-row', 'Livraison à domicile', deliveryFee);
+      } else if (pickupMode === 'delivery') {
+        insertTariffRow('tarif-delivery-row', 'Livraison à domicile', 'Chiffrée à la confirmation');
       }
 
       console.log('💰 Calcul:', days, 'jour(s) ×', pricePerDay, '€ + livraison', deliveryFee, '€ + conducteur', conducteurFee, '€ =', totalStr, '(mode:', pickupMode + ')');

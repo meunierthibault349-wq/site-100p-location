@@ -4,7 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nos offres — 100P Location</title>
-  <meta name="description" content="Trois formules de location de voitures sans permis : à la journée, à la semaine, au mois. Assurance incluse, kilométrage illimité, retrait dans 5 secteurs d'Auvergne." />
+  <meta name="description" content="Trois formules de location de voitures sans permis : à la journée, à la semaine, au mois. Assurance tous risques incluse, retrait gratuit en meet point dans 5 secteurs d'Auvergne." />
+  <!-- Partage social : Open Graph + Twitter Card -->
+  <link rel="canonical" href="https://100p-location.fr/offres.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="100P Location" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Nos offres — 100P Location" />
+  <meta property="og:description" content="Trois formules de location de voitures sans permis : à la journée, à la semaine, au mois. Assurance tous risques incluse, retrait gratuit en meet point dans 5 secteurs d'Auvergne." />
+  <meta property="og:url" content="https://100p-location.fr/offres.html" />
+  <meta property="og:image" content="https://100p-location.fr/og-100p.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Deux voitures sans permis 100P Location devant le panneau VICHY" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nos offres — 100P Location" />
+  <meta name="twitter:description" content="Trois formules de location de voitures sans permis : à la journée, à la semaine, au mois. Assurance tous risques incluse, retrait gratuit en meet point dans 5 secteurs d'Auvergne." />
+  <meta name="twitter:image" content="https://100p-location.fr/og-100p.jpg" />
+
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -705,6 +722,9 @@
       .final-modal__panel { padding: 40px 24px 28px; }
     }
   </style>
+
+  <!-- Mesure d'audience (chargee apres consentement uniquement) -->
+  <script src="assets/tracking.js" defer></script>
 </head>
 
 <body>
@@ -740,8 +760,8 @@
           </h1>
           <p class="offres-hero__lede">
             Trois formules pensées pour chaque usage. Pas de frais cachés,
-            assurance tous risques incluse, kilométrage illimité — paiement
-            sur place, aucun débit en ligne.
+            assurance tous risques incluse, forfait kilométrique compris —
+            paiement sur place, aucun débit en ligne.
           </p>
         </div>
       </div>
@@ -768,19 +788,22 @@
 
             <div class="offre-chapter__pricing">
               <div class="pricing-row">
-                <span class="pricing-row__car">Premium</span>
+                <span class="pricing-row__car">Aixam City Sport</span>
+                <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">30&thinsp;€<small>/ jour</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Premium', 30)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Aixam City Sport', 30)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Standard</span>
+                <span class="pricing-row__car">Aixam Minauto</span>
+                <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">25&thinsp;€<small>/ jour</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Standard', 25)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Aixam Minauto', 25)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Fun</span>
+                <span class="pricing-row__car">Fiat Topolino</span>
+                <span class="pricing-row__badge">Électrique</span>
                 <span class="pricing-row__price">22&thinsp;€<small>/ jour</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Fun', 22)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Fiat Topolino', 22)">Réserver</button>
               </div>
             </div>
 
@@ -816,19 +839,22 @@
 
             <div class="offre-chapter__pricing">
               <div class="pricing-row">
-                <span class="pricing-row__car">Premium</span>
+                <span class="pricing-row__car">Aixam City Sport</span>
+                <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">200&thinsp;€<small>/ semaine</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Premium', 200)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Aixam City Sport', 200)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Standard</span>
+                <span class="pricing-row__car">Aixam Minauto</span>
+                <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">170&thinsp;€<small>/ semaine</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Standard', 170)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Aixam Minauto', 170)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Fun</span>
+                <span class="pricing-row__car">Fiat Topolino</span>
+                <span class="pricing-row__badge">Électrique</span>
                 <span class="pricing-row__price">140&thinsp;€<small>/ semaine</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Fun', 140)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Fiat Topolino', 140)">Réserver</button>
               </div>
             </div>
 
@@ -857,35 +883,35 @@
             <div class="offre-chapter__tag">Formule 03 · Au mois</div>
             <h2 class="offre-chapter__title">Une voiture <em>au quotidien.</em></h2>
             <p class="offre-chapter__intro">
-              Quatre formules pensées pour la longue durée. Choisissez le
-              véhicule et le kilométrage qui correspondent à votre usage —
-              livraison gratuite à partir de 4 mois de location.
+              La longue durée sur toute la gamme, thermique ou électrique.
+              Choisissez le véhicule et le kilométrage qui correspondent à
+              votre usage — livraison gratuite à partir de 4 mois de location.
             </p>
 
             <div class="offre-chapter__pricing">
               <div class="pricing-row">
-                <span class="pricing-row__car">Premium</span>
-                <span class="pricing-row__badge">km illimité</span>
+                <span class="pricing-row__car">Aixam City Sport</span>
+                <span class="pricing-row__badge">Thermique · km illimité</span>
                 <span class="pricing-row__price">750&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Premium', 750)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · City Sport km illimité', 750)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Medium</span>
-                <span class="pricing-row__badge">1&thinsp;500 km</span>
+                <span class="pricing-row__car">Aixam City Sport</span>
+                <span class="pricing-row__badge">Thermique · 1&thinsp;500 km</span>
                 <span class="pricing-row__price">690&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Medium', 690)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Aixam City Sport', 690)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Économique</span>
-                <span class="pricing-row__badge">1&thinsp;500 km</span>
+                <span class="pricing-row__car">Aixam Minauto</span>
+                <span class="pricing-row__badge">Thermique · 1&thinsp;500 km</span>
                 <span class="pricing-row__price">540&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Économique', 540)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Aixam Minauto', 540)">Réserver</button>
               </div>
               <div class="pricing-row">
-                <span class="pricing-row__car">Fun</span>
-                <span class="pricing-row__badge">1&thinsp;500 km</span>
+                <span class="pricing-row__car">Fiat Topolino</span>
+                <span class="pricing-row__badge">Électrique · 1&thinsp;500 km</span>
                 <span class="pricing-row__price">490&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Fun', 490)">Réserver</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Fiat Topolino', 490)">Réserver</button>
               </div>
             </div>
 
@@ -961,10 +987,12 @@
             </summary>
             <div class="offres-faq__body">
               Le tarif affiché inclut <strong>l'assurance tous risques</strong>,
-              le <strong>kilométrage illimité</strong>, l'assistance 7j/7 et la
-              prise en main du véhicule sur place. Aucun frais caché — vous ne
-              payez en supplément que les options explicitement choisies
-              (livraison, conducteur supplémentaire, franchise réductible).
+              un <strong>forfait kilométrique</strong> adapté à la durée
+              (70 km/jour, 350 km/semaine, 1 500 km/mois — option illimitée
+              sur l'Aixam City Sport), l'assistance 7j/7 et la prise en main du
+              véhicule. Aucun frais caché — vous ne payez en supplément que
+              les options explicitement choisies (livraison, conducteur
+              supplémentaire, franchise réductible).
             </div>
           </details>
 
@@ -1146,7 +1174,7 @@
         <div class="final-modal__formula" id="formula-modal-recap" hidden>
           <span class="final-modal__formula-label">Formule</span>
           <span class="final-modal__formula-value" id="formula-modal-name">Journée</span>
-          <span class="final-modal__formula-label" id="formula-modal-price">39 €</span>
+          <span class="final-modal__formula-label" id="formula-modal-price">—</span>
         </div>
       </div>
 

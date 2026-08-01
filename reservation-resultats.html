@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
   <title>Votre réservation — 100P Location</title>
   <meta name="description" content="Personnalisez votre réservation 100P Location : choisissez votre véhicule, vos options et confirmez votre période de location." />
+  <!-- Partage social : Open Graph + Twitter Card -->
+  <link rel="canonical" href="https://100p-location.fr/reservation-resultats.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="100P Location" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Votre réservation — 100P Location" />
+  <meta property="og:description" content="Personnalisez votre réservation 100P Location : choisissez votre véhicule, vos options et confirmez votre période de location." />
+  <meta property="og:url" content="https://100p-location.fr/reservation-resultats.html" />
+  <meta property="og:image" content="https://100p-location.fr/og-100p.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Deux voitures sans permis 100P Location devant le panneau VICHY" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Votre réservation — 100P Location" />
+  <meta name="twitter:description" content="Personnalisez votre réservation 100P Location : choisissez votre véhicule, vos options et confirmez votre période de location." />
+  <meta name="twitter:image" content="https://100p-location.fr/og-100p.jpg" />
+
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -612,6 +630,9 @@
       .results-bar { position: static; }
     }
   </style>
+
+  <!-- Mesure d'audience (chargee apres consentement uniquement) -->
+  <script src="assets/tracking.js" defer></script>
 </head>
 
 <body>
@@ -736,7 +757,7 @@
             </span>
             <div>
               <span class="resa-toggle__label">Livraison à domicile</span>
-              <span class="resa-toggle__sub">+50 € · jusqu'à 20 km</span>
+              <span class="resa-toggle__sub">En option · offerte dès 4 mois</span>
             </div>
           </button>
         </div>
@@ -828,7 +849,7 @@
 
           <div class="resa-summary__row resa-summary__row--option" id="summary-delivery-row" hidden>
             <span>Livraison à domicile</span>
-            <span>50,00 €</span>
+            <span>Chiffrée à la confirmation</span>
           </div>
 
           <div class="resa-summary__row resa-summary__row--option" id="summary-conducteur-row" hidden>
@@ -1001,8 +1022,12 @@
        ────────────────────────────────────────────────────────────── */
     (function () {
 
+      // Tarifs journaliers — grille officielle client du 17/07/2026.
+      // Source de verite : offres.html. Toute modification doit y etre repercutee.
       var VEHICLES = [
-        { name: 'Aixam City Sport', brand: 'Aixam · Diesel', price: 49, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.png' }
+        { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.png' },
+        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.jpg' },
+        { name: 'Fiat Topolino',    brand: 'Fiat · Électrique',   price: 22, speed: '45 km/h', autonomy: 'Électrique · ville', seats: 2, img: 'topolino3.png' }
       ];
 
       var grid           = document.getElementById('resa-vehicles');
@@ -1313,7 +1338,9 @@
 
         var days = getDays();
         var locationTotal = v.price * days;
-        var deliveryFee   = state.mode === 'delivery' ? 50 : 0;
+        // Livraison : jamais chiffree en ligne (tarif selon distance, offerte des
+        // 4 mois). La ligne s'affiche sans montant, le total ne l'inclut pas.
+        var deliveryFee   = 0;
         var conducteurFee = state.options.conducteur ? 5 * days : 0;
         var total = locationTotal + deliveryFee + conducteurFee;
 
@@ -1321,7 +1348,7 @@
         document.getElementById('summary-period').textContent         = formatPeriod();
         document.getElementById('summary-location-label').textContent = 'Location · ' + days + ' jour' + (days > 1 ? 's' : '');
         document.getElementById('summary-location-price').textContent = locationTotal.toFixed(2).replace('.', ',') + ' €';
-        document.getElementById('summary-delivery-row').hidden        = deliveryFee === 0;
+        document.getElementById('summary-delivery-row').hidden        = state.mode !== 'delivery';
         var condRow = document.getElementById('summary-conducteur-row');
         condRow.hidden = conducteurFee === 0;
         document.getElementById('summary-conducteur-label').textContent = 'Conducteur supplémentaire · ' + days + ' jour' + (days > 1 ? 's' : '');

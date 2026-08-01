@@ -1,0 +1,102 @@
+/* ══════════════════════════════════════════════════════════════════
+   100P Location — Mesure d'audience et pixel publicitaire
+   GA4 + Meta Pixel, charges UNIQUEMENT apres consentement (RGPD/CNIL).
+
+   CONFIGURATION — renseigner les deux identifiants ci-dessous :
+   - GA4_ID        : Google Analytics 4, format "G-XXXXXXXXXX"
+                     (analytics.google.com → Admin → Flux de donnees)
+   - META_PIXEL_ID : Meta Pixel, format numerique "1234567890"
+                     (business.facebook.com → Gestionnaire d'evenements)
+
+   Tant que les deux sont vides, ce script ne fait RIEN :
+   pas de bandeau, pas de cookie, pas de requete.
+   ══════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var GA4_ID        = '';   // ex: 'G-XXXXXXXXXX'
+  var META_PIXEL_ID = '';   // ex: '1234567890'
+
+  if (!GA4_ID && !META_PIXEL_ID) return;
+
+  var KEY = '100p-consent';           // 'granted' | 'denied'
+  var choice = null;
+  try { choice = localStorage.getItem(KEY); } catch (e) {}
+
+  /* ── Chargement des traceurs (apres consentement uniquement) ─── */
+  function loadTrackers() {
+    if (GA4_ID) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA4_ID, { anonymize_ip: true });
+    }
+    if (META_PIXEL_ID) {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', META_PIXEL_ID);
+      fbq('track', 'PageView');
+    }
+  }
+
+  if (choice === 'granted') { loadTrackers(); return; }
+  if (choice === 'denied') return;
+
+  /* ── Bandeau de consentement ───────────────────────────────────── */
+  function showBanner() {
+    var css =
+      '#consent-100p{position:fixed;left:16px;right:16px;bottom:16px;z-index:99999;' +
+      'max-width:520px;margin:0 auto;background:#111;color:#f5f5f4;border-radius:14px;' +
+      'padding:20px 22px;box-shadow:0 12px 40px rgba(0,0,0,.35);' +
+      'font-family:"Geist",system-ui,sans-serif;font-size:14px;line-height:1.55}' +
+      '#consent-100p p{margin:0 0 14px}' +
+      '#consent-100p a{color:#f5f5f4;text-decoration:underline}' +
+      '#consent-100p .c-actions{display:flex;gap:10px;flex-wrap:wrap}' +
+      '#consent-100p button{cursor:pointer;border:0;border-radius:9px;' +
+      'padding:10px 18px;font:inherit;font-weight:600}' +
+      '#consent-100p .c-ok{background:#E8640A;color:#fff}' +
+      '#consent-100p .c-no{background:transparent;color:#d6d3d1;' +
+      'border:1px solid rgba(255,255,255,.25)}';
+    var style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+
+    var box = document.createElement('div');
+    box.id = 'consent-100p';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', 'Consentement cookies');
+    box.innerHTML =
+      '<p>On aimerait mesurer l’audience du site et l’efficacité de nos ' +
+      'publicités (Google Analytics, Meta). Aucune donnée n’est collectée ' +
+      'sans votre accord. <a href="confidentialite.html">En savoir plus</a></p>' +
+      '<div class="c-actions">' +
+      '<button type="button" class="c-ok">Accepter</button>' +
+      '<button type="button" class="c-no">Continuer sans accepter</button>' +
+      '</div>';
+
+    box.querySelector('.c-ok').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, 'granted'); } catch (e) {}
+      box.remove();
+      loadTrackers();
+    });
+    box.querySelector('.c-no').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, 'denied'); } catch (e) {}
+      box.remove();
+    });
+
+    document.body.appendChild(box);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showBanner);
+  } else {
+    showBanner();
+  }
+})();

@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>100P Location — Voitures sans permis · Auvergne</title>
   <meta name="description" content="Location de voitures sans permis à Vichy et Clermont-Ferrand. Dès 14 ans, sans permis B. Aixam City Sport." />
+  <!-- Partage social : Open Graph + Twitter Card -->
+  <link rel="canonical" href="https://100p-location.fr/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="100P Location" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="100P Location — Voitures sans permis · Auvergne" />
+  <meta property="og:description" content="Location de voitures sans permis à Vichy et Clermont-Ferrand. Dès 14 ans, sans permis B. Aixam City Sport." />
+  <meta property="og:url" content="https://100p-location.fr/" />
+  <meta property="og:image" content="https://100p-location.fr/og-100p.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Deux voitures sans permis 100P Location devant le panneau VICHY" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="100P Location — Voitures sans permis · Auvergne" />
+  <meta name="twitter:description" content="Location de voitures sans permis à Vichy et Clermont-Ferrand. Dès 14 ans, sans permis B. Aixam City Sport." />
+  <meta name="twitter:image" content="https://100p-location.fr/og-100p.jpg" />
+
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -3000,6 +3017,62 @@
       .final-modal__panel { padding: 40px 24px 28px; }
     }
   </style>
+
+  <!-- Mesure d'audience (chargee apres consentement uniquement) -->
+  <script src="assets/tracking.js" defer></script>
+
+  <!-- Donnees structurees : entreprise locale de location de vehicules -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AutoRental",
+    "name": "100P Location",
+    "description": "Location de voitures sans permis dès 14 ans (permis AM) à Vichy et en Auvergne. Aixam City Sport, Aixam Minauto, Fiat Topolino. Assurance tous risques incluse, retrait gratuit en meet point.",
+    "url": "https://100p-location.fr/",
+    "logo": "https://100p-location.fr/logo.png",
+    "image": "https://100p-location.fr/og-100p.jpg",
+    "telephone": "+33415458306",
+    "email": "contact@100p-location.fr",
+    "priceRange": "22€ - 750€",
+    "currenciesAccepted": "EUR",
+    "areaServed": [
+      { "@type": "City", "name": "Vichy" },
+      { "@type": "City", "name": "Clermont-Ferrand" },
+      { "@type": "City", "name": "Riom" },
+      { "@type": "City", "name": "Moulins" },
+      { "@type": "City", "name": "Montluçon" }
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Vichy",
+      "addressRegion": "Auvergne-Rhône-Alpes",
+      "addressCountry": "FR"
+    },
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "name": "Location à la journée",
+        "price": "22",
+        "priceCurrency": "EUR",
+        "description": "Dès 22 €/jour, assurance tous risques et 70 km/jour inclus"
+      },
+      {
+        "@type": "Offer",
+        "name": "Location à la semaine",
+        "price": "140",
+        "priceCurrency": "EUR",
+        "description": "Dès 140 €/semaine, assurance tous risques et 350 km/semaine inclus"
+      },
+      {
+        "@type": "Offer",
+        "name": "Location au mois",
+        "price": "490",
+        "priceCurrency": "EUR",
+        "description": "Dès 490 €/mois, assurance tous risques, 1 500 km/mois inclus, option kilométrage illimité sur l'Aixam City Sport"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -3169,9 +3242,8 @@
                 Des voitures sans permis <em>près de chez vous.</em>
               </h2>
               <p class="fleet-hero__lede">
-                Flotte accessible dès 14 ans.
+                Flotte accessible dès 14 ans, en deux gammes : thermique et électrique.
               </p>
-              <p class="fleet-hero__coming">Bientôt · Nos premiers modèles électriques</p>
               <div class="fleet-hero__actions">
                 <a href="vehicules.html" class="btn btn--primary">
                   Voir tous nos véhicules
@@ -3356,10 +3428,9 @@
               <span class="tag tag--ghost">À la journée</span>
             </div>
             <div class="plan__price"><span class="plan__price-prefix">dès</span>22&thinsp;€<span class="unit">/ jour</span></div>
-            <div class="plan__formulas" aria-label="Formules disponibles">
-              <span>Premium</span>
-              <span>Standard</span>
-              <span>Fun</span>
+            <div class="plan__formulas" aria-label="Gammes disponibles">
+              <span>Thermique</span>
+              <span>Électrique</span>
             </div>
             <p class="plan__desc">La location à la journée pour une sortie, un rendez-vous, une découverte ponctuelle.</p>
             <ul class="plan__list">
@@ -3382,10 +3453,9 @@
               <span class="tag tag--accent">Populaire</span>
             </div>
             <div class="plan__price"><span class="plan__price-prefix">dès</span>140&thinsp;€<span class="unit">/ semaine</span></div>
-            <div class="plan__formulas" aria-label="Formules disponibles">
-              <span>Premium</span>
-              <span>Standard</span>
-              <span>Fun</span>
+            <div class="plan__formulas" aria-label="Gammes disponibles">
+              <span>Thermique</span>
+              <span>Électrique</span>
             </div>
             <p class="plan__desc">Notre formule la plus choisie pour des vacances locales ou un essai prolongé.</p>
             <ul class="plan__list">
@@ -3408,13 +3478,12 @@
               <span class="tag tag--sand">Longue durée</span>
             </div>
             <div class="plan__price"><span class="plan__price-prefix">dès</span>490&thinsp;€<span class="unit">/ mois</span></div>
-            <div class="plan__formulas" aria-label="Formules disponibles">
-              <span>Premium</span>
-              <span>Medium</span>
-              <span>Économique</span>
-              <span>Fun</span>
+            <div class="plan__formulas" aria-label="Gammes disponibles">
+              <span>Thermique</span>
+              <span>Électrique</span>
+              <span>Km illimité en option</span>
             </div>
-            <p class="plan__desc">La location longue durée pour un usage quotidien — 4 formules au choix selon votre kilométrage.</p>
+            <p class="plan__desc">La location longue durée pour un usage quotidien — choisissez votre gamme et votre kilométrage.</p>
             <ul class="plan__list">
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Assurance tous risques comprise</li>
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Livraison gratuite dès 4 mois</li>
@@ -4615,8 +4684,12 @@
       var DOW          = ['Lu','Ma','Me','Je','Ve','Sa','Di'];
       var SLOTS        = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
 
+      // Tarifs journaliers — grille officielle client du 17/07/2026.
+      // Source de verite : offres.html. Toute modification doit y etre repercutee.
       var VEHICLES = [
-        { name: 'Aixam City Sport', price: 49, desc: '45 km/h · 4.3 L/100 km' }
+        { name: 'Aixam City Sport', price: 30, desc: 'Thermique · 45 km/h · 4.3 L/100 km' },
+        { name: 'Aixam Minauto',    price: 25, desc: 'Thermique · 45 km/h · compacte et maniable' },
+        { name: 'Fiat Topolino',    price: 22, desc: 'Électrique · 45 km/h · ville et proximité' }
       ];
 
       var state = {
@@ -4824,8 +4897,8 @@
           opts.className = 'chat-options';
 
           [
-            { val: 'agency',   icon: '🏬', label: 'Retrait sur place', sub: 'sans frais' },
-            { val: 'delivery', icon: '🚚', label: 'Livraison à domicile', sub: '+50 € (dans 20 km)' }
+            { val: 'agency',   icon: '🏬', label: 'Retrait en meet point', sub: 'gratuit' },
+            { val: 'delivery', icon: '🚚', label: 'Livraison à domicile', sub: 'en option · offerte dès 4 mois' }
           ].forEach(function (m) {
             opts.appendChild(makeOption(m.val, function (b) {
               b.appendChild(document.createTextNode(m.icon + ' '));
@@ -4849,7 +4922,9 @@
         var d1 = new Date(state.dateDepart);
         var d2 = new Date(state.dateRetour);
         var vehText  = state.vehicle || 'Aucun (à choisir)';
-        var modeText = state.mode === 'delivery' ? '🚚 Livraison (+50€)' : '🏬 Retrait sur place';
+        var modeText = state.mode === 'delivery'
+          ? '🚚 Livraison à domicile (chiffrée à la confirmation)'
+          : '🏬 Retrait en meet point (gratuit)';
 
         var recap =
           "Récapitulatif de votre réservation :<br/><br/>" +
@@ -4895,7 +4970,10 @@
         sessionStorage.setItem('pickupMode',           state.mode);
 
         // Frais de livraison + total (lus par reservation.html pour le récap tarif)
-        var deliveryFee = state.mode === 'delivery' ? 50 : 0;
+        // La livraison n'est jamais chiffree en ligne (tarif variable selon la distance :
+        // 160 EUR sous 100 km, 300 EUR sous 200 km, devis au-dela, offerte des 4 mois).
+        // Elle est donc a 0 dans le total affiche, et annoncee comme chiffree a la confirmation.
+        var deliveryFee = 0;
         var start = new Date(state.dateDepart + 'T' + (state.heureDepart || '00:00'));
         var end   = new Date(state.dateRetour + 'T' + (state.heureRetour || '00:00'));
         var diff  = end - start;
@@ -5047,7 +5125,7 @@
         <div class="final-modal__formula" id="formula-modal-recap" hidden>
           <span class="final-modal__formula-label">Formule</span>
           <span class="final-modal__formula-value" id="formula-modal-name">Journée</span>
-          <span class="final-modal__formula-label" id="formula-modal-price">39 €</span>
+          <span class="final-modal__formula-label" id="formula-modal-price">—</span>
         </div>
       </div>
 

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Pages de tunnel et de confirmation : sans interet pour l'indexation
+Disallow: /reservation.html
+Disallow: /reservation-resultats.html
+Disallow: /merci.html
+
+Sitemap: https://100p-location.fr/sitemap.xml

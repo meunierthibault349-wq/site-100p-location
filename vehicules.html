@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nos véhicules — 100P Location</title>
   <meta name="description" content="Catalogue des voitures sans permis 100P Location : Aixam City Sport. Accessible dès 14 ans." />
+  <!-- Partage social : Open Graph + Twitter Card -->
+  <link rel="canonical" href="https://100p-location.fr/vehicules.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="100P Location" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Nos véhicules — 100P Location" />
+  <meta property="og:description" content="Catalogue des voitures sans permis 100P Location : Aixam City Sport. Accessible dès 14 ans." />
+  <meta property="og:url" content="https://100p-location.fr/vehicules.html" />
+  <meta property="og:image" content="https://100p-location.fr/og-100p.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Deux voitures sans permis 100P Location devant le panneau VICHY" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nos véhicules — 100P Location" />
+  <meta name="twitter:description" content="Catalogue des voitures sans permis 100P Location : Aixam City Sport. Accessible dès 14 ans." />
+  <meta name="twitter:image" content="https://100p-location.fr/og-100p.jpg" />
+
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1007,6 +1024,9 @@
       .teaser-fleet__grid { grid-template-columns: 1fr; }
     }
   </style>
+
+  <!-- Mesure d'audience (chargee apres consentement uniquement) -->
+  <script src="assets/tracking.js" defer></script>
 </head>
 
 <body>
@@ -1074,7 +1094,7 @@
           </div>
 
           <div class="chapter__body" data-reveal style="--i:1">
-            <div class="chapter__brand">Aixam · Diesel</div>
+            <div class="chapter__brand">Aixam · Thermique</div>
             <h2 class="chapter__name">
               Aixam City Sport
               <button type="button" class="chapter__info-btn" data-spec="aixam" aria-label="Voir la fiche technique de l'Aixam City Sport">i</button>
@@ -1092,7 +1112,7 @@
             <div class="chapter__actions">
               <div class="chapter__price">
                 <span class="chapter__price-from">À partir de</span>
-                <span class="chapter__price-amount">49&thinsp;€<span class="unit">/ jour</span></span>
+                <span class="chapter__price-amount">30&thinsp;€<span class="unit">/ jour</span></span>
               </div>
               <button type="button" class="chapter__cta vcard__availability-btn" data-vehicle="Aixam City Sport">
                 Voir les disponibilités
@@ -1106,12 +1126,12 @@
     </article>
 
     <!-- TEASER — Bientôt : modèles électriques -->
-    <section class="teaser-fleet" aria-label="Bientôt dans notre flotte">
+    <section class="teaser-fleet" aria-label="Le reste de la flotte">
       <div class="container">
         <header class="teaser-fleet__head" data-reveal>
-          <span class="eyebrow">Bientôt · Nos premiers modèles électriques</span>
+          <span class="eyebrow">La gamme · Thermique &amp; électrique</span>
           <h2 class="teaser-fleet__title">
-            La flotte<br /><em>s'électrifie.</em>
+            Le reste de<br /><em>la flotte.</em>
           </h2>
         </header>
         <div class="teaser-fleet__grid">
@@ -1120,7 +1140,7 @@
               <img src="topolino3.png" alt="Fiat Topolino — 100P Location" loading="lazy" />
             </div>
             <div class="teaser-card__body">
-              <div class="teaser-card__brand">Fiat · Électrique</div>
+              <div class="teaser-card__brand">Fiat · Électrique · dès 22&thinsp;€ / jour</div>
               <h3 class="teaser-card__name">Fiat Topolino</h3>
             </div>
           </article>
@@ -1129,7 +1149,7 @@
               <img src="minauto.jpg" alt="Aixam Minauto — 100P Location" loading="lazy" />
             </div>
             <div class="teaser-card__body">
-              <div class="teaser-card__brand">Aixam</div>
+              <div class="teaser-card__brand">Aixam · Thermique · dès 25&thinsp;€ / jour</div>
               <h3 class="teaser-card__name">Aixam Minauto</h3>
             </div>
           </article>
@@ -1575,7 +1595,7 @@
 
       var SPECS = {
         aixam: {
-          brand: 'Aixam · Diesel',
+          brand: 'Aixam · Thermique',
           title: 'Aixam City Sport',
           sub: 'Quadricycle léger Diesel',
           groups: [

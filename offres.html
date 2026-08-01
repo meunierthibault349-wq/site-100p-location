@@ -751,6 +751,64 @@
 
   <!-- Mesure d'audience (chargee apres consentement uniquement) -->
   <script src="assets/tracking.js" defer></script>
+
+  <!-- Donnees structurees : FAQ tarifs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Quels frais sont inclus dans le tarif affiché ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le tarif affiché inclut l'assurance tous risques , l'assistance 7j/7 et la prise en main du véhicule. Au mois, les véhicules thermiques incluent un forfait de 1 500 km , et l'Aixam City Sport existe en version kilométrage illimité ; les électriques sont sans forfait kilométrique. Aucun frais caché — vous ne payez en supplément que les options explicitement choisies (livraison, conducteur supplémentaire, franchise réductible)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Y a-t-il une caution à verser ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Une empreinte bancaire de 300 € est prise à la récupération du véhicule. Elle n'est pas débitée. Elle est restituée immédiatement à la restitution si le véhicule est rendu propre, sans dommage et avec une batterie chargée à 80% minimum."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Puis-je annuler ou modifier ma réservation ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Annulation gratuite jusqu'à 24h avant le départ. Au-delà, des frais d'annulation peuvent s'appliquer (50% du montant). Pour toute modification, contactez directement votre secteur par téléphone — l'équipe s'arrange avec vous."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment se passe le paiement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Aucun débit en ligne lors de la réservation. Vous renseignez vos coordonnées, nous vous rappelons sous 24h pour confirmer, et le paiement se fait sur place le jour de la prise du véhicule par carte bancaire au nom du locataire."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que se passe-t-il si je dépasse la durée prévue ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Prévenez l'agence — dans la mesure des disponibilités, nous prolongeons la location au tarif initial. Sans accord préalable, des frais de retard équivalents à 1,5× le tarif journalier peuvent s'appliquer par jour de dépassement."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "La livraison est-elle disponible dans tous les secteurs ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, dans nos cinq secteurs (Clermont-Ferrand, Riom, Vichy, Moulins, Montluçon), nous livrons dans un rayon de 20 km autour du point de retrait . Au-delà, contactez-nous pour une livraison sur devis."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>

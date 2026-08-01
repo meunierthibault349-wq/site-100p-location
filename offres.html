@@ -211,6 +211,14 @@
       font-size: 17px;
       color: var(--ink);
     }
+    /* Groupe de bulles (ex: gamme + option km illimite) : empilees pour
+       laisser la place au nom du vehicule */
+    .pricing-row__badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
     .pricing-row__badge {
       font-family: var(--mono);
       font-size: 10px;
@@ -220,6 +228,7 @@
       background: var(--accent-soft);
       padding: 4px 10px;
       border-radius: 999px;
+      white-space: nowrap;
       white-space: nowrap;
     }
     .pricing-row__price {
@@ -267,6 +276,8 @@
     @media (max-width: 480px) {
       .pricing-row { grid-template-columns: 1fr auto; row-gap: 6px; }
       .pricing-row__badge { grid-column: 1 / -1; justify-self: start; }
+      .pricing-row__badges { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+      .pricing-row__badges .pricing-row__badge { grid-column: auto; }
     }
     .offre-chapter__save {
       display: inline-block;
@@ -891,13 +902,10 @@
             <div class="offre-chapter__pricing">
               <div class="pricing-row">
                 <span class="pricing-row__car">Aixam City Sport</span>
-                <span class="pricing-row__badge">Thermique · km illimité</span>
-                <span class="pricing-row__price">750&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · City Sport km illimité', 750)">Réserver</button>
-              </div>
-              <div class="pricing-row">
-                <span class="pricing-row__car">Aixam City Sport</span>
-                <span class="pricing-row__badge">Thermique · 1&thinsp;500 km</span>
+                <span class="pricing-row__badges">
+                  <span class="pricing-row__badge">Thermique · 1&thinsp;500 km</span>
+                  <span class="pricing-row__badge">Km illimité +60&thinsp;€</span>
+                </span>
                 <span class="pricing-row__price">690&thinsp;€<small>/ mois</small></span>
                 <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Aixam City Sport', 690)">Réserver</button>
               </div>

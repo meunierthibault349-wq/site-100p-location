@@ -3157,10 +3157,23 @@
             <span class="bb-divider" aria-hidden="true"></span>
 
             <label class="bb-place bb-vehicle">
+              <span class="bb-label">Gamme</span>
+              <select class="bb-select" id="bb-gamme-select" name="gamme">
+                <option value="">Toutes les gammes</option>
+                <option value="thermique">Thermique</option>
+                <option value="electrique">Électrique</option>
+              </select>
+            </label>
+
+            <span class="bb-divider" aria-hidden="true"></span>
+
+            <label class="bb-place bb-vehicle">
               <span class="bb-label">Véhicule</span>
               <select class="bb-select" id="bb-vehicle-select" name="vehicule">
                 <option value="">Tous les véhicules</option>
-                <option value="Aixam City Sport">Aixam City Sport</option>
+                <option value="Aixam City Sport" data-gamme="thermique">Aixam City Sport</option>
+                <option value="Aixam Minauto" data-gamme="thermique">Aixam Minauto</option>
+                <option value="Fiat Topolino" data-gamme="electrique">Fiat Topolino</option>
               </select>
             </label>
 
@@ -4364,9 +4377,31 @@
     })();
 
     /* ── Booking bar : validation + stockage + redirection ──── */
+    // Filtre gamme -> vehicules : ne montre que les vehicules de la gamme choisie
+    (function () {
+      var gammeSelect   = document.getElementById('bb-gamme-select');
+      var vehicleSelect = document.getElementById('bb-vehicle-select');
+      if (!gammeSelect || !vehicleSelect) return;
+      gammeSelect.addEventListener('change', function () {
+        var g = gammeSelect.value;
+        var opts = vehicleSelect.querySelectorAll('option[data-gamme]');
+        opts.forEach(function (o) {
+          var visible = !g || o.dataset.gamme === g;
+          o.hidden = !visible;
+          o.disabled = !visible;
+        });
+        // Si le vehicule selectionne ne correspond plus a la gamme, on reinitialise
+        var current = vehicleSelect.selectedOptions[0];
+        if (current && current.dataset.gamme && g && current.dataset.gamme !== g) {
+          vehicleSelect.value = '';
+        }
+      });
+    })();
+
     function goToVehicles() {
       var agenceSelect  = document.querySelector('.bb-agency select');
       var vehicleSelect = document.getElementById('bb-vehicle-select');
+      var gammeSelect   = document.getElementById('bb-gamme-select');
       var dateInputs = document.querySelectorAll('.bb-field input[type="date"]');
       var timeInputs = document.querySelectorAll('.bb-field input[type="time"]');
 
@@ -4420,6 +4455,14 @@
         sessionStorage.setItem('preselectedVehicle', vehicle);
       } else {
         sessionStorage.removeItem('preselectedVehicle');
+      }
+
+      // Gamme choisie (vide = toutes) : reservation-resultats filtre dessus
+      var gamme = gammeSelect ? gammeSelect.value : '';
+      if (gamme) {
+        sessionStorage.setItem('preferredGamme', gamme);
+      } else {
+        sessionStorage.removeItem('preferredGamme');
       }
 
       window.location.href = 'reservation-resultats.html';

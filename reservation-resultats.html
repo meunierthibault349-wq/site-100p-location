@@ -1025,9 +1025,9 @@
       // Tarifs journaliers — grille officielle client du 17/07/2026.
       // Source de verite : offres.html. Toute modification doit y etre repercutee.
       var VEHICLES = [
-        { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.png' },
-        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.jpg' },
-        { name: 'Fiat Topolino',    brand: 'Fiat · Électrique',   price: 22, speed: '45 km/h', autonomy: 'Électrique · ville', seats: 2, img: 'topolino3.png' }
+        { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.png' },
+        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.jpg' },
+        { name: 'Fiat Topolino',    brand: 'Fiat · Électrique',   gamme: 'electrique', price: 22, speed: '45 km/h', autonomy: 'Électrique · ville', seats: 2, img: 'topolino3.png' }
       ];
 
       var grid           = document.getElementById('resa-vehicles');
@@ -1215,10 +1215,15 @@
         grid.textContent = '';
 
         // Dès qu'un véhicule est choisi (pré-sélectionné OU sélectionné sur cette page),
-        // on n'affiche que celui-ci. Sinon, on affiche les 3 cards pour choisir.
+        // on n'affiche que celui-ci. Sinon, la gamme choisie dans le booking bar
+        // (Thermique / Électrique) filtre la liste ; sans gamme, les 3 cards.
+        var preferredGamme = sessionStorage.getItem('preferredGamme') || '';
         var list = state.vehicle
           ? VEHICLES.filter(function (v) { return v.name === state.vehicle; })
-          : VEHICLES;
+          : (preferredGamme
+              ? VEHICLES.filter(function (v) { return v.gamme === preferredGamme; })
+              : VEHICLES);
+        if (!list.length) list = VEHICLES; // garde-fou si la gamme stockee ne matche rien
 
         list.forEach(function (v) {
           var selected = state.vehicle === v.name;

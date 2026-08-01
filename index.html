@@ -3165,18 +3165,6 @@
               </select>
             </label>
 
-            <span class="bb-divider" aria-hidden="true"></span>
-
-            <label class="bb-place bb-vehicle">
-              <span class="bb-label">Véhicule</span>
-              <select class="bb-select" id="bb-vehicle-select" name="vehicule">
-                <option value="">Tous les véhicules</option>
-                <option value="Aixam City Sport" data-gamme="thermique">Aixam City Sport</option>
-                <option value="Aixam Minauto" data-gamme="thermique">Aixam Minauto</option>
-                <option value="Fiat Topolino" data-gamme="electrique">Fiat Topolino</option>
-              </select>
-            </label>
-
             <div class="bb-fields" role="group" aria-label="Dates de location">
               <div class="bb-field bb-date-field" id="bb-depart-field" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false">
                 <span class="bb-label">Date de départ</span>
@@ -4377,30 +4365,8 @@
     })();
 
     /* ── Booking bar : validation + stockage + redirection ──── */
-    // Filtre gamme -> vehicules : ne montre que les vehicules de la gamme choisie
-    (function () {
-      var gammeSelect   = document.getElementById('bb-gamme-select');
-      var vehicleSelect = document.getElementById('bb-vehicle-select');
-      if (!gammeSelect || !vehicleSelect) return;
-      gammeSelect.addEventListener('change', function () {
-        var g = gammeSelect.value;
-        var opts = vehicleSelect.querySelectorAll('option[data-gamme]');
-        opts.forEach(function (o) {
-          var visible = !g || o.dataset.gamme === g;
-          o.hidden = !visible;
-          o.disabled = !visible;
-        });
-        // Si le vehicule selectionne ne correspond plus a la gamme, on reinitialise
-        var current = vehicleSelect.selectedOptions[0];
-        if (current && current.dataset.gamme && g && current.dataset.gamme !== g) {
-          vehicleSelect.value = '';
-        }
-      });
-    })();
-
     function goToVehicles() {
       var agenceSelect  = document.querySelector('.bb-agency select');
-      var vehicleSelect = document.getElementById('bb-vehicle-select');
       var gammeSelect   = document.getElementById('bb-gamme-select');
       var dateInputs = document.querySelectorAll('.bb-field input[type="date"]');
       var timeInputs = document.querySelectorAll('.bb-field input[type="time"]');
@@ -4416,7 +4382,6 @@
       }
 
       var agence      = agenceSelect ? agenceSelect.value : '';
-      var vehicle     = vehicleSelect ? vehicleSelect.value : '';
       // Lit input natif OU sessionStorage du datepicker custom (site.js)
       var dateDepart  = (dateInputs[0] && dateInputs[0].value) || isoToDate(sessionStorage.getItem('bb_depart_date'));
       var heureDepart = (timeInputs[0] && timeInputs[0].value) || sessionStorage.getItem('bb_depart_time') || '';
@@ -4450,12 +4415,9 @@
         heure_retour: heureRetour
       }));
 
-      // Véhicule pré-sélectionné (vide = "Tous")
-      if (vehicle) {
-        sessionStorage.setItem('preselectedVehicle', vehicle);
-      } else {
-        sessionStorage.removeItem('preselectedVehicle');
-      }
+      // Le choix du vehicule se fait sur la page suivante : on nettoie toute
+      // pre-selection anterieure pour que le filtre de gamme s'applique
+      sessionStorage.removeItem('preselectedVehicle');
 
       // Gamme choisie (vide = toutes) : reservation-resultats filtre dessus
       var gamme = gammeSelect ? gammeSelect.value : '';

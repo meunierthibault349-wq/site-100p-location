@@ -219,6 +219,21 @@
       align-items: flex-end;
       gap: 6px;
     }
+    /* Vehicule pas encore disponible (ex: Citroen Ami) : ligne presente
+       mais non reservable */
+    .pricing-row--soon .pricing-row__car { color: var(--muted); }
+    .pricing-row--soon .pricing-row__price.pricing-row__price--soon {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .pricing-row__cta[disabled] {
+      opacity: .4;
+      cursor: not-allowed;
+    }
     .pricing-row__badge {
       font-family: var(--mono);
       font-size: 10px;
@@ -816,6 +831,12 @@
                 <span class="pricing-row__price">22&thinsp;€<small>/ jour</small></span>
                 <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Fiat Topolino', 22)">Réserver</button>
               </div>
+              <div class="pricing-row pricing-row--soon">
+                <span class="pricing-row__car">Citroën Ami</span>
+                <span class="pricing-row__badge">Électrique</span>
+                <span class="pricing-row__price pricing-row__price--soon">Bientôt · début octobre</span>
+                <button type="button" class="pricing-row__cta" disabled>Réserver</button>
+              </div>
             </div>
 
             <ul class="offre-chapter__included">
@@ -866,6 +887,12 @@
                 <span class="pricing-row__badge">Électrique</span>
                 <span class="pricing-row__price">140&thinsp;€<small>/ semaine</small></span>
                 <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Fiat Topolino', 140)">Réserver</button>
+              </div>
+              <div class="pricing-row pricing-row--soon">
+                <span class="pricing-row__car">Citroën Ami</span>
+                <span class="pricing-row__badge">Électrique</span>
+                <span class="pricing-row__price pricing-row__price--soon">Bientôt · début octobre</span>
+                <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
             </div>
 
@@ -920,6 +947,12 @@
                 <span class="pricing-row__badge">Électrique</span>
                 <span class="pricing-row__price">490&thinsp;€<small>/ mois</small></span>
                 <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Fiat Topolino', 490)">Réserver</button>
+              </div>
+              <div class="pricing-row pricing-row--soon">
+                <span class="pricing-row__car">Citroën Ami</span>
+                <span class="pricing-row__badge">Électrique</span>
+                <span class="pricing-row__price pricing-row__price--soon">Bientôt · début octobre</span>
+                <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
             </div>
 

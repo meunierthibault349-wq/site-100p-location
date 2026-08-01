@@ -942,8 +942,23 @@
     }
     .teaser-fleet__grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: clamp(20px, 3vw, 32px);
+    }
+    /* Pastille vehicule pas encore disponible (ex: Citroen Ami) */
+    .teaser-card__soon {
+      position: absolute;
+      top: 14px; left: 14px;
+      z-index: 2;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--ink);
+      padding: 6px 12px;
+      border-radius: 999px;
     }
     .teaser-card {
       position: relative;
@@ -1151,6 +1166,16 @@
             <div class="teaser-card__body">
               <div class="teaser-card__brand">Aixam · Thermique · dès 25&thinsp;€ / jour</div>
               <h3 class="teaser-card__name">Aixam Minauto</h3>
+            </div>
+          </article>
+          <article class="teaser-card" data-reveal style="--i:3">
+            <span class="teaser-card__soon">Disponible début octobre</span>
+            <div class="teaser-card__media">
+              <img src="voiture.jpg" alt="Citroën Ami — bientôt disponible chez 100P Location" loading="lazy" />
+            </div>
+            <div class="teaser-card__body">
+              <div class="teaser-card__brand">Citroën · Électrique</div>
+              <h3 class="teaser-card__name">Citroën Ami</h3>
             </div>
           </article>
         </div>

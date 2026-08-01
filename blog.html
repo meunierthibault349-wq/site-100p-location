@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le carnet de route — 100P Location</title>
+  <meta name="description" content="Articles, conseils et guides 100P Location : voiture sans permis, BSR, permis suspendu, location en Auvergne. Tout savoir avant de prendre la route." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    /* HERO de la page blog */
+    .blog-hero {
+      padding: clamp(72px, 9vw, 120px) 0 clamp(40px, 6vw, 64px);
+      background: var(--bg);
+    }
+    .blog-hero__inner { max-width: 760px; }
+    .blog-hero__eyebrow {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .blog-hero__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(40px, 5.5vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0 0 22px;
+    }
+    .blog-hero__title em { font-style: italic; color: var(--accent); }
+    .blog-hero__lede {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.1vw, 17px);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 60ch;
+      margin: 0;
+    }
+
+    /* Liste éditoriale des articles */
+    .blog-list { padding: clamp(40px, 6vw, 72px) 0 clamp(80px, 12vw, 140px); }
+    .blog-list__inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-article {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: clamp(28px, 4.5vw, 64px);
+      align-items: center;
+      padding: clamp(36px, 5vw, 56px) 0;
+      border-top: 1px solid var(--line);
+      text-decoration: none;
+      color: inherit;
+    }
+    .blog-article:first-of-type { border-top: none; padding-top: clamp(8px, 2vw, 16px); }
+
+    .blog-article__media {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface-2);
+      box-shadow:
+        0 1px 0 rgba(17,17,17,.04),
+        0 12px 30px -10px rgba(17,17,17,.16),
+        0 28px 56px -20px rgba(17,17,17,.1);
+    }
+    .blog-article__media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .8s var(--ease);
+    }
+    .blog-article:hover .blog-article__media img { transform: scale(1.03); }
+
+    .blog-article__body { display: flex; flex-direction: column; gap: 14px; }
+    .blog-article__meta {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .blog-article__meta-sep {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--muted-2);
+    }
+    .blog-article__tag { color: var(--accent); font-weight: 500; }
+
+    .blog-article__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(24px, 2.8vw, 32px);
+      line-height: 1.18;
+      letter-spacing: -.015em;
+      color: var(--ink);
+      margin: 0;
+      transition: color .2s;
+    }
+    .blog-article:hover .blog-article__title { color: var(--accent); }
+
+    .blog-article__excerpt {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      margin: 0;
+      max-width: 56ch;
+    }
+
+    .blog-article__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 6px;
+      font-family: var(--sans); font-size: 14px; font-weight: 500;
+      color: var(--ink);
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--ink);
+      align-self: flex-start;
+      transition: color .2s, border-color .2s;
+    }
+    .blog-article:hover .blog-article__cta {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .blog-article__cta svg {
+      width: 12px; height: 12px;
+      transition: transform .25s var(--ease);
+    }
+    .blog-article:hover .blog-article__cta svg { transform: translateX(3px); }
+
+    /* Alterne le sens de chaque article — image gauche / droite */
+    .blog-article:nth-child(even) {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+    .blog-article:nth-child(even) .blog-article__media { order: 2; }
+    .blog-article:nth-child(even) .blog-article__body { order: 1; }
+
+    @media (max-width: 760px) {
+      .blog-article,
+      .blog-article:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+      .blog-article:nth-child(even) .blog-article__media { order: 1; }
+      .blog-article:nth-child(even) .blog-article__body { order: 2; }
+    }
+
+    /* Closer */
+    .blog-closer {
+      padding: clamp(64px, 10vw, 110px) 0;
+      background: #ECE7DC;
+      border-top: 1px solid rgba(17,17,17,.08);
+    }
+    .blog-closer__inner {
+      text-align: center; max-width: 720px; margin: 0 auto;
+    }
+    .blog-closer__eyebrow {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 18px;
+    }
+    .blog-closer__title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08; letter-spacing: -.02em;
+      color: var(--ink); margin: 0 0 18px;
+    }
+    .blog-closer__title em { font-style: italic; color: var(--accent); }
+    .blog-closer__lede {
+      font-family: var(--sans); font-size: 15px; line-height: 1.6;
+      color: var(--ink-soft); max-width: 52ch; margin: 0 auto 28px;
+    }
+    .blog-closer__cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px;
+      background: var(--ink); color: var(--surface);
+      font-family: var(--sans); font-size: 14.5px; font-weight: 500;
+      border-radius: 999px; text-decoration: none;
+      transition: background .25s var(--ease), transform .25s var(--ease);
+    }
+    .blog-closer__cta:hover { background: #2A2A2A; }
+    .blog-closer__cta:active { transform: scale(.98); }
+    .blog-closer__cta svg {
+      width: 13px; height: 13px;
+      transition: transform .25s var(--ease);
+    }
+    .blog-closer__cta:hover svg { transform: translateX(3px); }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="blog-hero" aria-labelledby="blog-hero-title">
+      <div class="container">
+        <div class="blog-hero__inner" data-reveal>
+          <div class="blog-hero__eyebrow">Le carnet · 100P</div>
+          <h1 class="blog-hero__title" id="blog-hero-title">
+            Carnet <em>de route.</em>
+          </h1>
+          <p class="blog-hero__lede">
+            Itinéraires en Auvergne, conseils avant le départ, coulisses
+            de notre flotte. Tout ce qu'il faut savoir avant de prendre la
+            route sans permis.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE ÉDITORIALE -->
+    <section class="blog-list" aria-label="Tous les articles">
+      <div class="container">
+        <div class="blog-list__inner">
+
+          <a href="blog-location-auvergne.html" class="blog-article" data-reveal>
+            <div class="blog-article__media">
+              <img src="blog3.png" alt="Voiture sans permis 100P Location en Auvergne" loading="lazy" />
+            </div>
+            <div class="blog-article__body">
+              <div class="blog-article__meta">
+                <span class="blog-article__tag">Guide</span>
+                <span class="blog-article__meta-sep" aria-hidden="true"></span>
+                <span>26 juin 2026</span>
+                <span class="blog-article__meta-sep" aria-hidden="true"></span>
+                <span>8 min de lecture</span>
+              </div>
+              <h2 class="blog-article__title">Louer une voiture sans permis en Auvergne : prix, modèles et villes.</h2>
+              <p class="blog-article__excerpt">
+                Tout savoir sur la location de voiture sans permis à
+                Clermont-Ferrand, Vichy, Riom, Moulins et Montluçon. Prix
+                jour/semaine/mois, livraison et démarches.
+              </p>
+              <span class="blog-article__cta">
+                Lire l'article
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </a>
+
+          <a href="blog-permis-suspendu.html" class="blog-article" data-reveal>
+            <div class="blog-article__media">
+              <img src="blog2.png" alt="Voiture sans permis pour conduire avec un permis suspendu" loading="lazy" />
+            </div>
+            <div class="blog-article__body">
+              <div class="blog-article__meta">
+                <span class="blog-article__tag">Guide</span>
+                <span class="blog-article__meta-sep" aria-hidden="true"></span>
+                <span>12 juin 2026</span>
+                <span class="blog-article__meta-sep" aria-hidden="true"></span>
+                <span>8 min de lecture</span>
+              </div>
+              <h2 class="blog-article__title">Permis suspendu : comment continuer à conduire et travailler légalement.</h2>
+              <p class="blog-article__excerpt">
+                Votre permis vient d'être suspendu et vous devez aller
+                travailler ? Voici la solution légale, accessible en 24 h,
+                pour reprendre la route sans attendre la fin de votre
+                suspension.
+              </p>
+              <span class="blog-article__cta">
+                Lire l'article
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </a>
+
+          <a href="blog-voiture-sans-permis-14-ans.html" class="blog-article" data-reveal>
+            <div class="blog-article__media">
+              <img src="blog1.png" alt="Aixam City Sport, voiture sans permis dès 14 ans" loading="lazy" />
+            </div>
+            <div class="blog-article__body">
+              <div class="blog-article__meta">
+                <span class="blog-article__tag">Guide</span>
+                <span class="blog-article__meta-sep" aria-hidden="true"></span>
+                <span>5 juin 2026</span>
+                <span class="blog-article__meta-sep" aria-hidden="true"></span>
+                <span>7 min de lecture</span>
+              </div>
+              <h2 class="blog-article__title">Voiture sans permis dès 14 ans : tout savoir sur le BSR et l'Aixam City Sport.</h2>
+              <p class="blog-article__excerpt">
+                Votre enfant a 14 ans et son BSR ? On vous explique tout :
+                conditions, papiers, sécurité, tarifs — et pourquoi l'Aixam
+                City Sport est la solution la plus adaptée pour une
+                mobilité réelle dès aujourd'hui.
+              </p>
+              <span class="blog-article__cta">
+                Lire l'article
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSER -->
+    <section class="blog-closer" aria-labelledby="blog-closer-title">
+      <div class="container">
+        <div class="blog-closer__inner" data-reveal>
+          <div class="blog-closer__eyebrow">Réservation</div>
+          <h2 class="blog-closer__title" id="blog-closer-title">
+            Envie de prendre <em>la route ?</em>
+          </h2>
+          <p class="blog-closer__lede">
+            Réservez votre voiture sans permis en deux minutes. Assurance
+            tous risques incluse, paiement sur place dans le secteur
+            choisie.
+          </p>
+          <a href="index.html#top" class="blog-closer__cta">
+            Démarrer ma réservation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="offres.html">Tarifs</a></li>
+              <li><a href="horaires.html">Secteurs</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés · SIRET 104 352 299 00010</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

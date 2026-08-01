@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réservation — 100P Location</title>
+  <meta name="description" content="Récapitulatif de votre réservation 100P Location. Paiement sur place, sans frais cachés." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    /* ── FINAL MODAL (Coordonnées) ──────────────────────────────────── */
+    .final-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .final-modal[hidden] { display: none; }
+
+    .final-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.5);
+      backdrop-filter: blur(4px);
+      animation: fadeIn .25s ease;
+    }
+
+    .final-modal__panel {
+      position: relative;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 48px 40px 40px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+      animation: slideUp .3s var(--ease);
+    }
+
+    .final-modal__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .final-modal__close:hover { background: var(--line); }
+    .final-modal__close svg { width: 16px; height: 16px; }
+
+    .final-modal__head {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .final-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .final-form__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .final-form__field label {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .final-form__field input {
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+
+    .final-form__field input:focus {
+      border-color: var(--ink);
+      background: var(--surface-2);
+    }
+
+    .final-form__hint {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .final-form__submit {
+      margin-top: 12px;
+      justify-content: center;
+      padding: 14px 28px;
+      font-size: 15px;
+    }
+
+    .final-form__note {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .final-modal__success {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .final-modal__success-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--pastel-green);
+      color: var(--pastel-green-tx);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .final-modal__success-icon svg { width: 28px; height: 28px; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      .final-modal__panel { padding: 40px 24px 28px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+
+    <!-- LAYOUT RÉSERVATION -->
+    <main class="container">
+
+      <a href="reservation-resultats.html" class="booking-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M11 19l-7-7 7-7"/></svg>
+        Retour à la sélection
+      </a>
+
+      <div class="booking">
+
+        <!-- Colonne principale -->
+        <section class="booking-main" aria-label="Détails du véhicule">
+
+          <div class="booking-notice" role="note">
+            <span class="booking-notice__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </span>
+            <span>
+              Le kilométrage est <strong>illimité</strong> sur toutes nos
+              formules de location. Votre voiture sans permis vous attend
+              dans le secteur choisi — paiement sur place.
+            </span>
+          </div>
+
+          <!-- Card véhicule -->
+          <article class="booking-vehicle">
+            <div class="booking-vehicle__media">
+              <img id="resa-vehicule-img" src="Aixam.png" alt="Aixam City Sport" />
+            </div>
+            <div class="booking-vehicle__body">
+              <div>
+                <h1 class="booking-vehicle__title" id="resa-vehicule">Aixam City Sport</h1>
+                <p class="booking-vehicle__sub" id="resa-vehicule-sub">Quadricycle · ou similaire</p>
+              </div>
+              <div class="booking-vehicle__specs">
+                <span class="booking-vehicle__spec">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <span id="resa-spec-places">2 places</span>
+                </span>
+                <span class="booking-vehicle__spec">
+                  <svg viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Diesel
+                </span>
+                <span class="booking-vehicle__spec">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <span id="resa-spec-autonomy">Consommation 4.3 L/100 km</span>
+                </span>
+                <span class="booking-vehicle__spec">
+                  <svg viewBox="0 0 24 24"><path d="M5 9V6a3 3 0 013-3h8a3 3 0 013 3v3"/><rect x="3" y="9" width="18" height="11" rx="2"/></svg>
+                  <span id="resa-spec-luggage">2 bagages</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Bloc Inclus -->
+          <div class="booking-block">
+            <h2 class="booking-block__title">Inclus dans votre location</h2>
+            <ul class="booking-included">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                Dès 14 ans (permis AM)
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                Sans permis B
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                Kilométrage illimité
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                Assurance tous risques
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                Assistance 24/7
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                Véhicule révisé
+              </li>
+            </ul>
+          </div>
+
+          <!-- Politique d'annulation et conditions -->
+          <div class="booking-policy">
+            <details>
+              <summary>
+                Politique d'annulation
+                <span class="icon" aria-hidden="true"></span>
+              </summary>
+              <div class="booking-policy__body">
+                Annulation gratuite jusqu'à 24h avant le départ. Au-delà,
+                des frais d'annulation peuvent s'appliquer (50% du montant
+                de la location). Pour toute modification, contactez
+                directement votre secteur.
+              </div>
+            </details>
+            <details>
+              <summary>
+                Conditions de prise du véhicule
+                <span class="icon" aria-hidden="true"></span>
+              </summary>
+              <div class="booking-policy__body">
+                Présentez-vous sur place avec votre pièce d'identité, votre
+                permis AM, un justificatif de domicile et une carte bancaire
+                au nom du locataire. La prise en main du véhicule prend une
+                dizaine de minutes.
+              </div>
+            </details>
+            <details>
+              <summary>
+                Caution et restitution
+                <span class="icon" aria-hidden="true"></span>
+              </summary>
+              <div class="booking-policy__body">
+                Une empreinte bancaire de 300 € est prélevée à la prise du
+                véhicule (non débitée). Elle est restituée immédiatement à
+                la restitution si aucun dommage n'est constaté. Le véhicule
+                doit être rendu propre et avec le plein.
+              </div>
+            </details>
+          </div>
+
+        </section>
+
+        <!-- Sidebar récap + tarif -->
+        <aside class="booking-aside" aria-label="Récapitulatif">
+
+          <!-- Récap sélection -->
+          <div class="booking-card">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px;">
+              <h2 class="booking-card__title" style="margin-bottom:0;">Récapitulatif</h2>
+              <a href="contact.html" class="booking-summary__link">Info secteur</a>
+            </div>
+            <div>
+              <div class="booking-summary__line">
+                <span class="booking-summary__dot" aria-hidden="true"></span>
+                <div>
+                  <p class="booking-summary__place" id="resa-agence-depart">Secteur Vichy</p>
+                  <p class="booking-summary__addr" id="resa-pickup-addr-depart" hidden></p>
+                  <p class="booking-summary__date" id="resa-depart">12 mai 2026 · 09:30</p>
+                </div>
+              </div>
+              <div class="booking-summary__line">
+                <span class="booking-summary__dot" aria-hidden="true"></span>
+                <div>
+                  <p class="booking-summary__place" id="resa-agence-retour">Secteur Vichy</p>
+                  <p class="booking-summary__addr" id="resa-pickup-addr-retour" hidden></p>
+                  <p class="booking-summary__date" id="resa-retour">13 mai 2026 · 10:00</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Détail du tarif -->
+          <div class="booking-card">
+            <h2 class="booking-card__title">Détail du tarif</h2>
+
+            <div class="booking-tariff__row">
+              <span id="tarif-location-label">Location · 1 jour</span>
+              <span id="tarif-location-price">49,00 €</span>
+            </div>
+            <div class="booking-tariff__row">
+              <span>Assurance tous risques<span class="info" aria-label="Incluse">i</span></span>
+              <span>Incluse</span>
+            </div>
+            <div class="booking-tariff__row">
+              <span>Kilométrage illimité</span>
+              <span>Inclus</span>
+            </div>
+
+            <div class="booking-tariff__total">
+              <span class="booking-tariff__total-label">Total</span>
+              <span class="booking-tariff__total-amount" id="tarif-total">49,00 €</span>
+            </div>
+
+            <button class="booking-tariff__cta" type="button" id="open-final-modal">
+              Poursuivre ma réservation
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Paiement sur place (remplace "Nous acceptons") -->
+          <div class="booking-card">
+            <div class="booking-payment">
+              <span class="booking-payment__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/></svg>
+              </span>
+              <div>
+                <p class="booking-payment__title">Paiement sur place</p>
+                <p class="booking-payment__text">
+                  Aucun débit en ligne. Réglez par carte bancaire à la
+                  prise du véhicule, sur place.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Demander un devis -->
+          <div class="booking-card">
+            <div class="booking-quote">
+              <p class="booking-quote__text">Besoin d'un devis détaillé ?</p>
+              <a href="contact.html" class="booking-quote__link">Demander un devis</a>
+            </div>
+          </div>
+
+        </aside>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="index.html#how">Réservation</a></li>
+              <li><a href="index.html#pricing">Tarifs</a></li>
+              <li><a href="index.html#about">À propos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <script>
+    // Délai pour s'assurer que site.js a fini son travail
+    function fillReservationData() {
+      var data = {};
+      try { data = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+      var vehicle = sessionStorage.getItem('selectedVehicle');
+      console.log('🔵 Données chargées:', data, '— véhicule:', vehicle);
+
+      var MONTHS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+
+      function fmt(date, time) {
+        if (!date) return '';
+        var parts = date.split('-');
+        if (parts.length !== 3) return date + (time ? ' · ' + time : '');
+        var d = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+        if (isNaN(d.getTime())) return date + (time ? ' · ' + time : '');
+        return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() +
+               (time ? ' · ' + time : '');
+      }
+
+      var setText = function (id, value) {
+        var el = document.getElementById(id);
+        if (el && value) {
+          el.textContent = value;
+          console.log('✅ ' + id + ' =', value);
+        } else {
+          console.warn('⚠️ ' + id + ' — élément:', el, '— valeur:', value);
+        }
+      };
+
+      // ── Catalogue véhicules (source unique pour image/sub/specs) ──
+      var VEHICLE_CATALOG = {
+        'Aixam City Sport': {
+          img: 'Aixam.png',
+          sub: 'Quadricycle · ou similaire',
+          places: 2, autonomy: '4.3 L/100 km', luggage: 2
+        }
+      };
+
+      // Applique les données du véhicule sélectionné (img, sub, specs)
+      if (vehicle) {
+        setText('resa-vehicule', vehicle);
+
+        var v = VEHICLE_CATALOG[vehicle];
+        // Fallback : tente de parser selectedVehicleData s'il a été stocké (par resultats)
+        if (!v) {
+          try {
+            var stored = JSON.parse(sessionStorage.getItem('selectedVehicleData') || 'null');
+            if (stored) {
+              v = {
+                img:      stored.img || '',
+                sub:      stored.sub || '',
+                places:   stored.seats || stored.places || 2,
+                autonomy: stored.autonomy || '',
+                luggage:  stored.luggage || 1
+              };
+            }
+          } catch (e) {}
+        }
+
+        if (v) {
+          var imgEl = document.getElementById('resa-vehicule-img');
+          if (imgEl) {
+            if (v.img) {
+              imgEl.src = v.img;
+              imgEl.alt = vehicle;
+              imgEl.style.display = '';
+            } else {
+              imgEl.removeAttribute('src');
+              imgEl.alt = '';
+              imgEl.style.display = 'none';
+            }
+          }
+          setText('resa-vehicule-sub',     v.sub);
+          setText('resa-spec-places',      v.places + ' place' + (v.places > 1 ? 's' : ''));
+          setText('resa-spec-autonomy',    'Consommation ' + v.autonomy);
+          setText('resa-spec-luggage',     v.luggage + ' bagage' + (v.luggage > 1 ? 's' : ''));
+        }
+      }
+
+      // Récap du lieu : différencie livraison vs retrait sur place (avec meetpoint)
+      var pickupModeRecap = sessionStorage.getItem('pickupMode') || 'agency';
+      var pickupName      = sessionStorage.getItem('pickupPointName')    || '';
+      var pickupAddr      = sessionStorage.getItem('pickupPointAddress') || '';
+      var lieuLabel;
+      if (pickupModeRecap === 'delivery') {
+        lieuLabel = 'Livraison à domicile';
+      } else if (data.agence) {
+        lieuLabel = 'Secteur ' + data.agence + (pickupName ? ' · ' + pickupName : '');
+      } else {
+        lieuLabel = '';
+      }
+      if (lieuLabel) {
+        setText('resa-agence-depart', lieuLabel);
+        setText('resa-agence-retour', lieuLabel);
+      }
+      // Affiche l'adresse exacte du meetpoint sous le lieu (uniquement si retrait sur place)
+      var addrDepart = document.getElementById('resa-pickup-addr-depart');
+      var addrRetour = document.getElementById('resa-pickup-addr-retour');
+      if (addrDepart) {
+        addrDepart.hidden = !(pickupModeRecap === 'agency' && pickupAddr);
+        if (!addrDepart.hidden) addrDepart.textContent = pickupAddr;
+      }
+      if (addrRetour) {
+        addrRetour.hidden = !(pickupModeRecap === 'agency' && pickupAddr);
+        if (!addrRetour.hidden) addrRetour.textContent = pickupAddr;
+      }
+
+      var dDepart = fmt(data.date_depart, data.heure_depart);
+      var dRetour = fmt(data.date_retour, data.heure_retour);
+      if (dDepart) setText('resa-depart', dDepart);
+      if (dRetour) setText('resa-retour', dRetour);
+
+      // Mettre à jour aussi le bandeau sticky en haut
+      var depDisplay = document.getElementById('bb-depart-display');
+      var retDisplay = document.getElementById('bb-retour-display');
+      if (depDisplay && dDepart) {
+        depDisplay.textContent = dDepart;
+        depDisplay.classList.remove('placeholder');
+      }
+      if (retDisplay && dRetour) {
+        retDisplay.textContent = dRetour;
+        retDisplay.classList.remove('placeholder');
+      }
+
+      // Pré-sélectionner l'agence dans le select du bandeau sticky
+      var lieuSelect = document.getElementById('rs-lieu-select');
+      if (lieuSelect && data.agence) lieuSelect.value = data.agence;
+
+      /* ── Calcul du tarif selon la durée ───────────────────────── */
+      function calculateDays(dateStart, timeStart, dateEnd, timeEnd) {
+        if (!dateStart || !dateEnd) return 1;
+        var start = new Date(dateStart + 'T' + (timeStart || '00:00'));
+        var end   = new Date(dateEnd + 'T' + (timeEnd || '00:00'));
+        var diff = end - start;
+        if (isNaN(diff)) return 1;
+        return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+      }
+
+      var days = calculateDays(data.date_depart, data.heure_depart, data.date_retour, data.heure_retour);
+      var pricePerDay   = parseInt(sessionStorage.getItem('selectedVehiclePrice') || '49', 10);
+      var deliveryFee   = parseInt(sessionStorage.getItem('deliveryFee')   || '0', 10);
+      var conducteurFee = parseInt(sessionStorage.getItem('conducteurFee') || '0', 10);
+      var finalTotal    = parseInt(sessionStorage.getItem('finalTotal')    || '0', 10);
+      var pickupMode    = sessionStorage.getItem('pickupMode') || 'agency';
+
+      var subtotal = pricePerDay * days;
+      // Si la page précédente a déjà calculé un total final (avec options), l'utiliser
+      var total = finalTotal > 0 ? finalTotal : (subtotal + deliveryFee + conducteurFee);
+
+      var subtotalStr = subtotal.toFixed(2).replace('.', ',') + ' €';
+      var totalStr    = total.toFixed(2).replace('.', ',') + ' €';
+
+      var locationLabel = document.getElementById('tarif-location-label');
+      var locationPrice = document.getElementById('tarif-location-price');
+      var totalEl       = document.getElementById('tarif-total');
+      if (locationLabel) locationLabel.textContent = 'Location · ' + days + ' jour' + (days > 1 ? 's' : '');
+      if (locationPrice) locationPrice.textContent = subtotalStr;
+      if (totalEl)       totalEl.textContent       = totalStr;
+
+      // Insère / retire les lignes supplémentaires dans le détail tarif
+      function insertTariffRow(id, label, amount) {
+        var existing = document.getElementById(id);
+        if (existing) existing.remove();
+        if (!totalEl) return;
+        var totalRow = totalEl.closest('.booking-tariff__total');
+        if (!totalRow || !totalRow.parentNode) return;
+        var row = document.createElement('div');
+        row.className = 'booking-tariff__row';
+        row.id = id;
+        var lbl = document.createElement('span');
+        lbl.textContent = label;
+        var val = document.createElement('span');
+        val.textContent = amount.toFixed(2).replace('.', ',') + ' €';
+        row.appendChild(lbl);
+        row.appendChild(val);
+        totalRow.parentNode.insertBefore(row, totalRow);
+      }
+
+      // Toujours retirer les anciennes lignes d'abord (idempotent)
+      var oldDelivery = document.getElementById('tarif-delivery-row');
+      if (oldDelivery) oldDelivery.remove();
+      var oldConducteur = document.getElementById('tarif-conducteur-row');
+      if (oldConducteur) oldConducteur.remove();
+
+      if (conducteurFee > 0) {
+        insertTariffRow('tarif-conducteur-row', 'Conducteur supplémentaire · ' + days + ' jour' + (days > 1 ? 's' : ''), conducteurFee);
+      }
+      if (deliveryFee > 0) {
+        insertTariffRow('tarif-delivery-row', 'Livraison à domicile', deliveryFee);
+      }
+
+      console.log('💰 Calcul:', days, 'jour(s) ×', pricePerDay, '€ + livraison', deliveryFee, '€ + conducteur', conducteurFee, '€ =', totalStr, '(mode:', pickupMode + ')');
+    }
+
+    // Exécuter après le chargement complet ET après site.js
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(fillReservationData, 100);
+      });
+    } else {
+      setTimeout(fillReservationData, 100);
+    }
+
+    /* ── "Poursuivre ma réservation" : flag + redirige vers contact ── */
+    function goToContact() {
+      sessionStorage.setItem('fromReservation', 'true');
+      window.location.href = 'contact.html';
+    }
+
+    /* ── "Modifier" : capture les valeurs courantes et recharge ── */
+    function updateSearch() {
+      var agenceSelect = document.getElementById('rs-lieu-select');
+      var dateInputs = document.querySelectorAll('.bb-field input[type="date"]');
+      var timeInputs = document.querySelectorAll('.bb-field input[type="time"]');
+
+      var existing = {};
+      try { existing = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+
+      // Helper : convertit l'ISO du calendar custom (sessionStorage) en "YYYY-MM-DD"
+      function isoToDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.getFullYear() + '-' +
+               String(d.getMonth() + 1).padStart(2, '0') + '-' +
+               String(d.getDate()).padStart(2, '0');
+      }
+
+      // Lit aussi le state du datepicker custom maintenu par site.js
+      var calDepartDate = isoToDate(sessionStorage.getItem('bb_depart_date'));
+      var calDepartTime = sessionStorage.getItem('bb_depart_time') || '';
+      var calRetourDate = isoToDate(sessionStorage.getItem('bb_retour_date'));
+      var calRetourTime = sessionStorage.getItem('bb_retour_time') || '';
+
+      var newData = {
+        agence:       (agenceSelect && agenceSelect.value) || existing.agence || '',
+        date_depart:  (dateInputs[0] && dateInputs[0].value) || calDepartDate || existing.date_depart || '',
+        heure_depart: (timeInputs[0] && timeInputs[0].value) || calDepartTime || existing.heure_depart || '',
+        date_retour:  (dateInputs[1] && dateInputs[1].value) || calRetourDate || existing.date_retour || '',
+        heure_retour: (timeInputs[1] && timeInputs[1].value) || calRetourTime || existing.heure_retour || ''
+      };
+
+      sessionStorage.setItem('bookingData', JSON.stringify(newData));
+      console.log('🔄 Recherche mise à jour:', newData);
+
+      location.reload();
+    }
+
+    /* ── FINAL MODAL : envoi des coordonnées via Netlify Forms ────── */
+    function initFinalModal() {
+      var modal = document.getElementById('final-modal');
+      var openBtn = document.getElementById('open-final-modal');
+      if (!openBtn || !modal) return;
+
+      var closeBtn = modal.querySelector('.final-modal__close');
+      var backdrop = modal.querySelector('.final-modal__backdrop');
+      var form = document.getElementById('final-form');
+      var successBlock = document.getElementById('final-success');
+      var addressWrap = document.getElementById('ff-address-wrap');
+      var addressInput = document.getElementById('ff-address');
+
+      function openModal() {
+        var data = {};
+        try { data = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+        var vehicle = sessionStorage.getItem('selectedVehicle') || '';
+        var mode    = sessionStorage.getItem('pickupMode') || 'agency';
+        var totalEl = document.getElementById('tarif-total');
+
+        document.getElementById('ff-vehicule').value     = vehicle;
+        document.getElementById('ff-agence').value       = data.agence || '';
+        document.getElementById('ff-date-depart').value  = data.date_depart || '';
+        document.getElementById('ff-heure-depart').value = data.heure_depart || '';
+        document.getElementById('ff-date-retour').value  = data.date_retour || '';
+        document.getElementById('ff-heure-retour').value = data.heure_retour || '';
+        document.getElementById('ff-mode-retrait').value = mode === 'delivery' ? 'Livraison à domicile' : 'Retrait sur place';
+        document.getElementById('ff-prix-total').value   = totalEl ? totalEl.textContent.trim() : '';
+
+        if (mode === 'delivery') {
+          addressWrap.hidden = false;
+          addressInput.required = true;
+        } else {
+          addressWrap.hidden = true;
+          addressInput.required = false;
+        }
+
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData(form);
+
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString()
+        }).then(function (response) {
+          if (response.ok) {
+            form.hidden = true;
+            successBlock.hidden = false;
+            sessionStorage.removeItem('bookingData');
+            sessionStorage.removeItem('selectedVehicle');
+            sessionStorage.removeItem('selectedVehiclePrice');
+            sessionStorage.removeItem('pickupMode');
+            sessionStorage.removeItem('preselectedVehicle');
+            sessionStorage.removeItem('conducteurFee');
+            sessionStorage.removeItem('deliveryFee');
+            sessionStorage.removeItem('finalTotal');
+          } else {
+            alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
+          }
+        }).catch(function () {
+          alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFinalModal);
+    } else {
+      initFinalModal();
+    }
+  </script>
+
+  <!-- ============================================================
+       FINAL MODAL — Coordonnées (envoi via Netlify Forms)
+       ============================================================ -->
+  <div class="final-modal" id="final-modal" hidden>
+    <div class="final-modal__backdrop"></div>
+    <div class="final-modal__panel">
+
+      <button type="button" class="final-modal__close" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="final-modal__head">
+        <span class="eyebrow">Dernière étape</span>
+        <h2 class="display" style="margin-top:12px; font-size: clamp(24px, 3vw, 32px);">
+          Vos <em>coordonnées.</em>
+        </h2>
+        <p class="lede" style="margin-top:14px; font-size: 15px;">
+          Notre équipe locale vous contacte sous 24h pour confirmer votre location.
+        </p>
+      </div>
+
+      <form class="final-form" id="final-form" name="reservation-finale" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/merci.html">
+
+        <input type="hidden" name="form-name" value="reservation-finale" />
+        <p hidden><label>Ne pas remplir : <input name="bot-field" /></label></p>
+
+        <div class="final-form__field">
+          <label for="ff-name">Nom complet *</label>
+          <input id="ff-name" name="nom" type="text" required autocomplete="name" />
+        </div>
+
+        <div class="final-form__field">
+          <label for="ff-email">Email *</label>
+          <input id="ff-email" name="email" type="email" required autocomplete="email" />
+        </div>
+
+        <div class="final-form__field">
+          <label for="ff-phone">Téléphone *</label>
+          <input id="ff-phone" name="telephone" type="tel" required autocomplete="tel" />
+        </div>
+
+        <div class="final-form__field" id="ff-address-wrap" hidden>
+          <label for="ff-address">Adresse de livraison *</label>
+          <input id="ff-address" name="adresse_livraison" type="text" autocomplete="street-address" placeholder="N° rue, code postal, ville" />
+          <span class="final-form__hint">Livraison de votre voiture sans permis dans un rayon de 20 km autour du secteur.</span>
+        </div>
+
+        <!-- Hidden : récap de la résa transmis dans le mail -->
+        <input type="hidden" name="vehicule" id="ff-vehicule" />
+        <input type="hidden" name="agence" id="ff-agence" />
+        <input type="hidden" name="date_depart" id="ff-date-depart" />
+        <input type="hidden" name="heure_depart" id="ff-heure-depart" />
+        <input type="hidden" name="date_retour" id="ff-date-retour" />
+        <input type="hidden" name="heure_retour" id="ff-heure-retour" />
+        <input type="hidden" name="mode_retrait" id="ff-mode-retrait" />
+        <input type="hidden" name="prix_total" id="ff-prix-total" />
+
+        <button type="submit" class="btn btn--primary final-form__submit">
+          Envoyer ma réservation
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <p class="final-form__note">
+          En envoyant ce formulaire, vous acceptez d'être contacté par 100P Location pour finaliser votre location dans le secteur choisi.
+        </p>
+      </form>
+
+      <div class="final-modal__success" id="final-success" hidden>
+        <div class="final-modal__success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="display" style="font-size: 24px; margin-top: 16px;">Merci !</h3>
+        <p class="lede" style="margin-top: 14px;">
+          Nous avons bien reçu votre demande de location. Notre équipe locale vous recontacte sous 24h pour confirmer la prise en main de votre voiture sans permis.
+        </p>
+        <a href="index.html" class="btn btn--ghost" style="margin-top: 24px;">Retour à l'accueil</a>
+      </div>
+
+    </div>
+  </div>
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Dépendances
+node_modules/
+
+# Netlify
+.netlify/
+
+# Système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.claude/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*

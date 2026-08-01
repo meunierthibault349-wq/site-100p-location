@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merci — 100P Location</title>
+  <meta name="description" content="Merci pour votre demande. Notre équipe locale 100P Location vous recontacte sous 24h ouvrées." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    .merci-card {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 40px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      text-align: center;
+    }
+    .merci-card__icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 28px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+    .merci-card__icon svg {
+      width: 32px;
+      height: 32px;
+    }
+    .merci-card__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 0 0 18px;
+    }
+    .merci-card__title em {
+      font-style: italic;
+    }
+    .merci-card__lede {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+    .merci-card__actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .merci-info {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .merci-info__item {
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      text-align: left;
+    }
+    .merci-info__label {
+      font-family: var(--mono, var(--sans));
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    .merci-info__value {
+      font-size: 15px;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .merci-card {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner">
+          <span class="eyebrow">Demande reçue</span>
+          <h1 class="page-hero__title" data-reveal style="--i:1">
+            Merci pour<br /><em>votre demande.</em>
+          </h1>
+          <p class="page-hero__sub" data-reveal style="--i:2">
+            Votre message a bien été transmis à notre équipe locale 100P
+            Location. Nous revenons vers vous sous 24 heures ouvrées pour
+            confirmer les détails de votre location.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIRMATION -->
+    <section class="section section--tight" aria-label="Confirmation">
+      <div class="container">
+
+        <div class="merci-card" data-reveal>
+          <div class="merci-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h2 class="merci-card__title">
+            Demande<br /><em>bien reçue.</em>
+          </h2>
+          <p class="merci-card__lede">
+            Notre équipe locale vous recontacte sous 24 heures ouvrées pour
+            confirmer la prise en main de votre voiture sans permis. Pour
+            une réponse immédiate, n'hésitez pas à nous appeler.
+          </p>
+          <div class="merci-card__actions">
+            <a href="index.html" class="btn btn--primary">
+              Retour à l'accueil
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="vehicules.html" class="btn btn--ghost">Voir nos véhicules</a>
+          </div>
+        </div>
+
+        <div class="merci-info">
+          <div class="merci-info__item" data-reveal>
+            <p class="merci-info__label">Téléphone</p>
+            <p class="merci-info__value">04 15 45 83 06</p>
+          </div>
+          <div class="merci-info__item" data-reveal>
+            <p class="merci-info__label">Email</p>
+            <p class="merci-info__value">contact@100p-location.fr</p>
+          </div>
+          <div class="merci-info__item" data-reveal>
+            <p class="merci-info__label">Délai de réponse</p>
+            <p class="merci-info__value">Sous 24h ouvrées</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="offres.html">Tarifs</a></li>
+              <li><a href="horaires.html">Secteurs</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés · SIRET 104 352 299 00010</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

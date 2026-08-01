@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nos véhicules — 100P Location</title>
+  <meta name="description" content="Catalogue des voitures sans permis 100P Location : Aixam City Sport. Accessible dès 14 ans." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    /* =================================================================
+       FLEET SHOWCASE — Editorial design (chapters + sticky index)
+       =================================================================
+       Inspirations : Porsche Stories, Polestar models, Aston Martin
+       configurator. Refus de la grille de 3 cards égales.
+       ================================================================= */
+
+    /* HERO simple : titre + lede + Aixam en fond fadé */
+    .fleet-hero {
+      position: relative;
+      padding: clamp(96px, 12vw, 160px) 0 clamp(56px, 8vw, 96px);
+      background: var(--bg);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .fleet-hero::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10%;
+      transform: translateY(-65%);
+      width: clamp(640px, 82vw, 1400px);
+      height: clamp(640px, 82vw, 1400px);
+      background-image: url('PhotoVichy3.JPG');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: .75;
+      pointer-events: none;
+      z-index: 0;
+      /* Fade depuis la droite vers la gauche pour laisser le texte lisible */
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 90%);
+              mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 90%);
+    }
+    .fleet-hero .container { position: relative; z-index: 1; }
+    .fleet-hero__inner {
+      max-width: 760px;
+    }
+    @media (max-width: 760px) {
+      .fleet-hero::before {
+        top: auto;
+        bottom: -15%;
+        right: -25%;
+        transform: none;
+        width: 140vw;
+        height: 140vw;
+        opacity: .4;
+      }
+    }
+    .fleet-hero__eyebrow {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .fleet-hero__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(40px, 5.5vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0 0 22px;
+    }
+    .fleet-hero__title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .fleet-hero__lede {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.1vw, 17px);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0;
+      max-width: 60ch;
+    }
+
+    /* CHAPITRES VÉHICULE — zigzag sobre */
+    .chapter {
+      position: relative;
+      padding: clamp(56px, 8vw, 96px) 0;
+    }
+    .chapter + .chapter { border-top: 1px solid rgba(17,17,17,.08); }
+
+    .chapter__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+      gap: clamp(40px, 6vw, 88px);
+      align-items: center;
+    }
+    .chapter--reverse .chapter__grid {
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    }
+    .chapter--reverse .chapter__media { order: 2; }
+    .chapter--reverse .chapter__body { order: 1; }
+
+    /* Media : photo éditoriale avec profondeur, sans bord "card" */
+    .chapter__media {
+      position: relative;
+      aspect-ratio: 5/4;
+      border-radius: 6px;
+      overflow: hidden;
+      transition:
+        transform .5s cubic-bezier(.22,.61,.36,1),
+        box-shadow .5s cubic-bezier(.22,.61,.36,1);
+      box-shadow:
+        0 1px 0 rgba(17,17,17,.04),
+        0 12px 30px -10px rgba(17,17,17,.18),
+        0 30px 60px -20px rgba(17,17,17,.12);
+    }
+    /* Au hover du bouton "Voir les disponibilités" : la photo se soulève */
+    .chapter:has(.chapter__cta:hover) .chapter__media {
+      transform: translateY(-6px);
+      box-shadow:
+        0 1px 0 rgba(17,17,17,.04),
+        0 22px 44px -10px rgba(17,17,17,.28),
+        0 50px 90px -20px rgba(17,17,17,.2);
+    }
+    .chapter__media .chapter__specs {
+      transition: transform .5s cubic-bezier(.22,.61,.36,1);
+    }
+    .chapter:has(.chapter__cta:hover) .chapter__media .chapter__specs {
+      transform: translateY(-4px);
+    }
+    /* Gradient sombre en bas de l'image pour rendre les specs lisibles */
+    .chapter__media::before {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 75%;
+      background: linear-gradient(
+        to top,
+        rgba(17,17,17,.92) 0%,
+        rgba(17,17,17,.78) 25%,
+        rgba(17,17,17,.45) 55%,
+        rgba(17,17,17,.15) 80%,
+        rgba(17,17,17,0)  100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+    /* Liseré blanc inset 1px pour la finition de bord */
+    .chapter__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      border-radius: inherit;
+      z-index: 2;
+    }
+    .chapter__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* Specs en overlay sur la photo, centrées au-dessus du gradient */
+    .chapter__media .chapter__specs {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 2.5vw, 32px);
+      padding: clamp(28px, 3.5vw, 40px) clamp(22px, 3vw, 32px);
+      margin: 0;
+      border: 0;
+      justify-items: center;
+      text-align: center;
+    }
+    .chapter__media .chapter__spec {
+      align-items: center;
+    }
+    .chapter__media .chapter__spec-val {
+      color: #fff;
+      font-weight: 500;
+      font-size: clamp(22px, 2.4vw, 30px);
+    }
+    .chapter__media .chapter__spec-val .unit {
+      color: rgba(255,255,255,.7);
+    }
+    .chapter__media .chapter__spec-lbl {
+      color: rgba(255,255,255,.78);
+    }
+
+    /* Body : sobre */
+    .chapter__brand {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .chapter__name {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .chapter__info-btn {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--line);
+      background: transparent;
+      color: var(--ink-soft);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      padding: 0;
+      transition: border-color .2s, color .2s, background .2s, transform .2s var(--ease);
+    }
+    .chapter__info-btn:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: var(--surface-2);
+      transform: scale(1.08);
+    }
+
+    /* MODALE FICHE TECHNIQUE */
+    .spec-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .spec-modal[hidden] { display: none; }
+    .spec-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.5);
+      backdrop-filter: blur(4px);
+      animation: smFadeIn .25s ease;
+    }
+    .spec-modal__panel {
+      position: relative;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 40px 36px 32px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+      animation: smSlideUp .3s var(--ease);
+    }
+    .spec-modal__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .spec-modal__close:hover { background: var(--line); }
+    .spec-modal__close svg { width: 16px; height: 16px; }
+    .spec-modal__head {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .spec-modal__brand {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .spec-modal__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .spec-modal__sub {
+      font-family: var(--sans);
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      margin: 8px 0 0;
+    }
+    .spec-modal__group {
+      margin-bottom: 20px;
+    }
+    .spec-modal__group:last-child { margin-bottom: 0; }
+    .spec-modal__group-title {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+    .spec-modal__rows {
+      display: flex;
+      flex-direction: column;
+    }
+    .spec-modal__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line-soft, rgba(17,17,17,.06));
+      font-family: var(--sans);
+      font-size: 13.5px;
+    }
+    .spec-modal__row:first-child { border-top: none; padding-top: 0; }
+    .spec-modal__row-key { color: var(--muted); }
+    .spec-modal__row-val {
+      color: var(--ink);
+      font-weight: 500;
+      text-align: right;
+    }
+    @keyframes smFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes smSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 600px) {
+      .spec-modal__panel { padding: 32px 22px 24px; }
+      .spec-modal__title { font-size: 22px; }
+    }
+    .chapter__intro {
+      font-family: var(--sans);
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 48ch;
+      margin: 0 0 26px;
+    }
+
+    /* Specs : compact, sans valeurs oversized */
+    .chapter__specs {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: clamp(24px, 3.5vw, 40px);
+      margin-bottom: 26px;
+      padding-block: 18px;
+      border-top: 1px solid rgba(17,17,17,.1);
+      border-bottom: 1px solid rgba(17,17,17,.1);
+    }
+    .chapter__spec {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .chapter__spec-val {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: -.015em;
+      color: var(--ink);
+    }
+    .chapter__spec-val .unit {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: lowercase;
+      margin-left: 4px;
+    }
+    .chapter__spec-lbl {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Highlights : liste sobre */
+    .chapter__highlights {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .chapter__highlights li {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .chapter__highlights li::before {
+      content: "·";
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* CTAs éditoriaux */
+    .chapter__actions {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 4vw, 40px);
+      flex-wrap: wrap;
+    }
+    .chapter__price {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: clamp(24px, 4vw, 40px);
+      border-right: 1px solid rgba(17,17,17,.18);
+    }
+    .chapter__price-from {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chapter__price-amount {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+    .chapter__price-amount .unit {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: lowercase;
+      margin-left: 4px;
+    }
+    .chapter__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      background: var(--ink);
+      color: var(--surface);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -.005em;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .25s var(--ease), transform .25s var(--ease);
+    }
+    .chapter__cta:hover { background: #2A2A2A; }
+    .chapter__cta:active { transform: scale(.98); }
+    .chapter__cta svg {
+      width: 14px;
+      height: 14px;
+      transition: transform .3s var(--ease);
+    }
+    .chapter__cta:hover svg { transform: translateX(3px); }
+    .chapter__cta-text {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      letter-spacing: -.005em;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(17,17,17,.4);
+      padding-bottom: 2px;
+      transition: border-color .2s, color .2s;
+    }
+    .chapter__cta-text:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+
+    /* CLOSER : invitation finale (sobre, dans le ton du site) */
+    .fleet-closer {
+      padding: clamp(72px, 10vw, 120px) 0;
+      background: #ECE7DC;
+      position: relative;
+      border-top: 1px solid rgba(17,17,17,.08);
+    }
+    .fleet-closer__inner {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .fleet-closer__eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .fleet-closer__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0 0 20px;
+    }
+    .fleet-closer__title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .fleet-closer__lede {
+      font-family: var(--sans);
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 52ch;
+      margin: 0 auto clamp(28px, 4vw, 40px);
+    }
+    .fleet-closer__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      background: var(--ink);
+      color: var(--surface);
+      font-family: var(--sans);
+      font-size: 14.5px;
+      font-weight: 500;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform .25s var(--ease), background .25s;
+    }
+    .fleet-closer__cta:hover { background: #2A2A2A; }
+    .fleet-closer__cta:active { transform: scale(.98); }
+    .fleet-closer__cta svg {
+      width: 14px;
+      height: 14px;
+      transition: transform .3s var(--ease);
+    }
+    .fleet-closer__cta:hover svg { transform: translateX(3px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 980px) {
+      .chapter__grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .chapter--reverse .chapter__grid {
+        grid-template-columns: 1fr;
+      }
+      .chapter--reverse .chapter__media { order: 1; }
+      .chapter--reverse .chapter__body { order: 2; }
+      .chapter__specs { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    }
+    @media (max-width: 560px) {
+      .chapter__specs { grid-template-columns: 1fr 1fr; }
+      .chapter__price { border-right: none; padding-right: 0; padding-bottom: 16px; border-bottom: 1px solid rgba(17,17,17,.18); }
+      .chapter__actions { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* =================================================================
+       AVAILABILITY MODAL
+       ================================================================= */
+    .availability-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .availability-modal[hidden] { display: none; }
+
+    .availability-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      animation: avFadeIn .25s ease;
+    }
+    .availability-modal__panel {
+      position: relative;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+      animation: avSlideUp .3s var(--ease);
+    }
+    @keyframes avFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes avSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .availability-modal__close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .availability-modal__close:hover { background: var(--line); }
+    .availability-modal__close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    .availability-modal__head {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .availability-modal__calendars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+    .av-cal { display: flex; flex-direction: column; }
+    .av-cal__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 16px;
+      text-transform: capitalize;
+      color: var(--ink);
+    }
+    .av-cal__grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .av-cal__dow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      text-align: center;
+      padding: 6px 0;
+    }
+    .av-cal__day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+      font-size: 13px;
+      border-radius: 6px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      cursor: default;
+    }
+    .av-cal__day.empty { background: transparent; border: none; }
+    .av-cal__day.booked {
+      background: var(--surface-2);
+      color: var(--muted-2);
+      text-decoration: line-through;
+    }
+    .av-cal__day.today {
+      border-color: var(--ink);
+      border-width: 2px;
+      font-weight: 600;
+    }
+    .av-cal__day.past { opacity: 0.4; }
+
+    .availability-modal__legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid var(--line);
+    }
+    .legend-dot--free   { background: var(--surface); }
+    .legend-dot--booked { background: var(--surface-2); }
+    .legend-dot--today  { background: var(--surface); border-color: var(--ink); border-width: 2px; }
+
+    .availability-modal__footer {
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (max-width: 700px) {
+      .availability-modal__panel { padding: 28px 20px; }
+      .availability-modal__calendars { grid-template-columns: 1fr; gap: 24px; }
+      .availability-modal__close { top: 12px; right: 12px; }
+    }
+
+    /* =================================================================
+       AVAILABILITY MODAL — Réservation rapide (étapes + horaires)
+       ================================================================= */
+    .availability-modal__recap {
+      display: grid;
+      grid-template-columns: auto auto 1fr auto 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--surface-2);
+      border-radius: 12px;
+      margin-bottom: 28px;
+    }
+    .av-recap__col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .av-recap__col--agency { min-width: 110px; }
+    .av-recap__select {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+    }
+    .av-recap__label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .av-recap__value {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .av-recap__arrow { color: var(--muted-2); font-size: 18px; }
+    .av-recap__reset {
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .av-recap__reset:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* États interactifs des jours du calendrier */
+    .av-cal__day {
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .av-cal__day:not(.past):not(.booked):not(.empty):hover {
+      background: var(--surface-2);
+      border-color: var(--ink-soft);
+    }
+    .av-cal__day.past,
+    .av-cal__day.booked,
+    .av-cal__day.empty {
+      cursor: default;
+    }
+    .av-cal__day.selected {
+      background: var(--ink) !important;
+      color: var(--surface) !important;
+      border-color: var(--ink) !important;
+      font-weight: 600;
+    }
+    .av-cal__day.in-range {
+      background: var(--surface-2);
+      border-color: var(--surface-2);
+      color: var(--ink-soft);
+    }
+    .legend-dot--selected { background: var(--ink); border-color: var(--ink); }
+    .legend-dot--range    { background: var(--surface-2); border-color: var(--surface-2); }
+
+    /* Bloc horaires */
+    .availability-modal__times {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    .av-times__group { display: flex; flex-direction: column; gap: 12px; }
+    .av-times__label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .av-times__slots {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .av-time-slot {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: center;
+      padding: 8px 4px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .av-time-slot:hover { background: var(--surface-2); border-color: var(--ink-soft); }
+    .av-time-slot.selected {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+
+    /* Bouton réserver disabled */
+    #av-reserve-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 700px) {
+      .availability-modal__recap {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .av-recap__col--agency { grid-column: 1 / -1; }
+      .av-recap__arrow { display: none; }
+      .av-recap__reset { grid-column: 1 / -1; }
+      .availability-modal__times { grid-template-columns: 1fr; gap: 20px; }
+      .av-times__slots { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* =================================================================
+       TEASER FLOTTE — Bientôt : modèles électriques
+       ================================================================= */
+    .teaser-fleet {
+      padding: clamp(56px, 8vw, 96px) 0;
+      background: var(--surface-2);
+      border-top: 1px solid rgba(17,17,17,.08);
+    }
+    .teaser-fleet__head {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto clamp(32px, 5vw, 56px);
+    }
+    .teaser-fleet__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.05;
+      color: var(--ink);
+      margin: 14px 0 0;
+    }
+    .teaser-fleet__title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .teaser-fleet__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(20px, 3vw, 32px);
+    }
+    .teaser-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      opacity: .72;
+      transition: opacity .3s ease;
+    }
+    .teaser-card:hover { opacity: .95; }
+    .teaser-card__media {
+      position: relative;
+      aspect-ratio: 4/3;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+    .teaser-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(.75) brightness(1.02);
+      opacity: .85;
+      transition: filter .35s var(--ease), opacity .35s var(--ease);
+    }
+    .teaser-card:hover .teaser-card__media img {
+      filter: grayscale(0) brightness(1);
+      opacity: 1;
+    }
+    .teaser-card__media--placeholder {
+      display: grid;
+      place-items: center;
+      background:
+        repeating-linear-gradient(45deg, transparent 0 10px, rgba(17,17,17,.025) 10px 11px);
+    }
+    .teaser-card__placeholder-text {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+    }
+    .teaser-card__tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .teaser-card__body {
+      padding: 20px 22px 22px;
+    }
+    .teaser-card__brand {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .teaser-card__name {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(22px, 2.4vw, 28px);
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0;
+    }
+    @media (max-width: 980px) {
+      .teaser-fleet__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html" class="is-active">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO : titre + lede -->
+    <section class="fleet-hero" aria-labelledby="fleet-hero-title">
+      <div class="container">
+        <div class="fleet-hero__inner" data-reveal>
+          <div class="fleet-hero__eyebrow">Catalogue · 2026</div>
+          <h1 class="fleet-hero__title" id="fleet-hero-title">
+            Notre <em>flotte.</em>
+          </h1>
+          <p class="fleet-hero__lede">
+            Notre voiture sans permis, choisie pour couvrir chaque usage —
+            du trajet quotidien au week-end prolongé. Disponible à la
+            location dans nos cinq secteurs d'Auvergne, révisée entre
+            chaque location.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 01 — Aixam City Sport -->
+    <article class="chapter" id="chapitre-1" data-chapter="1">
+      <div class="container">
+        <div class="chapter__grid">
+
+          <div class="chapter__media" data-reveal>
+            <img src="Aixam.png" alt="Aixam City Sport, voiture sans permis 100P Location" loading="lazy" />
+            <div class="chapter__specs">
+              <div class="chapter__spec">
+                <span class="chapter__spec-val">45<span class="unit">km/h</span></span>
+                <span class="chapter__spec-lbl">Vitesse</span>
+              </div>
+              <div class="chapter__spec">
+                <span class="chapter__spec-val">4.3<span class="unit">L/100km</span></span>
+                <span class="chapter__spec-lbl">Consommation</span>
+              </div>
+              <div class="chapter__spec">
+                <span class="chapter__spec-val">2</span>
+                <span class="chapter__spec-lbl">Places</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter__body" data-reveal style="--i:1">
+            <div class="chapter__brand">Aixam · Diesel</div>
+            <h2 class="chapter__name">
+              Aixam City Sport
+              <button type="button" class="chapter__info-btn" data-spec="aixam" aria-label="Voir la fiche technique de l'Aixam City Sport">i</button>
+            </h2>
+            <p class="chapter__intro">
+              Le quadricycle référence de la flotte, fabriqué en France.
+              Conçu pour les trajets longs et l'usage quotidien — une prise
+              en main immédiate, et un confort de berline en miniature.
+            </p>
+            <ul class="chapter__highlights">
+              <li>Accessible dès 14 ans avec le permis AM</li>
+              <li>Caméra de recul, écran tactile, Bluetooth, coffre 422 L</li>
+              <li>Fabriquée en France</li>
+            </ul>
+            <div class="chapter__actions">
+              <div class="chapter__price">
+                <span class="chapter__price-from">À partir de</span>
+                <span class="chapter__price-amount">49&thinsp;€<span class="unit">/ jour</span></span>
+              </div>
+              <button type="button" class="chapter__cta vcard__availability-btn" data-vehicle="Aixam City Sport">
+                Voir les disponibilités
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </article>
+
+    <!-- TEASER — Bientôt : modèles électriques -->
+    <section class="teaser-fleet" aria-label="Bientôt dans notre flotte">
+      <div class="container">
+        <header class="teaser-fleet__head" data-reveal>
+          <span class="eyebrow">Bientôt · Nos premiers modèles électriques</span>
+          <h2 class="teaser-fleet__title">
+            La flotte<br /><em>s'électrifie.</em>
+          </h2>
+        </header>
+        <div class="teaser-fleet__grid">
+          <article class="teaser-card" data-reveal style="--i:1">
+            <div class="teaser-card__media">
+              <img src="topolino3.png" alt="Fiat Topolino — 100P Location" loading="lazy" />
+            </div>
+            <div class="teaser-card__body">
+              <div class="teaser-card__brand">Fiat · Électrique</div>
+              <h3 class="teaser-card__name">Fiat Topolino</h3>
+            </div>
+          </article>
+          <article class="teaser-card" data-reveal style="--i:2">
+            <div class="teaser-card__media">
+              <img src="minauto.jpg" alt="Aixam Minauto — 100P Location" loading="lazy" />
+            </div>
+            <div class="teaser-card__body">
+              <div class="teaser-card__brand">Aixam</div>
+              <h3 class="teaser-card__name">Aixam Minauto</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSER : invitation finale -->
+    <section class="fleet-closer">
+      <div class="container">
+        <div class="fleet-closer__inner" data-reveal>
+          <div class="fleet-closer__eyebrow">Réservation</div>
+          <h2 class="fleet-closer__title">
+            Une voiture choisie ?<br /><em>Réservez en deux minutes.</em>
+          </h2>
+          <p class="fleet-closer__lede">
+            Paiement sur place dans le secteur choisi, assurance
+            tous risques incluse. Aucun débit en ligne — nous vous
+            rappelons sous 24h pour confirmer.
+          </p>
+          <a href="index.html#hero" class="fleet-closer__cta">
+            Démarrer ma réservation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- POPUP CALENDRIER + RÉSERVATION RAPIDE -->
+    <div class="availability-modal" id="availability-modal" hidden>
+      <div class="availability-modal__backdrop"></div>
+      <div class="availability-modal__panel" role="dialog" aria-modal="true" aria-labelledby="availability-vehicle-name">
+
+        <button type="button" class="availability-modal__close" aria-label="Fermer">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
+        <div class="availability-modal__head">
+          <span class="eyebrow">Calendrier · Réservation rapide</span>
+          <h3 class="display" id="availability-vehicle-name" style="margin-top:12px; font-size: 24px;">Aixam City Sport</h3>
+          <p class="meta" id="availability-step-hint" style="margin-top:6px;">Sélectionnez votre date de départ</p>
+        </div>
+
+        <div class="availability-modal__recap" id="availability-recap" hidden>
+          <div class="av-recap__col av-recap__col--agency">
+            <span class="av-recap__label">📍 Secteur</span>
+            <select class="av-recap__select" id="av-recap-agency">
+              <option value="Vichy">Vichy</option>
+              <option value="Clermont-Ferrand">Clermont-Ferrand</option>
+            </select>
+          </div>
+          <div class="av-recap__arrow" aria-hidden="true">·</div>
+          <div class="av-recap__col">
+            <span class="av-recap__label">Départ</span>
+            <span class="av-recap__value" id="av-recap-depart">—</span>
+          </div>
+          <div class="av-recap__arrow" aria-hidden="true">→</div>
+          <div class="av-recap__col">
+            <span class="av-recap__label">Retour</span>
+            <span class="av-recap__value" id="av-recap-retour">—</span>
+          </div>
+          <button type="button" class="av-recap__reset" id="av-recap-reset">Réinitialiser</button>
+        </div>
+
+        <div class="availability-modal__calendars" id="availability-calendars"></div>
+
+        <div class="availability-modal__times" id="availability-times" hidden>
+          <div class="av-times__group">
+            <div class="av-times__label">Heure de départ</div>
+            <div class="av-times__slots" id="av-times-depart"></div>
+          </div>
+          <div class="av-times__group">
+            <div class="av-times__label">Heure de retour</div>
+            <div class="av-times__slots" id="av-times-retour"></div>
+          </div>
+        </div>
+
+        <div class="availability-modal__legend">
+          <span class="legend-item"><span class="legend-dot legend-dot--free"></span> Disponible</span>
+          <span class="legend-item"><span class="legend-dot legend-dot--selected"></span> Sélectionné</span>
+          <span class="legend-item"><span class="legend-dot legend-dot--range"></span> Plage</span>
+        </div>
+
+        <div class="availability-modal__footer">
+          <button type="button" class="btn btn--primary" id="av-reserve-btn" disabled>
+            Réserver ce véhicule
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="index.html#how">Réservation</a></li>
+              <li><a href="index.html#pricing">Tarifs</a></li>
+              <li><a href="index.html#about">À propos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <script>
+    /* ── Availability modal · Réservation rapide ──────────────────
+       1er clic sur un jour : date de départ
+       2e clic : date de retour (la plage entre les deux est surlignée)
+       Puis sélection des horaires de départ et retour
+       Bouton "Réserver" actif quand tout est rempli → stocke + redirige */
+    (function () {
+      var modal = document.getElementById('availability-modal');
+      if (!modal) return;
+
+      var calendars     = document.getElementById('availability-calendars');
+      var vehicleNameEl = document.getElementById('availability-vehicle-name');
+      var stepHint      = document.getElementById('availability-step-hint');
+      var recap         = document.getElementById('availability-recap');
+      var recapDepart   = document.getElementById('av-recap-depart');
+      var recapRetour   = document.getElementById('av-recap-retour');
+      var recapReset    = document.getElementById('av-recap-reset');
+      var timesBlock    = document.getElementById('availability-times');
+      var timesDepart   = document.getElementById('av-times-depart');
+      var timesRetour   = document.getElementById('av-times-retour');
+      var reserveBtn    = document.getElementById('av-reserve-btn');
+      var closeBtn      = modal.querySelector('.availability-modal__close');
+      var backdrop      = modal.querySelector('.availability-modal__backdrop');
+      var buttons       = document.querySelectorAll('.vcard__availability-btn');
+
+      var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+      var SHORT  = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+      var DOW    = ['Lu','Ma','Me','Je','Ve','Sa','Di'];
+      var SLOTS  = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
+
+      var VEHICLE_PRICES = {
+        'Aixam City Sport': 49
+      };
+
+      var currentVehicle = '';
+      var bookedDates    = new Set();
+      var departDate     = null;
+      var retourDate     = null;
+      var departTime     = null;
+      var retourTime     = null;
+
+      function getBookedDates() {
+        return new Set();
+      }
+
+      function formatDateShort(date) {
+        return date.getDate() + ' ' + SHORT[date.getMonth()];
+      }
+
+      function formatDateISO(date) {
+        return date.getFullYear() + '-' +
+               String(date.getMonth() + 1).padStart(2, '0') + '-' +
+               String(date.getDate()).padStart(2, '0');
+      }
+
+      function buildMonth(year, month) {
+        var first = new Date(year, month, 1);
+        var off = (first.getDay() + 6) % 7;
+        var days = new Date(year, month + 1, 0).getDate();
+        var today = new Date(); today.setHours(0,0,0,0);
+
+        var wrap = document.createElement('div');
+        wrap.className = 'av-cal';
+
+        var title = document.createElement('div');
+        title.className = 'av-cal__title';
+        title.textContent = MONTHS[month] + ' ' + year;
+        wrap.appendChild(title);
+
+        var grid = document.createElement('div');
+        grid.className = 'av-cal__grid';
+
+        DOW.forEach(function (d) {
+          var el = document.createElement('div');
+          el.className = 'av-cal__dow';
+          el.textContent = d;
+          grid.appendChild(el);
+        });
+        for (var i = 0; i < off; i++) {
+          var emp = document.createElement('div');
+          emp.className = 'av-cal__day empty';
+          grid.appendChild(emp);
+        }
+        for (var d = 1; d <= days; d++) {
+          var dt = new Date(year, month, d);
+          var cls = 'av-cal__day';
+          if (dt < today) cls += ' past';
+          else if (bookedDates.has(dt.toDateString())) cls += ' booked';
+          if (dt.toDateString() === today.toDateString()) cls += ' today';
+
+          if (departDate && dt.toDateString() === departDate.toDateString()) cls += ' selected';
+          if (retourDate && dt.toDateString() === retourDate.toDateString()) cls += ' selected';
+          if (departDate && retourDate && dt > departDate && dt < retourDate) cls += ' in-range';
+
+          var cell = document.createElement('div');
+          cell.className = cls;
+          cell.textContent = d;
+          // Stocke la date en ISO via dataset (pas d'injection HTML)
+          cell.dataset.iso = formatDateISO(dt);
+          grid.appendChild(cell);
+        }
+        wrap.appendChild(grid);
+        return wrap;
+      }
+
+      function renderCalendars() {
+        var now = new Date();
+        var m1 = now.getMonth();
+        var y1 = now.getFullYear();
+        var m2 = m1 + 1;
+        var y2 = y1;
+        if (m2 > 11) { m2 = 0; y2++; }
+
+        calendars.textContent = '';
+        calendars.appendChild(buildMonth(y1, m1));
+        calendars.appendChild(buildMonth(y2, m2));
+        attachDayListeners();
+      }
+
+      function attachDayListeners() {
+        calendars.querySelectorAll('.av-cal__day:not(.past):not(.booked):not(.empty)').forEach(function (el) {
+          el.addEventListener('click', function () {
+            // Reconstruit la date depuis l'ISO stocké (safe : pas d'innerHTML)
+            var parts = el.dataset.iso.split('-');
+            var dt = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+
+            if (!departDate || (departDate && retourDate)) {
+              // 1er clic ou reset après plage complète
+              departDate = dt;
+              retourDate = null;
+              departTime = null;
+              retourTime = null;
+            } else if (dt <= departDate) {
+              // Si on clique avant le départ, on redémarre
+              departDate = dt;
+              retourDate = null;
+            } else {
+              // 2e clic : retour
+              retourDate = dt;
+            }
+
+            updateUI();
+          });
+        });
+      }
+
+      function buildTimeSlots(container, selected) {
+        container.textContent = '';
+        SLOTS.forEach(function (slot) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'av-time-slot' + (selected === slot ? ' selected' : '');
+          btn.dataset.slot = slot;
+          btn.textContent = slot;
+          container.appendChild(btn);
+        });
+      }
+
+      function attachTimeListeners() {
+        timesDepart.querySelectorAll('.av-time-slot').forEach(function (el) {
+          el.addEventListener('click', function () {
+            departTime = el.dataset.slot;
+            buildTimeSlots(timesDepart, departTime);
+            buildTimeSlots(timesRetour, retourTime);
+            attachTimeListeners();
+            updateUI();
+          });
+        });
+        timesRetour.querySelectorAll('.av-time-slot').forEach(function (el) {
+          el.addEventListener('click', function () {
+            retourTime = el.dataset.slot;
+            buildTimeSlots(timesDepart, departTime);
+            buildTimeSlots(timesRetour, retourTime);
+            attachTimeListeners();
+            updateUI();
+          });
+        });
+      }
+
+      function updateUI() {
+        // Re-render calendars (états selected/in-range)
+        renderCalendars();
+
+        // Recap (toujours visible — l'agence reste accessible)
+        recapDepart.textContent = departDate
+          ? formatDateShort(departDate) + (departTime ? ' · ' + departTime : '')
+          : '—';
+        recapRetour.textContent = retourDate
+          ? formatDateShort(retourDate) + (retourTime ? ' · ' + retourTime : '')
+          : '—';
+
+        // Step hint
+        if (!departDate) {
+          stepHint.textContent = 'Sélectionnez votre date de départ';
+        } else if (!retourDate) {
+          stepHint.textContent = 'Sélectionnez votre date de retour';
+        } else if (!departTime || !retourTime) {
+          stepHint.textContent = 'Choisissez vos horaires de départ et de retour';
+        } else {
+          stepHint.textContent = 'Tout est prêt ! Cliquez sur Réserver';
+        }
+
+        // Bloc horaires
+        if (departDate && retourDate) {
+          timesBlock.hidden = false;
+          buildTimeSlots(timesDepart, departTime);
+          buildTimeSlots(timesRetour, retourTime);
+          attachTimeListeners();
+        } else {
+          timesBlock.hidden = true;
+        }
+
+        // Bouton Réserver
+        var allOk = departDate && retourDate && departTime && retourTime;
+        reserveBtn.disabled = !allOk;
+      }
+
+      function resetAll() {
+        departDate = null;
+        retourDate = null;
+        departTime = null;
+        retourTime = null;
+        updateUI();
+      }
+
+      function openModal(vehicle) {
+        currentVehicle = vehicle;
+        vehicleNameEl.textContent = vehicle;
+        bookedDates = getBookedDates(vehicle);
+        resetAll();
+        recap.hidden = false;
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      reserveBtn.addEventListener('click', function () {
+        if (reserveBtn.disabled) return;
+
+        // Sauvegarde dans sessionStorage (l'utilisateur pourra modifier l'agence après)
+        sessionStorage.setItem('bookingData', JSON.stringify({
+          agence: document.getElementById('av-recap-agency').value || 'Vichy',
+          date_depart:  formatDateISO(departDate),
+          heure_depart: departTime,
+          date_retour:  formatDateISO(retourDate),
+          heure_retour: retourTime
+        }));
+
+        sessionStorage.setItem('selectedVehicle', currentVehicle);
+        sessionStorage.setItem('selectedVehiclePrice', String(VEHICLE_PRICES[currentVehicle] || 49));
+
+        window.location.href = 'reservation-resultats.html';
+      });
+
+      recapReset.addEventListener('click', resetAll);
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openModal(btn.dataset.vehicle);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+
+    /* ──────────────────────────────────────────────────────────────
+       MODALE FICHE TECHNIQUE — Aixam
+       ────────────────────────────────────────────────────────────── */
+    function initSpecModal() {
+      var modal = document.getElementById('spec-modal');
+      if (!modal) return;
+
+      var closeBtn = modal.querySelector('.spec-modal__close');
+      var backdrop = modal.querySelector('.spec-modal__backdrop');
+      var brandEl  = document.getElementById('spec-brand');
+      var titleEl  = document.getElementById('spec-title');
+      var subEl    = document.getElementById('spec-sub');
+      var groupsEl = document.getElementById('spec-groups');
+
+      var SPECS = {
+        aixam: {
+          brand: 'Aixam · Diesel',
+          title: 'Aixam City Sport',
+          sub: 'Quadricycle léger Diesel',
+          groups: [
+            { title: 'Motorisation', rows: [
+              ['Type',             'Quadricycle léger (catégorie L6e)'],
+              ['Fabrication',      'France'],
+              ['Puissance',        '6 kW (8 ch)'],
+              ['Couple',           '44 Nm'],
+              ['Vitesse maximale', '45 km/h']
+            ]},
+            { title: 'Carburant & consommation', rows: [
+              ['Carburant',        'Diesel'],
+              ['Consommation',     '4.3 L/100 km']
+            ]},
+            { title: 'Dimensions & habitacle', rows: [
+              ['Longueur',         '2,72 m'],
+              ['Largeur',          '1,50 m'],
+              ['Hauteur',          '1,40 m'],
+              ['Poids à vide',     '425 kg'],
+              ['Volume coffre',    '422 L'],
+              ['Places',           '2']
+            ]},
+            { title: 'Accessibilité', rows: [
+              ['Permis requis',    'Permis AM à partir de 14 ans'],
+              ['Équipement',       'Caméra de recul, radar sonore, écran tactile, Bluetooth, USB, ABS, airbag conducteur']
+            ]}
+          ]
+        },
+      };
+
+      function openModal(key) {
+        var data = SPECS[key];
+        if (!data) return;
+
+        brandEl.textContent = data.brand;
+        titleEl.textContent = data.title;
+        subEl.textContent   = data.sub;
+
+        // Construction DOM-safe des groupes + lignes
+        groupsEl.textContent = '';
+        data.groups.forEach(function (g) {
+          var group = document.createElement('div');
+          group.className = 'spec-modal__group';
+
+          var gt = document.createElement('p');
+          gt.className = 'spec-modal__group-title';
+          gt.textContent = g.title;
+          group.appendChild(gt);
+
+          var rows = document.createElement('div');
+          rows.className = 'spec-modal__rows';
+
+          g.rows.forEach(function (pair) {
+            var row = document.createElement('div');
+            row.className = 'spec-modal__row';
+            var k = document.createElement('span');
+            k.className = 'spec-modal__row-key';
+            k.textContent = pair[0];
+            var v = document.createElement('span');
+            v.className = 'spec-modal__row-val';
+            v.textContent = pair[1];
+            row.appendChild(k);
+            row.appendChild(v);
+            rows.appendChild(row);
+          });
+
+          group.appendChild(rows);
+          groupsEl.appendChild(group);
+        });
+
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.chapter__info-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          openModal(btn.dataset.spec);
+        });
+      });
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (backdrop) backdrop.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSpecModal);
+    } else {
+      initSpecModal();
+    }
+  </script>
+
+  <!-- ============================================================
+       MODALE FICHE TECHNIQUE
+       ============================================================ -->
+  <div class="spec-modal" id="spec-modal" hidden>
+    <div class="spec-modal__backdrop"></div>
+    <div class="spec-modal__panel">
+
+      <button type="button" class="spec-modal__close" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="spec-modal__head">
+        <div class="spec-modal__brand" id="spec-brand">—</div>
+        <h2 class="spec-modal__title" id="spec-title">—</h2>
+        <p class="spec-modal__sub" id="spec-sub">—</p>
+      </div>
+
+      <div id="spec-groups">
+        <!-- Groupes injectés par JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Permis suspendu : rouler légalement avec une voiture sans permis — 100P Location</title>
+  <meta name="description" content="Permis suspendu ou annulé ? Découvrez comment rester mobile légalement avec une voiture sans permis et continuer à aller travailler. Guide complet 100P." />
+  <link rel="canonical" href="https://100p-location.fr/blog-permis-suspendu.html" />
+  <meta property="og:title" content="Permis suspendu : rouler légalement avec une voiture sans permis" />
+  <meta property="og:description" content="Permis suspendu ou annulé ? Découvrez comment rester mobile légalement avec une voiture sans permis." />
+  <meta property="og:type" content="article" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    /* ── Article : layout et typographie spécifiques ────────────── */
+    .article-meta {
+      display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
+      font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted); margin-top: 26px;
+    }
+    .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+    .article-meta strong { color: var(--ink); font-weight: 500; }
+
+    .article-body { max-width: 740px; margin: 0 auto; }
+    .article-body p {
+      font-family: var(--sans); font-size: 16px; line-height: 1.75;
+      color: var(--ink-soft); margin-bottom: 18px;
+    }
+    .article-body p strong { color: var(--ink); font-weight: 600; }
+
+    .article-intro {
+      font-family: var(--serif); font-style: italic;
+      font-size: 19px !important; line-height: 1.55 !important;
+      color: var(--ink) !important;
+      border-left: 3px solid var(--accent);
+      padding-left: 22px; margin-bottom: 36px !important;
+    }
+
+    .article-body h2 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(24px, 2.6vw, 30px); line-height: 1.18;
+      letter-spacing: -.015em; color: var(--ink);
+      margin: 48px 0 16px; padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .article-body h3 {
+      font-family: var(--sans); font-weight: 600;
+      font-size: 16px; letter-spacing: -.005em;
+      color: var(--accent); margin: 28px 0 10px;
+    }
+
+    /* Stat hero — chiffre clé en avant */
+    .article-stat {
+      display: flex; align-items: baseline; gap: 20px;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin: 24px 0 30px;
+    }
+    .article-stat__num {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(36px, 4.5vw, 52px);
+      line-height: 1;
+      letter-spacing: -.025em;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .article-stat__text {
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+
+    /* Boxes de mise en valeur */
+    .article-box {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .article-box--neutral { background: var(--surface-2); }
+    .article-box--alert {
+      background: rgba(181,64,74,.08);
+      border: 1px solid rgba(181,64,74,.18);
+    }
+    .article-box__title {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 8px;
+    }
+    .article-box--neutral .article-box__title { color: var(--muted); }
+    .article-box p {
+      font-family: var(--sans); font-size: 14.5px;
+      line-height: 1.65; color: var(--ink-soft); margin: 0;
+    }
+    .article-box p strong { color: var(--ink); }
+
+    /* Listes "→" */
+    ul.article-list { list-style: none; padding: 0; margin: 14px 0 24px; }
+    ul.article-list li {
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px dotted rgba(17,17,17,.14);
+      font-family: var(--sans); font-size: 15px; color: var(--ink-soft);
+    }
+    ul.article-list li:last-child { border-bottom: none; }
+    ul.article-list li::before {
+      content: "→"; font-family: var(--mono); font-size: 12px;
+      color: var(--accent); flex-shrink: 0;
+    }
+    ul.article-list li strong { color: var(--ink); }
+
+    /* Steps numérotés (procédure 1-2-3) */
+    .article-steps {
+      counter-reset: steps;
+      list-style: none; padding: 0; margin: 24px 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .article-step {
+      counter-increment: steps;
+      position: relative;
+      padding: 18px 22px 18px 70px;
+      background: var(--surface-2);
+      border-radius: 10px;
+      font-family: var(--sans); font-size: 15px; color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .article-step::before {
+      content: counter(steps);
+      position: absolute;
+      left: 18px; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px;
+      background: var(--ink);
+      color: var(--surface);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-style: italic; font-weight: 500;
+      font-size: 15px;
+    }
+    .article-step strong { color: var(--ink); }
+
+    /* Tableau */
+    .article-table {
+      width: 100%; border-collapse: collapse;
+      margin: 24px 0;
+      font-family: var(--sans); font-size: 14.5px;
+      border: 1px solid var(--line);
+      border-radius: 12px; overflow: hidden;
+    }
+    .article-table th, .article-table td { padding: 13px 18px; text-align: left; }
+    .article-table th {
+      background: var(--ink); color: var(--surface);
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+    }
+    .article-table tr + tr td { border-top: 1px solid var(--line); }
+    .article-table td:first-child { color: var(--ink); font-weight: 500; }
+    .article-table td { color: var(--ink-soft); }
+    .article-table tr:nth-child(even) td { background: var(--surface-2); }
+
+    /* Mini-grille de prix */
+    .article-prices {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin: 24px 0;
+    }
+    @media (max-width: 600px) { .article-prices { grid-template-columns: 1fr; } }
+    .article-price {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px; text-align: center;
+    }
+    .article-price__amount {
+      font-family: var(--serif); font-weight: 500;
+      font-size: 28px; letter-spacing: -.02em;
+      color: var(--ink); line-height: 1;
+    }
+    .article-price__unit {
+      display: block; margin-top: 6px;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .article-price__tag {
+      display: inline-block; margin-top: 10px;
+      padding: 3px 10px;
+      background: var(--accent-soft);
+      color: var(--accent-2);
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: .08em; text-transform: uppercase;
+      border-radius: 999px;
+    }
+
+    /* FAQ */
+    .article-faq {
+      max-width: 740px; margin: 32px auto 0;
+      border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    }
+    .article-faq__item { border-bottom: 1px solid var(--line); }
+    .article-faq__item:last-child { border-bottom: none; }
+    .article-faq__item summary {
+      list-style: none; cursor: pointer;
+      padding: 22px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px;
+      font-family: var(--sans); font-size: 15px; font-weight: 500;
+      color: var(--ink); transition: background .2s;
+    }
+    .article-faq__item summary::-webkit-details-marker { display: none; }
+    .article-faq__item summary:hover { background: var(--surface-2); }
+    .article-faq__icon { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
+    .article-faq__icon::before, .article-faq__icon::after {
+      content: ""; position: absolute; background: var(--ink-soft);
+      transition: transform .25s var(--ease);
+    }
+    .article-faq__icon::before { top: 50%; left: 0; right: 0; height: 1.5px; transform: translateY(-50%); }
+    .article-faq__icon::after { left: 50%; top: 0; bottom: 0; width: 1.5px; transform: translateX(-50%); }
+    .article-faq__item[open] .article-faq__icon::after { transform: translateX(-50%) rotate(90deg); }
+    .article-faq__body {
+      padding: 0 28px 24px;
+      font-family: var(--sans); font-size: 14.5px;
+      line-height: 1.65; color: var(--ink-soft);
+    }
+
+    /* CTA bloc */
+    .article-cta {
+      background: var(--ink); color: var(--surface);
+      border-radius: 16px; padding: clamp(32px, 5vw, 48px);
+      text-align: center; margin: 56px 0;
+    }
+    .article-cta h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(26px, 3vw, 34px); line-height: 1.15;
+      letter-spacing: -.02em; color: var(--surface); margin: 0 0 14px;
+    }
+    .article-cta h2 em { font-style: italic; color: #F5C6CB; }
+    .article-cta p {
+      font-family: var(--sans); font-size: 15px;
+      color: rgba(255,255,255,.7); margin: 0 0 26px;
+    }
+    .article-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px;
+      background: var(--surface); color: var(--ink);
+      font-family: var(--sans); font-size: 14.5px; font-weight: 500;
+      border-radius: 999px; text-decoration: none;
+      transition: background .2s, transform .25s var(--ease);
+    }
+    .article-cta__btn:hover { background: #ECE7DC; }
+    .article-cta__btn:active { transform: scale(.98); }
+    .article-cta__btn svg { width: 13px; height: 13px; transition: transform .25s var(--ease); }
+    .article-cta__btn:hover svg { transform: translateX(3px); }
+
+    /* Back link */
+    .article-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--sans); font-size: 13.5px;
+      color: var(--ink-soft); text-decoration: none;
+      padding: 4px 0; margin: 32px 0 16px;
+      transition: color .2s;
+    }
+    .article-back:hover { color: var(--ink); }
+    .article-back svg { width: 14px; height: 14px; transition: transform .25s var(--ease); }
+    .article-back:hover svg { transform: translateX(-3px); }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner">
+          <span class="eyebrow">Guide · Permis suspendu</span>
+          <h1 class="page-hero__title" data-reveal style="--i:1">
+            Permis suspendu,<br /><em>rester mobile.</em>
+          </h1>
+          <p class="page-hero__sub" data-reveal style="--i:2">
+            Comment continuer à conduire et à travailler légalement quand
+            votre permis B est suspendu ou annulé — sans risque, avec une
+            voiture sans permis.
+          </p>
+          <div class="article-meta" data-reveal style="--i:3">
+            <span><strong>12 juin 2026</strong></span>
+            <span>8 min de lecture</span>
+            <span>100P Location</span>
+            <span>Auvergne</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENU ARTICLE -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="article-body">
+
+          <a href="blog.html" class="article-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M11 5l-7 7 7 7"/></svg>
+            Retour au carnet
+          </a>
+
+          <p class="article-intro" data-reveal>
+            Votre permis vient d'être suspendu. Votre premier réflexe :
+            comment vais-je aller au travail demain matin ? La bonne nouvelle :
+            il existe une solution légale, accessible en 24 h, qui vous
+            permet de reprendre la route sans attendre la fin de votre
+            suspension.
+          </p>
+
+          <div class="article-stat">
+            <span class="article-stat__num">70 000+</span>
+            <span class="article-stat__text">
+              permis B retirés ou suspendus chaque année en France — une
+              situation qui touche des actifs de tous âges et de tous
+              secteurs.
+            </span>
+          </div>
+
+          <h2>1. Suspension et annulation : quelle différence ?</h2>
+          <p>
+            Avant de trouver une solution, il est important de comprendre la
+            nature de votre situation. La <strong>suspension de permis</strong>
+            et l'<strong>annulation de permis</strong> sont deux mesures
+            distinctes avec des implications différentes.
+          </p>
+
+          <table class="article-table">
+            <thead>
+              <tr><th>Mesure</th><th>Cause fréquente</th><th>Durée</th><th>Récupération</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Suspension administrative</td>
+                <td>Excès de vitesse, alcool au volant, infractions graves</td>
+                <td>1 à 6 mois</td>
+                <td>Automatique à l'issue</td>
+              </tr>
+              <tr>
+                <td>Suspension judiciaire</td>
+                <td>Décision de justice suite à une infraction pénale</td>
+                <td>Variable (jugement)</td>
+                <td>À l'issue de la peine</td>
+              </tr>
+              <tr>
+                <td>Annulation judiciaire</td>
+                <td>Infractions très graves, récidive, grand excès</td>
+                <td>Permanente</td>
+                <td>Repasser l'examen complet</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="article-box article-box--alert">
+            <div class="article-box__title">Important · à ne jamais faire</div>
+            <p>
+              Conduire avec un permis suspendu ou annulé constitue un
+              <strong>délit pénal</strong> passible de 2 ans
+              d'emprisonnement et 4 500 € d'amende (article L224-16 du Code
+              de la route). Ne prenez aucun risque.
+            </p>
+          </div>
+
+          <h2>2. Ce que dit la loi sur la voiture sans permis</h2>
+          <p>
+            Une <strong>voiture sans permis</strong> (quadricycle léger à
+            moteur, catégorie L6e) peut être conduite par toute personne
+            âgée d'au moins <strong>14 ans</strong> avec le permis AM. Le
+            point essentiel : <strong>la conduite d'une VSP ne requiert pas
+            le permis B</strong>.
+          </p>
+          <p>
+            Cela signifie concrètement que la <strong>suspension ou
+            l'annulation de votre permis B ne vous interdit pas de conduire
+            une voiture sans permis</strong>. Ces deux droits sont totalement
+            indépendants l'un de l'autre selon le Code de la route français.
+          </p>
+
+          <div class="article-box">
+            <div class="article-box__title">Confirmation légale</div>
+            <p>
+              L'article R. 211-1 du Code de la route classe les
+              quadricycles légers à moteur dans une catégorie distincte du
+              permis B. La suspension du permis B n'affecte pas le droit de
+              conduire un véhicule de cette catégorie.
+              <strong>C'est légal, c'est confirmé.</strong>
+            </p>
+          </div>
+
+          <h2>3. L'Aixam City Sport pour le trajet domicile-travail</h2>
+          <p>
+            Pour un actif dont le permis est suspendu, l'enjeu n°1 est
+            simple : <strong>continuer à aller travailler</strong>.
+            L'<strong>Aixam City Sport</strong> de 100P Location répond
+            exactement à ce besoin.
+          </p>
+
+          <h3>Pourquoi l'Aixam City Sport est la solution idéale</h3>
+          <ul class="article-list">
+            <li><strong>350 km d'autonomie</strong> : couvre largement les trajets domicile-travail en Auvergne</li>
+            <li><strong>Habitacle fermé et chauffé</strong> : confortable par tous les temps, toute l'année</li>
+            <li><strong>Boîte automatique</strong> : prise en main immédiate, aucune formation supplémentaire</li>
+            <li><strong>USB et Bluetooth</strong> : confort équivalent à une citadine classique</li>
+            <li><strong>Livraison à domicile possible</strong> : pas besoin de vous déplacer pour récupérer le véhicule</li>
+          </ul>
+
+          <h3>Quelques exemples de trajets couverts en Auvergne</h3>
+          <p>
+            L'Aixam City Sport circule sur les voies urbaines, les routes
+            secondaires et les axes péri-urbains.
+          </p>
+
+          <div class="article-box article-box--neutral">
+            <div class="article-box__title">Limite à connaître</div>
+            <p>
+              Les voitures sans permis sont limitées à <strong>45 km/h</strong>
+              et ne peuvent pas circuler sur les voies rapides (routes
+              nationales à 2×2 voies, autoroutes). Elles sont conçues pour
+              les voiries urbaines et périurbaines.
+            </p>
+          </div>
+
+          <h2>4. Quelle formule choisir selon la durée de suspension ?</h2>
+          <p>
+            La durée d'une suspension de permis varie généralement de
+            <strong>1 à 6 mois</strong>. Chez 100P Location, nous proposons
+            des formules adaptées à chaque situation :
+          </p>
+
+          <div class="article-prices">
+            <div class="article-price">
+              <span class="article-price__amount">39&thinsp;€</span>
+              <span class="article-price__unit">À la journée</span>
+              <span class="article-price__tag">Idéal en attendant</span>
+            </div>
+            <div class="article-price">
+              <span class="article-price__amount">219&thinsp;€</span>
+              <span class="article-price__unit">À la semaine</span>
+              <span class="article-price__tag">Suspension courte</span>
+            </div>
+            <div class="article-price">
+              <span class="article-price__amount">699&thinsp;€</span>
+              <span class="article-price__unit">Au mois</span>
+              <span class="article-price__tag">Livraison offerte</span>
+            </div>
+          </div>
+
+          <p>
+            Pour une suspension de 3 mois par exemple, la formule mensuelle
+            (699 €/mois) représente un coût total d'environ
+            <strong>2 097 €</strong> — assurance incluse, kilométrage
+            illimité, livraison à domicile offerte. Souvent moins cher que
+            les solutions de mobilité de substitution.
+          </p>
+
+          <h2>5. Les démarches pratiques : comment réserver chez 100P</h2>
+          <p>
+            La procédure de réservation est conçue pour être rapide. Si
+            votre permis vient d'être suspendu et que vous avez besoin d'un
+            véhicule dès demain, voici comment procéder :
+          </p>
+
+          <ol class="article-steps">
+            <li class="article-step">
+              <strong>Réservez en ligne.</strong> Choisissez votre ville,
+              votre véhicule et vos dates sur notre site. Deux minutes
+              suffisent.
+            </li>
+            <li class="article-step">
+              <strong>Notre équipe vous rappelle.</strong> Sous 24 h, nous
+              confirmons votre réservation par téléphone et précisons les
+              modalités de retrait ou livraison.
+            </li>
+            <li class="article-step">
+              <strong>Récupérez ou faites livrer.</strong> Retrait sur place
+              dans l'un de nos cinq secteurs, ou livraison à
+              domicile selon la formule choisie.
+            </li>
+            <li class="article-step">
+              <strong>Signez le contrat sur place.</strong> Pièce d'identité
+              et justificatif de domicile suffisent. Aucun permis B requis.
+            </li>
+            <li class="article-step">
+              <strong>Roulez légalement.</strong> Assurance tous risques
+              incluse dès le premier kilomètre, kilométrage illimité.
+            </li>
+          </ol>
+
+          <h2>6. La solution 100P : livrée en Auvergne</h2>
+          <p>
+            100P Location est un loueur indépendant local, présent dans
+            <strong>5 villes d'Auvergne</strong> : Clermont-Ferrand, Riom,
+            Vichy, Moulins et Montluçon. Notre équipe entretient chaque
+            véhicule en interne entre chaque location. Pas de centrale
+            d'appels — vous parlez directement aux personnes qui préparent
+            votre voiture.
+          </p>
+          <p>
+            La livraison à domicile est disponible dès la formule semaine.
+            Idéale si vous ne pouvez pas vous déplacer jusqu'à notre point
+            de retrait.
+          </p>
+
+          <div class="article-cta">
+            <h2>Permis suspendu ? <em>Restez mobile.</em></h2>
+            <p>Réservez votre Aixam City Sport en ligne. Livraison possible, assurance incluse. Notre équipe vous recontacte sous 24 h.</p>
+            <a href="index.html#top" class="article-cta__btn">
+              Réserver à la semaine
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+
+          <h2>FAQ — Permis suspendu et voiture sans permis</h2>
+          <div class="article-faq">
+
+            <details class="article-faq__item">
+              <summary>
+                Une personne avec le permis suspendu peut-elle légalement conduire une voiture sans permis ?
+                <span class="article-faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="article-faq__body">
+                Oui. La suspension du permis B concerne uniquement le droit
+                de conduire des véhicules de la catégorie B. La conduite
+                d'un quadricycle léger à moteur (voiture sans permis) relève
+                d'un droit distinct, non affecté par la suspension.
+              </div>
+            </details>
+
+            <details class="article-faq__item">
+              <summary>
+                Est-ce que je risque quelque chose si je conduis une VSP avec le permis suspendu ?
+                <span class="article-faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="article-faq__body">
+                Non, à condition de conduire une voiture sans permis
+                homologuée (quadricycle léger, vitesse max 45 km/h,
+                catégorie L6e). Ce type de véhicule ne nécessite pas le
+                permis B. Votre suspension ne vous interdit pas de le
+                conduire.
+              </div>
+            </details>
+
+            <details class="article-faq__item">
+              <summary>
+                Faut-il obligatoirement avoir le permis AM pour louer une VSP chez 100P ?
+                <span class="article-faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="article-faq__body">
+                Oui, depuis 2013, le permis AM est obligatoire ou le BSR
+                passé entre 1988 et 2013. Avant 1988, aucun permis nécessaire.
+              </div>
+            </details>
+
+            <details class="article-faq__item">
+              <summary>
+                Puis-je louer pour 3 mois (durée de ma suspension) ?
+                <span class="article-faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="article-faq__body">
+                Oui. Notre formule mensuelle à 699 €/mois est renouvelable.
+                Pour une suspension de 3 mois, vous louez mois par mois et
+                restituez le véhicule à la fin de votre suspension.
+              </div>
+            </details>
+
+            <details class="article-faq__item">
+              <summary>
+                Ma voiture sans permis peut-elle aller jusqu'à mon lieu de travail ?
+                <span class="article-faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="article-faq__body">
+                Cela dépend de votre trajet. Les VSP circulent sur les
+                voiries urbaines et routes secondaires, limitées à 45 km/h.
+                Si votre trajet évite les voies rapides et autoroutes,
+                l'Aixam City Sport (400 km d'autonomie) peut couvrir la
+                quasi-totalité des trajets domicile-travail en Auvergne.
+              </div>
+            </details>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="offres.html">Tarifs</a></li>
+              <li><a href="horaires.html">Secteurs</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés · SIRET 104 352 299 00010</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nos offres — 100P Location</title>
+  <meta name="description" content="Trois formules de location de voitures sans permis : à la journée, à la semaine, au mois. Assurance incluse, kilométrage illimité, retrait dans 5 secteurs d'Auvergne." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    /* ──────────────────────────────────────────────────────────────
+       OFFRES — Page dédiée aux 3 formules
+       ────────────────────────────────────────────────────────────── */
+
+    /* HERO court */
+    .offres-hero {
+      position: relative;
+      padding: clamp(72px, 9vw, 120px) 0 clamp(40px, 6vw, 72px);
+      background: var(--bg);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .offres-hero::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10%;
+      transform: translateY(-65%);
+      width: clamp(640px, 82vw, 1400px);
+      height: clamp(640px, 82vw, 1400px);
+      background-image: url('PhotoVichy2.JPG');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: .75;
+      pointer-events: none;
+      z-index: 0;
+      /* Fade depuis la droite vers la gauche pour laisser le texte lisible */
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 90%);
+              mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 90%);
+    }
+    .offres-hero .container { position: relative; z-index: 1; }
+    .offres-hero__inner { max-width: 760px; position: relative; z-index: 1; }
+    @media (max-width: 760px) {
+      .offres-hero::before {
+        top: auto;
+        bottom: -15%;
+        right: -25%;
+        transform: none;
+        width: 140vw;
+        height: 140vw;
+        opacity: .4;
+      }
+    }
+    .offres-hero__eyebrow {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .offres-hero__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(40px, 5.5vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0 0 22px;
+    }
+    .offres-hero__title em { font-style: italic; color: var(--accent); }
+    .offres-hero__lede {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.1vw, 17px);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0;
+      max-width: 60ch;
+    }
+
+    /* CHAPITRES OFFRE — zigzag image/texte, sobre */
+    .offre-chapter {
+      padding: clamp(56px, 8vw, 96px) 0;
+    }
+    .offre-chapter + .offre-chapter { border-top: 1px solid rgba(17,17,17,.08); }
+    .offre-chapter__grid {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: clamp(40px, 6vw, 88px);
+      align-items: center;
+    }
+    .offre-chapter--reverse .offre-chapter__grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    }
+    .offre-chapter--reverse .offre-chapter__media { order: 2; }
+    .offre-chapter--reverse .offre-chapter__body { order: 1; }
+
+    .offre-chapter__media {
+      position: relative;
+      aspect-ratio: 4/5;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--surface-2);
+      box-shadow:
+        0 1px 0 rgba(17,17,17,.05),
+        0 16px 36px -10px rgba(17,17,17,.28),
+        0 40px 72px -20px rgba(17,17,17,.22);
+    }
+    .offre-chapter__media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    /* Recentrage spécifique — Formule 2 (Semaine) */
+    #semaine .offre-chapter__media img {
+      object-position: 70% 35%;
+    }
+
+    .offre-chapter__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .offre-chapter__tag::before {
+      content: "";
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .offre-chapter__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(36px, 4.5vw, 56px);
+      line-height: 1.04;
+      letter-spacing: -.025em;
+      color: var(--ink);
+      margin: 0 0 16px;
+    }
+    .offre-chapter__title em { font-style: italic; color: var(--accent); }
+
+    .offre-chapter__price {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 0 0 22px;
+    }
+    .offre-chapter__price-amount {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(34px, 4vw, 48px);
+      line-height: 1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+    .offre-chapter__price-unit {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Grille de prix multi-véhicules (Journée / Semaine / Mois) */
+    .offre-chapter__pricing {
+      margin: 0 0 28px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .pricing-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 12px 16px;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+    .pricing-row:first-child { border-top: 0; }
+    .pricing-row__car {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 17px;
+      color: var(--ink);
+    }
+    .pricing-row__badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .pricing-row__price {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 22px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .pricing-row__price small {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-left: 4px;
+      font-weight: 400;
+    }
+    .pricing-row__cta {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s, color .2s, border-color .2s;
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .pricing-row__cta:hover {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+    @media (min-width: 640px) {
+      .pricing-row { grid-template-columns: 1fr auto auto auto; }
+      .pricing-row__cta { grid-column: auto; justify-self: end; }
+    }
+    @media (max-width: 480px) {
+      .pricing-row { grid-template-columns: 1fr auto; row-gap: 6px; }
+      .pricing-row__badge { grid-column: 1 / -1; justify-self: start; }
+    }
+    .offre-chapter__save {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 4px 10px;
+      background: var(--accent-soft);
+      color: var(--accent-2);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border-radius: 999px;
+    }
+
+    .offre-chapter__intro {
+      font-family: var(--sans);
+      font-size: 15.5px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      max-width: 52ch;
+      margin: 0 0 26px;
+    }
+    .offre-chapter__target {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    .offre-chapter__target-text {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.4;
+      color: var(--ink);
+      margin: 0 0 28px;
+      max-width: 48ch;
+    }
+
+    .offre-chapter__included {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 24px;
+    }
+    .offre-chapter__included li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .offre-chapter__included svg {
+      width: 14px; height: 14px;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    .offre-chapter__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      background: var(--ink);
+      color: var(--surface);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .25s var(--ease), transform .25s var(--ease);
+    }
+    .offre-chapter__cta:hover { background: #2A2A2A; }
+    .offre-chapter__cta:active { transform: scale(.98); }
+    .offre-chapter__cta svg {
+      width: 13px; height: 13px;
+      transition: transform .25s var(--ease);
+    }
+    .offre-chapter__cta:hover svg { transform: translateX(3px); }
+
+    @media (max-width: 980px) {
+      .offre-chapter__grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .offre-chapter--reverse .offre-chapter__grid {
+        grid-template-columns: 1fr;
+      }
+      .offre-chapter--reverse .offre-chapter__media { order: 1; }
+      .offre-chapter--reverse .offre-chapter__body { order: 2; }
+      .offre-chapter__included { grid-template-columns: 1fr; }
+    }
+
+    /* SECTION FRAIS ADDITIONNELS */
+    .offres-extras {
+      padding: clamp(64px, 9vw, 110px) 0;
+      background: #ECE7DC;
+      border-top: 1px solid rgba(17,17,17,.08);
+    }
+    .offres-extras__head {
+      max-width: 720px;
+      margin: 0 0 clamp(40px, 5vw, 56px);
+    }
+    .offres-extras__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 3.6vw, 40px);
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 14px 0 0;
+    }
+    .offres-extras__title em { font-style: italic; color: var(--accent); }
+    .offres-extras__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .extra-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .extra-card__label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .extra-card__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 19px;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .extra-card__price {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 22px;
+      letter-spacing: -.01em;
+      color: var(--accent);
+    }
+    .extra-card__price span {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .04em;
+      margin-left: 4px;
+    }
+    .extra-card__desc {
+      font-family: var(--sans);
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    @media (max-width: 760px) {
+      .offres-extras__grid { grid-template-columns: 1fr; }
+    }
+
+    /* FAQ */
+    .offres-faq { padding: clamp(72px, 10vw, 130px) 0; }
+    .offres-faq__head {
+      max-width: 720px;
+      margin: 0 auto clamp(40px, 5vw, 56px);
+      text-align: center;
+    }
+    .offres-faq__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 3.6vw, 40px);
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 14px 0 0;
+    }
+    .offres-faq__title em { font-style: italic; color: var(--accent); }
+    .offres-faq__list {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .offres-faq__item {
+      border-bottom: 1px solid var(--line);
+    }
+    .offres-faq__item:last-child { border-bottom: none; }
+    .offres-faq__item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .offres-faq__item summary::-webkit-details-marker { display: none; }
+    .offres-faq__item summary:hover { background: var(--surface-2); }
+    .offres-faq__icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+    .offres-faq__icon::before,
+    .offres-faq__icon::after {
+      content: "";
+      position: absolute;
+      background: var(--ink-soft);
+      transition: transform .25s var(--ease);
+    }
+    .offres-faq__icon::before {
+      top: 50%; left: 0; right: 0; height: 1.5px; transform: translateY(-50%);
+    }
+    .offres-faq__icon::after {
+      left: 50%; top: 0; bottom: 0; width: 1.5px; transform: translateX(-50%);
+    }
+    .offres-faq__item[open] .offres-faq__icon::after { transform: translateX(-50%) rotate(90deg); }
+    .offres-faq__body {
+      padding: 0 28px 24px;
+      font-family: var(--sans);
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+    }
+    .offres-faq__body strong { color: var(--ink); }
+
+    /* CLOSER */
+    .offres-closer {
+      padding: clamp(72px, 10vw, 120px) 0;
+      background: #ECE7DC;
+      border-top: 1px solid rgba(17,17,17,.08);
+    }
+    .offres-closer__inner {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .offres-closer__eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .offres-closer__title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin: 0 0 20px;
+    }
+    .offres-closer__title em { font-style: italic; color: var(--accent); }
+    .offres-closer__lede {
+      font-family: var(--sans);
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 52ch;
+      margin: 0 auto clamp(28px, 4vw, 40px);
+    }
+    .offres-closer__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      background: var(--ink);
+      color: var(--surface);
+      font-family: var(--sans);
+      font-size: 14.5px;
+      font-weight: 500;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform .25s var(--ease), background .25s;
+    }
+    .offres-closer__cta:hover { background: #2A2A2A; }
+    .offres-closer__cta:active { transform: scale(.98); }
+    .offres-closer__cta svg {
+      width: 13px; height: 13px;
+      transition: transform .25s var(--ease);
+    }
+    .offres-closer__cta:hover svg { transform: translateX(3px); }
+
+    /* ===========================================
+       FINAL MODAL (réservation formule) — réutilisé d'index.html
+       =========================================== */
+    .final-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .final-modal[hidden] { display: none; }
+    .final-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.5);
+      backdrop-filter: blur(4px);
+      animation: ffFadeIn .25s ease;
+    }
+    .final-modal__panel {
+      position: relative;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 48px 40px 40px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+      animation: ffSlideUp .3s var(--ease);
+    }
+    .final-modal__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .final-modal__close:hover { background: var(--line); }
+    .final-modal__close svg { width: 16px; height: 16px; }
+    .final-modal__head {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .final-modal__formula {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: var(--surface-2);
+      border-radius: 999px;
+    }
+    .final-modal__formula-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .final-modal__formula-value {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--ink);
+      letter-spacing: -.01em;
+    }
+    .final-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .final-form__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .final-form__field label {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .final-form__field input,
+    .final-form__field textarea {
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color .2s, background .2s;
+      resize: vertical;
+    }
+    .final-form__field input:focus,
+    .final-form__field textarea:focus {
+      border-color: var(--ink);
+      background: var(--surface-2);
+    }
+    .final-form__submit {
+      margin-top: 12px;
+      justify-content: center;
+      padding: 14px 28px;
+      font-size: 15px;
+    }
+    .final-form__note {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+    .final-modal__success {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .final-modal__success-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--pastel-green);
+      color: var(--pastel-green-tx);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .final-modal__success-icon svg { width: 28px; height: 28px; }
+    @keyframes ffFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes ffSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 600px) {
+      .final-modal__panel { padding: 40px 24px 28px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html" class="is-active">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="offres-hero" aria-labelledby="offres-hero-title">
+      <div class="container">
+        <div class="offres-hero__inner" data-reveal>
+          <div class="offres-hero__eyebrow">Tarifs location · 03 formules</div>
+          <h1 class="offres-hero__title" id="offres-hero-title">
+            La location<br /><em>sans surprise.</em>
+          </h1>
+          <p class="offres-hero__lede">
+            Trois formules pensées pour chaque usage. Pas de frais cachés,
+            assurance tous risques incluse, kilométrage illimité — paiement
+            sur place, aucun débit en ligne.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULE 01 — Journée -->
+    <article class="offre-chapter" id="journee">
+      <div class="container">
+        <div class="offre-chapter__grid">
+
+          <div class="offre-chapter__media" data-reveal>
+            <img src="Photo1offre.JPG" alt="Formule Journée — 100P Location" loading="lazy" decoding="async" />
+          </div>
+
+          <div class="offre-chapter__body" data-reveal style="--i:1">
+            <div class="offre-chapter__tag">Formule 01 · À la journée</div>
+            <h2 class="offre-chapter__title">Une voiture, <em>un jour.</em></h2>
+            <p class="offre-chapter__intro">
+              La formule simple pour les besoins ponctuels. Une sortie en
+              ville, un rendez-vous, une découverte le temps d'une journée —
+              vous repartez de notre secteur le matin, vous rapportez
+              la voiture le soir, et c'est tout.
+            </p>
+
+            <div class="offre-chapter__pricing">
+              <div class="pricing-row">
+                <span class="pricing-row__car">Premium</span>
+                <span class="pricing-row__price">30&thinsp;€<small>/ jour</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Premium', 30)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Standard</span>
+                <span class="pricing-row__price">25&thinsp;€<small>/ jour</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Standard', 25)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Fun</span>
+                <span class="pricing-row__price">22&thinsp;€<small>/ jour</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Fun', 22)">Réserver</button>
+              </div>
+            </div>
+
+            <ul class="offre-chapter__included">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kilométrage limité à 70 km/jour</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Assurance tous risques comprise</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accessible dès 14 ans</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Retrait sur place</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </article>
+
+    <!-- FORMULE 02 — Semaine (layout inversé) -->
+    <article class="offre-chapter offre-chapter--reverse" id="semaine">
+      <div class="container">
+        <div class="offre-chapter__grid">
+
+          <div class="offre-chapter__media" data-reveal>
+            <img src="Photo2offre.JPG" alt="Formule Semaine — 100P Location" loading="lazy" decoding="async" />
+          </div>
+
+          <div class="offre-chapter__body" data-reveal style="--i:1">
+            <div class="offre-chapter__tag">Formule 02 · À la semaine</div>
+            <h2 class="offre-chapter__title">Sept jours, <em>plus libres.</em></h2>
+            <p class="offre-chapter__intro">
+              Sept jours de location à un tarif dégressif, livraison à domicile
+              possible, et la tranquillité d'avoir une voiture sous la main pour
+              vos vacances locales ou un essai prolongé.
+            </p>
+
+            <div class="offre-chapter__pricing">
+              <div class="pricing-row">
+                <span class="pricing-row__car">Premium</span>
+                <span class="pricing-row__price">200&thinsp;€<small>/ semaine</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Premium', 200)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Standard</span>
+                <span class="pricing-row__price">170&thinsp;€<small>/ semaine</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Standard', 170)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Fun</span>
+                <span class="pricing-row__price">140&thinsp;€<small>/ semaine</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Fun', 140)">Réserver</button>
+              </div>
+            </div>
+
+            <ul class="offre-chapter__included">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kilométrage limité à 350 km/semaine</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Assurance tous risques comprise</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Livraison possible</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Assistance 7j/7</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </article>
+
+    <!-- FORMULE 03 — Mois (4 sous-formules) -->
+    <article class="offre-chapter" id="mois">
+      <div class="container">
+        <div class="offre-chapter__grid">
+
+          <div class="offre-chapter__media" data-reveal>
+            <img src="Photo3offre.JPG" alt="Formule Mois — Une voiture au quotidien — 100P Location" loading="lazy" decoding="async" />
+          </div>
+
+          <div class="offre-chapter__body" data-reveal style="--i:1">
+            <div class="offre-chapter__tag">Formule 03 · Au mois</div>
+            <h2 class="offre-chapter__title">Une voiture <em>au quotidien.</em></h2>
+            <p class="offre-chapter__intro">
+              Quatre formules pensées pour la longue durée. Choisissez le
+              véhicule et le kilométrage qui correspondent à votre usage —
+              livraison gratuite à partir de 4 mois de location.
+            </p>
+
+            <div class="offre-chapter__pricing">
+              <div class="pricing-row">
+                <span class="pricing-row__car">Premium</span>
+                <span class="pricing-row__badge">km illimité</span>
+                <span class="pricing-row__price">750&thinsp;€<small>/ mois</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Premium', 750)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Medium</span>
+                <span class="pricing-row__badge">1&thinsp;500 km</span>
+                <span class="pricing-row__price">690&thinsp;€<small>/ mois</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Medium', 690)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Économique</span>
+                <span class="pricing-row__badge">1&thinsp;500 km</span>
+                <span class="pricing-row__price">540&thinsp;€<small>/ mois</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Économique', 540)">Réserver</button>
+              </div>
+              <div class="pricing-row">
+                <span class="pricing-row__car">Fun</span>
+                <span class="pricing-row__badge">1&thinsp;500 km</span>
+                <span class="pricing-row__price">490&thinsp;€<small>/ mois</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Fun', 490)">Réserver</button>
+              </div>
+            </div>
+
+            <ul class="offre-chapter__included">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Assurance tous risques comprise</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Livraison gratuite dès 4 mois</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accessible dès 14 ans</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Assistance 7j/7</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </article>
+
+    <!-- FRAIS ADDITIONNELS -->
+    <section class="offres-extras" aria-labelledby="extras-title">
+      <div class="container">
+        <div class="offres-extras__head" data-reveal>
+          <div class="offres-hero__eyebrow">Options · Frais additionnels</div>
+          <h2 class="offres-extras__title" id="extras-title">
+            Quelques <em>extras.</em>
+          </h2>
+        </div>
+        <div class="offres-extras__grid">
+          <div class="extra-card" data-reveal style="--i:1">
+            <span class="extra-card__label">Livraison · 100 km</span>
+            <h3 class="extra-card__title">Rayon 100 km de Vichy</h3>
+            <p class="extra-card__price">160&thinsp;€<span>aller-retour</span></p>
+            <p class="extra-card__desc">
+              Dépôt et récupération du véhicule inclus, dans un rayon de
+              100 km autour de Vichy.
+            </p>
+          </div>
+          <div class="extra-card" data-reveal style="--i:2">
+            <span class="extra-card__label">Livraison · 200 km</span>
+            <h3 class="extra-card__title">Rayon 200 km de Vichy</h3>
+            <p class="extra-card__price">300&thinsp;€<span>aller-retour</span></p>
+            <p class="extra-card__desc">
+              Dépôt et récupération du véhicule inclus, dans un rayon de
+              200 km autour de Vichy.
+            </p>
+          </div>
+          <div class="extra-card" data-reveal style="--i:3">
+            <span class="extra-card__label">Livraison · Au-delà</span>
+            <h3 class="extra-card__title">Au-delà de 200 km</h3>
+            <p class="extra-card__price">Sur devis</p>
+            <p class="extra-card__desc">
+              Contactez-nous pour un devis personnalisé selon la distance
+              et les conditions de livraison.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="offres-faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="offres-faq__head" data-reveal>
+          <div class="offres-hero__eyebrow">Questions fréquentes</div>
+          <h2 class="offres-faq__title" id="faq-title">
+            Vos questions <em>sur nos tarifs.</em>
+          </h2>
+        </div>
+
+        <div class="offres-faq__list" data-reveal>
+
+          <details class="offres-faq__item">
+            <summary>
+              Quels frais sont inclus dans le tarif affiché ?
+              <span class="offres-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="offres-faq__body">
+              Le tarif affiché inclut <strong>l'assurance tous risques</strong>,
+              le <strong>kilométrage illimité</strong>, l'assistance 7j/7 et la
+              prise en main du véhicule sur place. Aucun frais caché — vous ne
+              payez en supplément que les options explicitement choisies
+              (livraison, conducteur supplémentaire, franchise réductible).
+            </div>
+          </details>
+
+          <details class="offres-faq__item">
+            <summary>
+              Y a-t-il une caution à verser ?
+              <span class="offres-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="offres-faq__body">
+              Une <strong>empreinte bancaire de 300 €</strong> est prise à la
+              récupération du véhicule. Elle n'est pas débitée. Elle est
+              restituée immédiatement à la restitution si le véhicule est
+              rendu propre, sans dommage et avec une batterie chargée à 80%
+              minimum.
+            </div>
+          </details>
+
+          <details class="offres-faq__item">
+            <summary>
+              Puis-je annuler ou modifier ma réservation ?
+              <span class="offres-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="offres-faq__body">
+              <strong>Annulation gratuite jusqu'à 24h avant le départ.</strong>
+              Au-delà, des frais d'annulation peuvent s'appliquer (50% du
+              montant). Pour toute modification, contactez directement votre
+              secteur par téléphone — l'équipe s'arrange avec vous.
+            </div>
+          </details>
+
+          <details class="offres-faq__item">
+            <summary>
+              Comment se passe le paiement ?
+              <span class="offres-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="offres-faq__body">
+              <strong>Aucun débit en ligne lors de la réservation.</strong>
+              Vous renseignez vos coordonnées, nous vous rappelons sous 24h
+              pour confirmer, et le paiement se fait <strong>sur place le jour
+              de la prise du véhicule</strong> par carte bancaire au nom du
+              locataire.
+            </div>
+          </details>
+
+          <details class="offres-faq__item">
+            <summary>
+              Que se passe-t-il si je dépasse la durée prévue ?
+              <span class="offres-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="offres-faq__body">
+              Prévenez l'agence — dans la mesure des disponibilités, nous
+              prolongeons la location au tarif initial. Sans accord
+              préalable, des <strong>frais de retard équivalents à 1,5× le
+              tarif journalier</strong> peuvent s'appliquer par jour de
+              dépassement.
+            </div>
+          </details>
+
+          <details class="offres-faq__item">
+            <summary>
+              La livraison est-elle disponible dans tous les secteurs ?
+              <span class="offres-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="offres-faq__body">
+              Oui, dans nos cinq secteurs (Clermont-Ferrand, Riom,
+              Vichy, Moulins, Montluçon), nous livrons dans un rayon de
+              <strong>20 km autour du point de retrait</strong>. Au-delà,
+              contactez-nous pour une livraison sur devis.
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSER -->
+    <section class="offres-closer" aria-labelledby="closer-title">
+      <div class="container">
+        <div class="offres-closer__inner" data-reveal>
+          <div class="offres-closer__eyebrow">Réservation</div>
+          <h2 class="offres-closer__title" id="closer-title">
+            Une formule choisie ?<br /><em>Réservez en deux minutes.</em>
+          </h2>
+          <p class="offres-closer__lede">
+            Paiement sur place dans le secteur choisi, assurance
+            tous risques incluse. Aucun débit en ligne — nous vous rappelons
+            sous 24h pour confirmer votre location.
+          </p>
+          <a href="index.html#hero" class="offres-closer__cta">
+            Démarrer ma réservation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="offres.html">Tarifs</a></li>
+              <li><a href="horaires.html">Secteurs</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+
+  <!-- ============================================================
+       FINAL MODAL — Réservation de formule tarifaire (Netlify Forms)
+       ============================================================ -->
+  <div class="final-modal" id="formula-modal" hidden>
+    <div class="final-modal__backdrop"></div>
+    <div class="final-modal__panel">
+
+      <button type="button" class="final-modal__close" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="final-modal__head">
+        <span class="offres-hero__eyebrow">Réservation</span>
+        <h2 class="offres-hero__title" style="margin-top:12px; font-size: clamp(24px, 3vw, 32px);">
+          Vos <em>coordonnées.</em>
+        </h2>
+        <p class="offres-hero__lede" style="margin-top:14px; font-size: 15px;">
+          Notre équipe locale vous contacte sous 24h pour confirmer votre réservation.
+        </p>
+        <div class="final-modal__formula" id="formula-modal-recap" hidden>
+          <span class="final-modal__formula-label">Formule</span>
+          <span class="final-modal__formula-value" id="formula-modal-name">Journée</span>
+          <span class="final-modal__formula-label" id="formula-modal-price">39 €</span>
+        </div>
+      </div>
+
+      <form class="final-form" id="formula-form" name="reservation-formule" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/merci.html">
+
+        <input type="hidden" name="form-name" value="reservation-formule" />
+        <p hidden><label>Ne pas remplir : <input name="bot-field" /></label></p>
+
+        <div class="final-form__field">
+          <label for="fm-name">Nom complet *</label>
+          <input id="fm-name" name="nom" type="text" required autocomplete="name" />
+        </div>
+
+        <div class="final-form__field">
+          <label for="fm-email">Email *</label>
+          <input id="fm-email" name="email" type="email" required autocomplete="email" />
+        </div>
+
+        <div class="final-form__field">
+          <label for="fm-phone">Téléphone *</label>
+          <input id="fm-phone" name="telephone" type="tel" required autocomplete="tel" />
+        </div>
+
+        <div class="final-form__field">
+          <label for="fm-message">Message (optionnel)</label>
+          <textarea id="fm-message" name="message" rows="3" placeholder="Dates souhaitées, secteur, véhicule…"></textarea>
+        </div>
+
+        <input type="hidden" name="formule"      id="fm-formule" />
+        <input type="hidden" name="prix_formule" id="fm-prix" />
+
+        <button type="submit" class="offre-chapter__cta final-form__submit">
+          Envoyer ma demande
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <p class="final-form__note">
+          En envoyant ce formulaire, vous acceptez d'être contacté par 100P Location pour finaliser votre réservation.
+        </p>
+      </form>
+
+      <div class="final-modal__success" id="formula-success" hidden>
+        <div class="final-modal__success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 style="font-family: var(--serif); font-weight: 400; font-size: 24px; margin-top: 16px;">Merci !</h3>
+        <p class="offres-hero__lede" style="margin-top: 14px;">
+          Nous avons bien reçu votre demande. Notre équipe locale vous recontacte sous 24h pour confirmer.
+        </p>
+        <button type="button" id="formula-close-success" style="margin-top: 24px; padding: 12px 22px; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; font-family: var(--sans); font-size: 14px; cursor: pointer;">Fermer</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* Sélection d'une formule → ouvre la modale */
+    function selectFormula(name, price) {
+      var modal      = document.getElementById('formula-modal');
+      var recapWrap  = document.getElementById('formula-modal-recap');
+      var nameEl     = document.getElementById('formula-modal-name');
+      var priceEl    = document.getElementById('formula-modal-price');
+      var formuleInp = document.getElementById('fm-formule');
+      var prixInp    = document.getElementById('fm-prix');
+
+      var unit = /^Journée/.test(name) ? '€ / jour'
+               : /^Semaine/.test(name) ? '€ / semaine'
+               : /^Mois/.test(name)    ? '€ / mois'
+               : '€';
+
+      if (nameEl)    nameEl.textContent  = name;
+      if (priceEl)   priceEl.textContent = price + ' ' + unit;
+      if (recapWrap) recapWrap.hidden    = false;
+      if (formuleInp) formuleInp.value   = name;
+      if (prixInp)    prixInp.value      = String(price);
+
+      if (modal) {
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    /* Gestion fermeture + envoi Netlify Forms (init au DOMContentLoaded) */
+    function initFormulaModal() {
+      var modal       = document.getElementById('formula-modal');
+      if (!modal) return;
+      var closeBtn    = modal.querySelector('.final-modal__close');
+      var backdrop    = modal.querySelector('.final-modal__backdrop');
+      var form        = document.getElementById('formula-form');
+      var successEl   = document.getElementById('formula-success');
+      var successBtn  = document.getElementById('formula-close-success');
+
+      function closeModal() {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      if (closeBtn)   closeBtn.addEventListener('click', closeModal);
+      if (backdrop)   backdrop.addEventListener('click', closeModal);
+      if (successBtn) successBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var formData = new FormData(form);
+          fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+          }).then(function (response) {
+            if (response.ok) {
+              form.hidden = true;
+              if (successEl) successEl.hidden = false;
+            } else {
+              alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
+            }
+          }).catch(function () {
+            alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
+          });
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFormulaModal);
+    } else {
+      initFormulaModal();
+    }
+  </script>
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

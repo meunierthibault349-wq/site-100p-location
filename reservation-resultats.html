@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Votre réservation — 100P Location</title>
+  <meta name="description" content="Personnalisez votre réservation 100P Location : choisissez votre véhicule, vos options et confirmez votre période de location." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+
+  <style>
+    /* ──────────────────────────────────────────────────────────────
+       CARDS VÉHICULE (.vcard) — partagées avec la page catalogue
+       ────────────────────────────────────────────────────────────── */
+    .vcard {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow .25s var(--ease), border-color .2s;
+      overflow: hidden;
+    }
+    .vcard:hover {
+      box-shadow: 0 2px 14px rgba(17,17,17,.04);
+      border-color: #DEDEDE;
+    }
+    .vcard__media {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 220px;
+      margin: -8px -8px 18px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .vcard__media img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: saturate(.85);
+      transition: transform .8s var(--ease);
+    }
+    .vcard:hover .vcard__media img { transform: scale(1.025); }
+    .vcard__head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 6px;
+    }
+    .vcard__brand {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .vcard__name { margin-bottom: 18px; }
+    .vcard__specs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: auto;
+    }
+    .vcard__spec { display: flex; flex-direction: column; gap: 2px; }
+    .vcard__spec + .vcard__spec { border-left: 1px solid var(--line); padding-left: 12px; }
+    .vcard__spec .lbl {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .vcard__spec .val {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -.01em;
+    }
+    .vcard__foot {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .vcard__price {
+      font-family: var(--serif);
+      font-size: 24px;
+      letter-spacing: -.01em;
+      color: var(--ink);
+    }
+    .vcard__price .unit {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-left: 4px;
+    }
+    @media (max-width: 480px) {
+      .vcard__foot { flex-direction: column; align-items: stretch; }
+    }
+
+    /* ──────────────────────────────────────────────────────────────
+       RÉSERVATION — page récapitulative (sélection + options + récap)
+       ────────────────────────────────────────────────────────────── */
+    .resa-section {
+      padding-block: clamp(32px, 5vw, 56px);
+    }
+    .resa-header-section { padding-bottom: 0; }
+
+    /* Wrapper véhicule + options — single column par défaut */
+    .resa-grid {
+      display: block;
+    }
+
+    /* Lien retour à la sélection */
+    .resa-back-wrap {
+      padding: 18px 0;
+    }
+    .resa-back {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0;
+      transition: color .2s;
+    }
+    .resa-back:hover { color: var(--ink); }
+    .resa-back svg { width: 16px; height: 16px; transition: transform .2s var(--ease); }
+    .resa-back:hover svg { transform: translateX(-3px); }
+
+    /* Mode pré-sélection : véhicule à gauche, options à droite */
+    @media (min-width: 901px) {
+      #resa-main.is-preselected .resa-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: clamp(24px, 4vw, 48px);
+        align-items: start;
+      }
+      #resa-main.is-preselected .resa-vehicle-section,
+      #resa-main.is-preselected .resa-options-section {
+        padding-block: clamp(24px, 4vw, 40px);
+      }
+      /* La card véhicule reste sticky pour rester visible pendant le choix d'options */
+      #resa-main.is-preselected .resa-vehicle-section {
+        position: sticky;
+        top: 96px;
+      }
+    }
+
+    /* Grille véhicules */
+    .resa-vehicles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    /* En mode pré-sélection, la grille n'a qu'une colonne (1 seul véhicule) */
+    #resa-main.is-preselected .resa-vehicles {
+      grid-template-columns: 1fr;
+    }
+
+    /* Cards véhicules cliquables */
+    .resa-vehicles .vcard {
+      cursor: pointer;
+      position: relative;
+      transition: border-color .2s, box-shadow .2s, transform .2s var(--ease);
+    }
+    .resa-vehicles .vcard:hover { transform: translateY(-2px); }
+    .resa-vehicles .vcard.is-selected {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 1px var(--ink);
+    }
+    .resa-vehicles .vcard.is-selected::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--ink);
+      z-index: 2;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 14px 14px;
+    }
+
+    /* Toggle Retrait/Livraison */
+    .resa-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .resa-toggle__tab {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      position: relative;
+      transition: border-color .2s, background .2s;
+    }
+    .resa-toggle__tab:hover { border-color: var(--ink-soft); }
+    .resa-toggle__tab.is-active {
+      border-color: var(--ink);
+      background: var(--surface);
+      box-shadow: inset 3px 0 0 var(--ink);
+    }
+    .resa-toggle__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--ink-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .resa-toggle__icon svg { width: 100%; height: 100%; }
+    .resa-toggle__tab.is-active .resa-toggle__icon { color: var(--ink); }
+    .resa-toggle__label {
+      display: block;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .resa-toggle__sub {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* Encart info livraison */
+    .resa-delivery-info {
+      display: flex;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--accent-soft);
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .resa-delivery-info[hidden] { display: none; }
+    .resa-delivery-info__icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .resa-delivery-info__icon svg { width: 100%; height: 100%; }
+    .resa-delivery-info__title {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 14px;
+      margin: 0 0 4px;
+      color: var(--ink);
+    }
+    .resa-delivery-info__text {
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    /* Bloc retrait sur place : intro + meetpoints + map (1 colonne, compact) */
+    .resa-pickup-info {
+      display: block;
+      margin-bottom: 20px;
+    }
+    .resa-pickup-info[hidden] { display: none; }
+    .resa-pickup-info__intro {
+      display: none;
+    }
+    .resa-pickup-info__title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px;
+      font-weight: 500;
+    }
+    .resa-pickup-points {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 0 12px;
+    }
+    .resa-pickup-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--sans);
+      transition: border-color .2s, background .2s;
+    }
+    .resa-pickup-point:hover { border-color: var(--ink-soft); }
+    .resa-pickup-point.is-active {
+      border-color: var(--ink);
+      background: var(--surface);
+      box-shadow: inset 2px 0 0 var(--ink);
+    }
+    @media (max-width: 600px) {
+      .resa-pickup-points { grid-template-columns: 1fr; }
+    }
+    .resa-pickup-point__dot {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--line);
+      background: var(--surface);
+      margin-top: 2px;
+      position: relative;
+      transition: border-color .2s, background .2s;
+    }
+    .resa-pickup-point.is-active .resa-pickup-point__dot {
+      border-color: var(--ink);
+      background: var(--ink);
+    }
+    .resa-pickup-point.is-active .resa-pickup-point__dot::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--surface);
+      transform: translate(-50%, -50%);
+    }
+    .resa-pickup-point__body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .resa-pickup-point__name {
+      font-weight: 600;
+      font-size: 13.5px;
+      color: var(--ink);
+      letter-spacing: -.005em;
+    }
+    .resa-pickup-point__addr {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+    .resa-pickup-map {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--bg);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .resa-pickup-map iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .resa-pickup-map__cta {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      background: var(--ink);
+      color: var(--surface);
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 12px rgba(0,0,0,.18);
+      z-index: 2;
+      transition: background .2s;
+    }
+    .resa-pickup-map__cta:hover { background: #2A2A2A; }
+    @media (max-width: 720px) {
+      .resa-pickup-info { grid-template-columns: 1fr; }
+      .resa-pickup-map { aspect-ratio: 16/10; min-height: 0; }
+    }
+
+    /* Liste d'options */
+    .resa-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .resa-option {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .resa-option:hover { border-color: var(--ink-soft); }
+    .resa-option:has(.resa-option__check:checked) {
+      border-color: var(--ink);
+      background: var(--surface);
+      box-shadow: inset 3px 0 0 var(--ink);
+    }
+    .resa-option__check {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--line);
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      transition: background .2s, border-color .2s;
+      margin: 0;
+    }
+    .resa-option__check:checked {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+    .resa-option__check:checked::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 7px;
+      width: 5px;
+      height: 11px;
+      border: solid var(--surface);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .resa-option__body {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .resa-option__icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      color: var(--ink-soft);
+    }
+    .resa-option__icon svg { width: 100%; height: 100%; }
+    .resa-option__title {
+      display: block;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .resa-option__desc {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-top: 2px;
+    }
+    .resa-option__price {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -.01em;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .resa-option__price span {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-left: 4px;
+    }
+
+    /* Récap final */
+    .resa-summary-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .resa-summary__title {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .resa-summary__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-soft);
+      gap: 16px;
+    }
+    .resa-summary__row[hidden] { display: none; }
+    .resa-summary__row + .resa-summary__row { border-top: 1px solid var(--line-soft); }
+    .resa-summary__row span:first-child { color: var(--muted); }
+    .resa-summary__row span:last-child { color: var(--ink); font-weight: 500; text-align: right; }
+    .resa-summary__row--option span:first-child { color: var(--ink-soft); }
+    .resa-summary__total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ink);
+    }
+    .resa-summary__total span:first-child {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .resa-summary__total span:last-child {
+      font-family: var(--serif);
+      font-size: 28px;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+    .resa-summary__cta {
+      width: 100%;
+      justify-content: center;
+      margin-top: 18px;
+      padding: 14px 24px;
+      font-size: 14.5px;
+    }
+    .resa-summary__note {
+      margin-top: 16px;
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .resa-summary__note .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      color: var(--muted-2);
+      margin-right: 6px;
+      vertical-align: -2px;
+    }
+    .resa-summary__note .info-icon svg { width: 100%; height: 100%; }
+
+    @media (max-width: 768px) {
+      .resa-toggle { grid-template-columns: 1fr; }
+      .resa-option { grid-template-columns: auto 1fr; }
+      .resa-option__price { grid-column: 2; padding-left: 36px; }
+      .resa-summary-card { padding: 24px; }
+      .resa-summary__total span:last-child { font-size: 28px; }
+    }
+
+    /* Mobile : la results-bar reste dans le flux, ne suit plus le scroll */
+    @media (max-width: 768px) {
+      .results-bar { position: static; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- BANDEAU RÉCAP DE LA RECHERCHE (sticky) -->
+    <div class="results-bar">
+      <div class="container results-bar__inner">
+
+        <div class="results-summary" id="rs">
+          <label class="results-summary__item is-editable bb-agency">
+            <span class="results-summary__label">Secteur</span>
+            <select class="results-summary__select" id="rs-lieu-select" name="lieu">
+              <option value="">Choisir votre secteur</option>
+              <option value="Clermont-Ferrand">Clermont-Ferrand</option>
+              <option value="Riom">Riom</option>
+              <option value="Vichy">Vichy</option>
+              <option value="Moulins">Moulins</option>
+              <option value="Montluçon">Montluçon</option>
+            </select>
+          </label>
+          <div class="results-summary__item is-editable bb-date-field" id="bb-depart-field" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false">
+            <span class="results-summary__label">Date de départ</span>
+            <span class="bb-date-display placeholder" id="bb-depart-display">Choisir une date</span>
+          </div>
+          <div class="results-summary__item is-editable bb-date-field" id="bb-retour-field" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false">
+            <span class="results-summary__label">Date de retour</span>
+            <span class="bb-date-display placeholder" id="bb-retour-display">Choisir une date</span>
+          </div>
+        </div>
+
+        <button class="results-bar__edit" type="button" onclick="updateSearch()" title="Mettre à jour la recherche">
+          Modifier
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN : sélection + options + récap -->
+    <main class="container" id="resa-main">
+
+      <!-- Lien retour à la sélection (visible si un véhicule est choisi) -->
+      <div class="resa-back-wrap" id="resa-back-wrap" hidden>
+        <button type="button" class="resa-back" id="resa-back-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5"/><path d="M11 5l-7 7 7 7"/>
+          </svg>
+          Retour à la sélection
+        </button>
+      </div>
+
+      <!-- Header : titre + lede (toujours pleine largeur) -->
+      <section class="resa-section resa-header-section" data-reveal>
+        <div class="s-head">
+          <div>
+            <span class="eyebrow" id="resa-eyebrow">Votre sélection</span>
+            <h1 class="display s-head__title" id="resa-title" style="margin-top:18px">
+              Personnalisez votre <em>réservation.</em>
+            </h1>
+          </div>
+          <p class="lede" id="resa-lede">
+            Finalisez votre location de voiture sans permis dans nos secteurs.
+          </p>
+        </div>
+      </section>
+
+      <!-- Wrapper : véhicule + options (2 colonnes si pré-sélection) -->
+      <div class="resa-grid">
+
+        <!-- Section : véhicule(s) -->
+        <section class="resa-section resa-vehicle-section" data-reveal>
+          <div class="resa-vehicles" id="resa-vehicles">
+            <!-- Cards injectées par JS -->
+          </div>
+        </section>
+
+        <!-- Section : Options (cachée tant qu'aucun véhicule n'est sélectionné) -->
+        <section class="resa-section resa-options-section" id="resa-options-section" hidden data-reveal>
+
+        <!-- Toggle Retrait / Livraison -->
+        <div class="resa-toggle" role="tablist">
+          <button class="resa-toggle__tab is-active" data-mode="agency" type="button">
+            <span class="resa-toggle__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18"/>
+                <path d="M5 21V9l7-5 7 5v12"/>
+                <path d="M10 21v-6h4v6"/>
+              </svg>
+            </span>
+            <div>
+              <span class="resa-toggle__label">Retrait sur place</span>
+              <span class="resa-toggle__sub">Inclus · sans frais</span>
+            </div>
+          </button>
+          <button class="resa-toggle__tab" data-mode="delivery" type="button">
+            <span class="resa-toggle__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 16V8a1 1 0 011-1h10v10H4a1 1 0 01-1-1z"/>
+                <path d="M14 9h4l3 4v3h-7"/>
+                <circle cx="7.5" cy="17.5" r="1.8"/>
+                <circle cx="17" cy="17.5" r="1.8"/>
+              </svg>
+            </span>
+            <div>
+              <span class="resa-toggle__label">Livraison à domicile</span>
+              <span class="resa-toggle__sub">+50 € · jusqu'à 20 km</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Encart retrait sur place : meetpoints + carte (visible si agency) -->
+        <div class="resa-pickup-info" id="resa-pickup-info" hidden>
+          <h3 class="resa-pickup-info__title">Point de retrait</h3>
+          <div class="resa-pickup-points" id="resa-pickup-points">
+            <!-- 2 meetpoints injectés en JS -->
+          </div>
+          <div class="resa-pickup-map">
+            <iframe id="resa-pickup-iframe" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Carte du point de retrait"></iframe>
+            <a id="resa-pickup-link" href="#" target="_blank" rel="noopener" class="resa-pickup-map__cta">
+              Ouvrir dans Maps
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;">
+                <path d="M7 17L17 7"/><path d="M8 7h9v9"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Encart info livraison (visible si delivery) -->
+        <div class="resa-delivery-info" id="resa-delivery-info" hidden>
+          <div class="resa-delivery-info__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 16V8a1 1 0 011-1h10v10H4a1 1 0 01-1-1z"/>
+              <path d="M14 9h4l3 4v3h-7"/>
+              <circle cx="7.5" cy="17.5" r="1.8"/>
+              <circle cx="17" cy="17.5" r="1.8"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="resa-delivery-info__title">Livraison à votre adresse</h3>
+            <p class="resa-delivery-info__text">
+              Nous livrons votre voiture sans permis directement chez vous, dans un rayon de <strong>20 km autour de notre secteur de <span id="resa-delivery-agency">Vichy</span></strong>. Frais de livraison : <strong>50 € fixe</strong> (aller-retour inclus).
+            </p>
+          </div>
+        </div>
+
+        <!-- Liste des options additionnelles -->
+        <div class="resa-options-list">
+
+          <label class="resa-option" data-option="conducteur-sup" data-price="5">
+            <input type="checkbox" class="resa-option__check" />
+            <div class="resa-option__body">
+              <span class="resa-option__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 010 7.75"/>
+                </svg>
+              </span>
+              <div>
+                <span class="resa-option__title">Conducteur supplémentaire</span>
+                <span class="resa-option__desc">Une seconde personne autorisée à conduire le véhicule.</span>
+              </div>
+            </div>
+            <span class="resa-option__price">+5 €<span>/ jour</span></span>
+          </label>
+
+        </div>
+
+      </section>
+
+      </div><!-- /.resa-grid -->
+
+      <!-- Section : Récap tarif + bouton Continuer -->
+      <section class="resa-section resa-summary-section" id="resa-summary-section" hidden data-reveal>
+
+        <div class="resa-summary-card">
+
+          <h3 class="resa-summary__title">Récapitulatif</h3>
+
+          <div class="resa-summary__row">
+            <span>Véhicule</span>
+            <span id="summary-vehicle">—</span>
+          </div>
+
+          <div class="resa-summary__row">
+            <span>Période</span>
+            <span id="summary-period">—</span>
+          </div>
+
+          <div class="resa-summary__row" id="summary-location-row">
+            <span id="summary-location-label">Location · 1 jour</span>
+            <span id="summary-location-price">0,00 €</span>
+          </div>
+
+          <div class="resa-summary__row resa-summary__row--option" id="summary-delivery-row" hidden>
+            <span>Livraison à domicile</span>
+            <span>50,00 €</span>
+          </div>
+
+          <div class="resa-summary__row resa-summary__row--option" id="summary-conducteur-row" hidden>
+            <span id="summary-conducteur-label">Conducteur supplémentaire</span>
+            <span id="summary-conducteur-price">0,00 €</span>
+          </div>
+
+          <div class="resa-summary__total">
+            <span>Total</span>
+            <span id="summary-total">0,00 €</span>
+          </div>
+
+          <button type="button" class="btn btn--primary resa-summary__cta" id="resa-continue-btn">
+            Continuer ma réservation
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </button>
+
+          <p class="resa-summary__note">
+            <span class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+            </span>
+            Vos coordonnées seront renseignées à l'étape suivante. Paiement sur place, au secteur, aucun débit en ligne.
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="index.html#how">Réservation</a></li>
+              <li><a href="index.html#pricing">Tarifs</a></li>
+              <li><a href="index.html#about">À propos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <script>
+    /* Override le libellé du mobile header sur cette page : "Modifier"
+       (au lieu de "Réserver maintenant" injecté par site.js). */
+    document.addEventListener('DOMContentLoaded', function () {
+      var labelEl = document.querySelector('.results-bar .bb-mobile-header__label');
+      if (labelEl) labelEl.textContent = 'Modifier';
+    });
+
+    /* ── Pré-remplit la results-bar à partir de sessionStorage ───── */
+    document.addEventListener('DOMContentLoaded', function () {
+      var data = {};
+      try { data = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+
+      var agenceSelect = document.getElementById('rs-lieu-select');
+      if (agenceSelect && data.agence) agenceSelect.value = data.agence;
+
+      var MONTHS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+      function fmt(date, time) {
+        if (!date) return '';
+        var parts = date.split('-');
+        if (parts.length !== 3) return date + (time ? ' · ' + time : '');
+        var d = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+        return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + (time ? ' · ' + time : '');
+      }
+
+      var depDisplay = document.getElementById('bb-depart-display');
+      var retDisplay = document.getElementById('bb-retour-display');
+      if (depDisplay && data.date_depart) {
+        depDisplay.textContent = fmt(data.date_depart, data.heure_depart);
+        depDisplay.classList.remove('placeholder');
+      }
+      if (retDisplay && data.date_retour) {
+        retDisplay.textContent = fmt(data.date_retour, data.heure_retour);
+        retDisplay.classList.remove('placeholder');
+      }
+    });
+
+    /* ── "Modifier" : capture les valeurs courantes et recharge ── */
+    function updateSearch() {
+      var agenceSelect = document.getElementById('rs-lieu-select');
+
+      var existing = {};
+      try { existing = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+
+      function isoToDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.getFullYear() + '-' +
+               String(d.getMonth() + 1).padStart(2, '0') + '-' +
+               String(d.getDate()).padStart(2, '0');
+      }
+
+      var calDepartDate = isoToDate(sessionStorage.getItem('bb_depart_date'));
+      var calDepartTime = sessionStorage.getItem('bb_depart_time') || '';
+      var calRetourDate = isoToDate(sessionStorage.getItem('bb_retour_date'));
+      var calRetourTime = sessionStorage.getItem('bb_retour_time') || '';
+
+      var newData = {
+        agence:       (agenceSelect && agenceSelect.value) || existing.agence || '',
+        date_depart:  calDepartDate || existing.date_depart || '',
+        heure_depart: calDepartTime || existing.heure_depart || '',
+        date_retour:  calRetourDate || existing.date_retour || '',
+        heure_retour: calRetourTime || existing.heure_retour || ''
+      };
+
+      sessionStorage.setItem('bookingData', JSON.stringify(newData));
+      location.reload();
+    }
+
+    /* ──────────────────────────────────────────────────────────────
+       Logique principale : véhicule, options, récap
+       ────────────────────────────────────────────────────────────── */
+    (function () {
+
+      var VEHICLES = [
+        { name: 'Aixam City Sport', brand: 'Aixam · Diesel', price: 49, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.png' }
+      ];
+
+      var grid           = document.getElementById('resa-vehicles');
+      var optionsSection = document.getElementById('resa-options-section');
+      var summarySection = document.getElementById('resa-summary-section');
+      var eyebrow        = document.getElementById('resa-eyebrow');
+      var title          = document.getElementById('resa-title');
+      var lede           = document.getElementById('resa-lede');
+      var deliveryAgency = document.getElementById('resa-delivery-agency');
+
+      // ── Secteurs : 2 meetpoints par ville ──
+      var PRESENCES = {
+        'Vichy': [
+          { name: 'Centre-ville',   addr: '12 avenue de la Victoire, 03200 Vichy', q: '12+avenue+de+la+Victoire,+03200+Vichy' },
+          { name: 'Gare SNCF',      addr: '53 place de la Gare, 03200 Vichy',      q: '53+place+de+la+Gare,+03200+Vichy' }
+        ],
+        'Clermont-Ferrand': [
+          { name: 'Place de Jaude', addr: 'Place de Jaude, 63000 Clermont-Ferrand',     q: 'Place+de+Jaude,+63000+Clermont-Ferrand' },
+          { name: 'Gare SNCF',      addr: '43 avenue de l\'Union Soviétique, 63000 Clermont-Ferrand', q: '43+avenue+de+l%27Union+Sovietique,+63000+Clermont-Ferrand' }
+        ],
+        'Riom': [
+          { name: 'Centre-ville',   addr: 'Place de la Fédération, 63200 Riom', q: 'Place+de+la+Federation,+63200+Riom' },
+          { name: 'Gare SNCF',      addr: '1 boulevard Desaix, 63200 Riom',     q: '1+boulevard+Desaix,+63200+Riom' }
+        ],
+        'Moulins': [
+          { name: "Place d'Allier", addr: "Place d'Allier, 03000 Moulins",      q: 'Place+d%27Allier,+03000+Moulins' },
+          { name: 'Gare SNCF',      addr: '21 place de la Gare, 03000 Moulins', q: '21+place+de+la+Gare,+03000+Moulins' }
+        ],
+        'Montluçon': [
+          { name: 'Centre-ville',   addr: 'Place Jean Jaurès, 03100 Montluçon', q: 'Place+Jean+Jaures,+03100+Montlucon' },
+          { name: 'Gare SNCF',      addr: '17 avenue Marx Dormoy, 03100 Montluçon', q: '17+avenue+Marx+Dormoy,+03100+Montlucon' }
+        ]
+      };
+      var pickupInfo     = document.getElementById('resa-pickup-info');
+      var pickupPointsEl = document.getElementById('resa-pickup-points');
+      var pickupIframe   = document.getElementById('resa-pickup-iframe');
+      var pickupLink     = document.getElementById('resa-pickup-link');
+
+      var pickupState = {
+        city: '',
+        idx:  parseInt(sessionStorage.getItem('pickupPointIdx') || '0', 10) || 0
+      };
+
+      function applyPickupPoint(city, idx) {
+        var points = PRESENCES[city] || PRESENCES['Vichy'];
+        var i = Math.min(Math.max(idx | 0, 0), points.length - 1);
+        var p = points[i];
+        pickupState.city = city || 'Vichy';
+        pickupState.idx  = i;
+
+        if (pickupIframe) pickupIframe.src = 'https://www.google.com/maps?q=' + p.q + '&output=embed';
+        if (pickupLink)   pickupLink.href  = 'https://www.google.com/maps/search/?api=1&query=' + p.q;
+
+        // Met à jour l'état actif des boutons et persiste pour les pages suivantes
+        if (pickupPointsEl) {
+          pickupPointsEl.querySelectorAll('.resa-pickup-point').forEach(function (btn) {
+            btn.classList.toggle('is-active', parseInt(btn.dataset.idx, 10) === i);
+          });
+        }
+        sessionStorage.setItem('pickupPointIdx',     String(i));
+        sessionStorage.setItem('pickupPointName',    p.name);
+        sessionStorage.setItem('pickupPointAddress', p.addr);
+      }
+
+      function updatePickupMap(city) {
+        if (!pickupInfo) return;
+        var points = PRESENCES[city] || PRESENCES['Vichy'];
+
+        // Render des 2 meetpoints
+        if (pickupPointsEl) {
+          pickupPointsEl.textContent = '';
+          points.forEach(function (p, idx) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'resa-pickup-point';
+            btn.dataset.idx = String(idx);
+
+            var dot = document.createElement('span');
+            dot.className = 'resa-pickup-point__dot';
+            btn.appendChild(dot);
+
+            var body = document.createElement('span');
+            body.className = 'resa-pickup-point__body';
+            var name = document.createElement('span');
+            name.className = 'resa-pickup-point__name';
+            name.textContent = p.name;
+            var addr = document.createElement('span');
+            addr.className = 'resa-pickup-point__addr';
+            addr.textContent = p.addr;
+            body.appendChild(name);
+            body.appendChild(addr);
+            btn.appendChild(body);
+
+            btn.addEventListener('click', function () {
+              applyPickupPoint(city, idx);
+            });
+            pickupPointsEl.appendChild(btn);
+          });
+        }
+
+        // Sélection initiale : on garde l'index courant si on est sur la même ville, sinon on reset à 0
+        var startIdx = (pickupState.city === city) ? pickupState.idx : 0;
+        applyPickupPoint(city, startIdx);
+      }
+
+      var mainEl  = document.getElementById('resa-main');
+      var backWrap = document.getElementById('resa-back-wrap');
+      var backBtn  = document.getElementById('resa-back-btn');
+
+      // Le véhicule peut venir : (1) du booking bar de index.html (preselectedVehicle)
+      // ou (2) du popup modal de vehicules.html (selectedVehicle). On lit les deux.
+      var state = {
+        vehicle: sessionStorage.getItem('preselectedVehicle')
+                 || sessionStorage.getItem('selectedVehicle')
+                 || '',
+        mode:    sessionStorage.getItem('pickupMode') || 'agency',
+        options: { conducteur: false }
+      };
+
+      function getBookingData() {
+        try { return JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) { return {}; }
+      }
+
+      function getDays() {
+        var d = getBookingData();
+        if (!d.date_depart || !d.date_retour) return 1;
+        var start = new Date(d.date_depart + 'T' + (d.heure_depart || '00:00'));
+        var end   = new Date(d.date_retour + 'T' + (d.heure_retour || '00:00'));
+        var diff = end - start;
+        if (isNaN(diff)) return 1;
+        return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+      }
+
+      function getVehicle(name) {
+        return VEHICLES.find(function (v) { return v.name === name; });
+      }
+
+      function formatPeriod() {
+        var d = getBookingData();
+        if (!d.date_depart || !d.date_retour) return '—';
+        var MONTHS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+        function f(iso, t) {
+          var p = iso.split('-');
+          if (p.length !== 3) return iso;
+          var dt = new Date(+p[0], +p[1] - 1, +p[2]);
+          return dt.getDate() + ' ' + MONTHS[dt.getMonth()] + (t ? ' · ' + t : '');
+        }
+        return f(d.date_depart, d.heure_depart) + ' → ' + f(d.date_retour, d.heure_retour);
+      }
+
+      function buildPlaceholderSvg() {
+        var SVG_NS = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('width', '62%');
+        svg.setAttribute('viewBox', '0 0 90 50');
+        svg.setAttribute('fill', 'none');
+        function shape(tag, attrs) {
+          var el = document.createElementNS(SVG_NS, tag);
+          Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+          svg.appendChild(el);
+        }
+        shape('rect',   { x:'5',  y:'28', width:'80', height:'12', rx:'2.5', stroke:'#2F3437', 'stroke-width':'1.2' });
+        shape('path',   { d:'M16 28 L21 8 L65 8 L74 28', stroke:'#2F3437', 'stroke-width':'1.2' });
+        shape('circle', { cx:'24', cy:'40', r:'7.5', stroke:'#2F3437', 'stroke-width':'1.2' });
+        shape('circle', { cx:'66', cy:'40', r:'7.5', stroke:'#2F3437', 'stroke-width':'1.2' });
+        return svg;
+      }
+
+      function setTitleSelected() {
+        title.textContent = '';
+        title.appendChild(document.createTextNode('Personnalisez votre '));
+        var em = document.createElement('em');
+        em.textContent = 'réservation.';
+        title.appendChild(em);
+      }
+      function setTitleChoose() {
+        title.textContent = '';
+        title.appendChild(document.createTextNode('Choisissez votre '));
+        var em = document.createElement('em');
+        em.textContent = 'véhicule.';
+        title.appendChild(em);
+      }
+
+      function renderVehiclesGrid() {
+        grid.textContent = '';
+
+        // Dès qu'un véhicule est choisi (pré-sélectionné OU sélectionné sur cette page),
+        // on n'affiche que celui-ci. Sinon, on affiche les 3 cards pour choisir.
+        var list = state.vehicle
+          ? VEHICLES.filter(function (v) { return v.name === state.vehicle; })
+          : VEHICLES;
+
+        list.forEach(function (v) {
+          var selected = state.vehicle === v.name;
+
+          var card = document.createElement('article');
+          card.className = 'vcard' + (selected ? ' is-selected' : '');
+          card.dataset.vehicle = v.name;
+
+          // Media
+          var media = document.createElement('div');
+          media.className = 'vcard__media';
+          if (v.img) {
+            var img = document.createElement('img');
+            img.src = v.img;
+            img.alt = v.name;
+            img.loading = 'lazy';
+            media.appendChild(img);
+          } else {
+            media.appendChild(buildPlaceholderSvg());
+          }
+          card.appendChild(media);
+
+          // Head
+          var head = document.createElement('div');
+          head.className = 'vcard__head';
+          var brand = document.createElement('span');
+          brand.className = 'vcard__brand';
+          brand.textContent = v.brand;
+          head.appendChild(brand);
+          card.appendChild(head);
+
+          // Name
+          var name = document.createElement('h3');
+          name.className = 'display vcard__name';
+          name.textContent = v.name;
+          card.appendChild(name);
+
+          // Specs
+          var specs = document.createElement('div');
+          specs.className = 'vcard__specs';
+          [
+            ['Vitesse',   v.speed],
+            ['Consommation', v.autonomy],
+            ['Places',    String(v.seats)]
+          ].forEach(function (pair) {
+            var s = document.createElement('div');
+            s.className = 'vcard__spec';
+            var lbl = document.createElement('span');
+            lbl.className = 'lbl';
+            lbl.textContent = pair[0];
+            var val = document.createElement('span');
+            val.className = 'val';
+            val.textContent = pair[1];
+            s.appendChild(lbl);
+            s.appendChild(val);
+            specs.appendChild(s);
+          });
+          card.appendChild(specs);
+
+          // Foot
+          var foot = document.createElement('div');
+          foot.className = 'vcard__foot';
+          var price = document.createElement('div');
+          price.className = 'vcard__price';
+          price.appendChild(document.createTextNode(v.price + ' €'));
+          var unit = document.createElement('span');
+          unit.className = 'unit';
+          unit.textContent = '/ jour';
+          price.appendChild(unit);
+          var ulink = document.createElement('span');
+          ulink.className = 'ulink';
+          ulink.textContent = selected ? 'Sélectionné ✓' : 'Choisir →';
+          foot.appendChild(price);
+          foot.appendChild(ulink);
+          card.appendChild(foot);
+
+          grid.appendChild(card);
+        });
+
+        grid.querySelectorAll('.vcard').forEach(function (card) {
+          card.addEventListener('click', function () {
+            state.vehicle = card.dataset.vehicle;
+            sessionStorage.setItem('preselectedVehicle', state.vehicle);
+            renderVehiclesGrid();
+            updateUI();
+            if (optionsSection && !optionsSection.hidden) {
+              var rect = optionsSection.getBoundingClientRect();
+              if (rect.top < 0 || rect.top > window.innerHeight * 0.6) {
+                optionsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          });
+        });
+      }
+
+      function updateHeader() {
+        var d = getBookingData();
+        if (deliveryAgency) deliveryAgency.textContent = d.agence || 'Vichy';
+
+        // Synchronise la carte du retrait sur place avec l'agence active
+        updatePickupMap(d.agence || 'Vichy');
+
+        if (state.vehicle) {
+          eyebrow.textContent = 'Étape 2 / 2';
+          setTitleSelected();
+          lede.textContent = 'Finalisez votre location de voiture sans permis dans notre secteur de ' + (d.agence || 'votre secteur') + '.';
+        } else {
+          eyebrow.textContent = 'Étape 1 / 2';
+          setTitleChoose();
+          lede.textContent = VEHICLES.length + ' voitures sans permis disponibles à la location à ' + (d.agence || 'votre secteur') + ' pour votre période.';
+        }
+      }
+
+      function updateSummary() {
+        var v = getVehicle(state.vehicle);
+        if (!v) return;
+
+        var days = getDays();
+        var locationTotal = v.price * days;
+        var deliveryFee   = state.mode === 'delivery' ? 50 : 0;
+        var conducteurFee = state.options.conducteur ? 5 * days : 0;
+        var total = locationTotal + deliveryFee + conducteurFee;
+
+        document.getElementById('summary-vehicle').textContent        = v.name;
+        document.getElementById('summary-period').textContent         = formatPeriod();
+        document.getElementById('summary-location-label').textContent = 'Location · ' + days + ' jour' + (days > 1 ? 's' : '');
+        document.getElementById('summary-location-price').textContent = locationTotal.toFixed(2).replace('.', ',') + ' €';
+        document.getElementById('summary-delivery-row').hidden        = deliveryFee === 0;
+        var condRow = document.getElementById('summary-conducteur-row');
+        condRow.hidden = conducteurFee === 0;
+        document.getElementById('summary-conducteur-label').textContent = 'Conducteur supplémentaire · ' + days + ' jour' + (days > 1 ? 's' : '');
+        document.getElementById('summary-conducteur-price').textContent = conducteurFee.toFixed(2).replace('.', ',') + ' €';
+        document.getElementById('summary-total').textContent            = total.toFixed(2).replace('.', ',') + ' €';
+
+        sessionStorage.setItem('selectedVehicle',      v.name);
+        sessionStorage.setItem('selectedVehiclePrice', String(v.price));
+        sessionStorage.setItem('pickupMode',           state.mode);
+        sessionStorage.setItem('deliveryFee',          String(deliveryFee));
+        sessionStorage.setItem('conducteurFee',        String(conducteurFee));
+        sessionStorage.setItem('finalTotal',           String(total));
+      }
+
+      function updateUI() {
+        updateHeader();
+        // Layout 2-col activé dès qu'un véhicule est choisi
+        if (mainEl) mainEl.classList.toggle('is-preselected', !!state.vehicle);
+        if (backWrap) backWrap.hidden = !state.vehicle;
+        if (state.vehicle) {
+          optionsSection.hidden = false;
+          summarySection.hidden = false;
+          updateSummary();
+        } else {
+          optionsSection.hidden = true;
+          summarySection.hidden = true;
+        }
+      }
+
+      // Retour à la sélection : reset du véhicule + re-render des 3 cards
+      if (backBtn) {
+        backBtn.addEventListener('click', function () {
+          state.vehicle = '';
+          sessionStorage.removeItem('preselectedVehicle');
+          renderVehiclesGrid();
+          updateUI();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // Toggle Retrait / Livraison
+      function applyMode(mode) {
+        document.querySelectorAll('.resa-toggle__tab').forEach(function (t) {
+          t.classList.toggle('is-active', t.dataset.mode === mode);
+        });
+        state.mode = mode;
+        var pi = document.getElementById('resa-pickup-info');
+        var di = document.getElementById('resa-delivery-info');
+        if (pi) pi.hidden = (mode !== 'agency');
+        if (di) di.hidden = (mode !== 'delivery');
+        if (mode === 'agency') {
+          var d = getBookingData();
+          updatePickupMap(d.agence || 'Vichy');
+        }
+        updateSummary();
+      }
+
+      document.querySelectorAll('.resa-toggle__tab').forEach(function (tab) {
+        tab.addEventListener('click', function () { applyMode(tab.dataset.mode); });
+      });
+
+      // État initial du toggle au chargement (agency par défaut → carte visible)
+      applyMode(state.mode === 'delivery' ? 'delivery' : 'agency');
+
+      // Option : conducteur supplémentaire
+      var conducteurCheck = document.querySelector('.resa-option[data-option="conducteur-sup"] .resa-option__check');
+      if (conducteurCheck) {
+        conducteurCheck.addEventListener('change', function (e) {
+          state.options.conducteur = e.target.checked;
+          updateSummary();
+        });
+      }
+
+      // Bouton Continuer → reservation.html
+      var continueBtn = document.getElementById('resa-continue-btn');
+      if (continueBtn) {
+        continueBtn.addEventListener('click', function () {
+          window.location.href = 'reservation.html';
+        });
+      }
+
+      // Init
+      renderVehiclesGrid();
+      updateUI();
+    })();
+  </script>
+  <!-- Bouton Contact flottant -->
+  <a href="contact.html" class="chatbot-toggle" aria-label="Nous contacter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="chatbot-toggle__label">Contact</span>
+  </a>
+</body>
+</html>

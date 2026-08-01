@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — 100P Location</title>
+  <meta name="description" content="Contactez 100P Location à Vichy ou Clermont-Ferrand. Réponse sous 24h ouvrées par formulaire, ou par téléphone." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <div class="container topnav__inner">
+        <a href="index.html" class="topnav__logo" aria-label="100P Location — Accueil">
+          100P<span class="accent-dot" aria-hidden="true"></span>
+          <span class="small">Location</span>
+        </a>
+        <nav class="topnav__links" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="vehicules.html">Nos véhicules</a>
+          <a href="offres.html">Nos offres</a>
+          <a href="horaires.html">Nos secteurs</a>
+        </nav>
+        <div class="topnav__right">
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner">
+          <span class="eyebrow">Secteurs · Auvergne</span>
+          <h1 class="page-hero__title" data-reveal style="--i:1">
+            Parlez à votre<br /><em>loueur local.</em>
+          </h1>
+          <p class="page-hero__sub" data-reveal style="--i:2">
+            Une question sur votre location, une voiture sans permis à
+            réserver — l'équipe Auvergnate vous répond.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- SECTION CONTACT -->
+    <section class="section section--tight" id="contact" aria-label="Formulaire de contact">
+      <div class="container">
+
+        <div class="contact">
+
+          <!-- Formulaire -->
+          <div class="form-card" data-reveal>
+            <h2 class="display form__title">Envoyez-nous un message</h2>
+            <p class="form__sub">
+              Réponse garantie sous 24h.
+            </p>
+
+            <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+
+              <input type="hidden" name="form-name" value="contact" />
+              <p hidden><label>Ne pas remplir : <input name="bot-field" /></label></p>
+
+              <div class="form__row">
+                <div class="form__group">
+                  <label class="form__label" for="prenom">Prénom</label>
+                  <input class="form__input" type="text" id="prenom" name="prenom" placeholder="Votre prénom" required />
+                </div>
+                <div class="form__group">
+                  <label class="form__label" for="nom">Nom</label>
+                  <input class="form__input" type="text" id="nom" name="nom" placeholder="Votre nom" required />
+                </div>
+              </div>
+
+              <div class="form__row">
+                <div class="form__group">
+                  <label class="form__label" for="email">Email</label>
+                  <input class="form__input" type="email" id="email" name="email" placeholder="vous@exemple.fr" required />
+                </div>
+                <div class="form__group">
+                  <label class="form__label" for="telephone">Téléphone</label>
+                  <input class="form__input" type="tel" id="telephone" name="telephone" placeholder="06 00 00 00 00" />
+                </div>
+              </div>
+
+              <div class="form__row form__row--full">
+                <div class="form__group">
+                  <label class="form__label" for="objet">Objet de votre demande</label>
+                  <select class="form__select" id="objet" name="objet">
+                    <option value="">Choisissez un objet…</option>
+                    <option value="reservation">Demande de réservation</option>
+                    <option value="tarif">Renseignement tarifaire</option>
+                    <option value="assurance">Question sur l'assurance</option>
+                    <option value="sinistre">Déclaration de sinistre</option>
+                    <option value="autre">Autre demande</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form__row form__row--full">
+                <div class="form__group">
+                  <label class="form__label" for="message">Message</label>
+                  <textarea class="form__textarea" id="message" name="message" placeholder="Décrivez votre demande…" required></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="form__submit">Envoyer le message</button>
+              <p class="form__note">
+                Vos données sont traitées dans le strict respect de notre
+                politique de confidentialité.
+              </p>
+            </form>
+
+            <div class="form__confirm" id="contact-confirm" aria-live="polite">
+              <p class="form__confirm-title">Message envoyé</p>
+              <p class="form__confirm-text">
+                Merci pour votre message. Notre équipe vous répondra dans
+                les plus brefs délais, et au plus tard sous 24h ouvrées.
+              </p>
+            </div>
+          </div>
+
+          <!-- Infos secteurs -->
+          <aside class="contact__side">
+
+            <article class="agency" data-reveal style="--i:1">
+              <div class="agency__head">
+                <span class="agency__label">Nos secteurs</span>
+                <span class="tag tag--green">Joignables 7j/7</span>
+              </div>
+              <h3 class="agency__name">5 villes en Auvergne</h3>
+
+              <div class="agency__detail">
+                <span class="agency__detail-icon">
+                  <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <p class="agency__detail-text">
+                  <strong>Villes desservies</strong>
+                  Clermont-Ferrand · Riom · Vichy<br />Moulins · Montluçon
+                </p>
+              </div>
+
+              <div class="agency__detail">
+                <span class="agency__detail-icon">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.01 2C0 .84.96 0 2 0h2.09a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L5.45 7.52A16 16 0 0016.48 18.55l.89-.89a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                </span>
+                <p class="agency__detail-text">
+                  <strong>Téléphone unique</strong>
+                  04 15 45 83 06
+                </p>
+              </div>
+
+              <div class="agency__detail">
+                <span class="agency__detail-icon">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+                <p class="agency__detail-text">
+                  <strong>Disponibilité</strong>
+                  Du lundi au dimanche de 9h à 18h
+                </p>
+              </div>
+            </article>
+
+            <div class="contact__pulse" data-reveal style="--i:3">
+              <span class="contact__pulse-dot" aria-hidden="true"></span>
+              <p class="contact__pulse-text">
+                Réponse garantie sous <strong>24h</strong> pour
+                toute demande par formulaire.
+              </p>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="container">
+        <div class="foot__top">
+          <div class="foot__brand">
+            <a href="index.html" class="topnav__logo">100P<span class="accent-dot"></span><span class="small">Location</span></a>
+            <p>
+              Loueur indépendant de voitures sans permis en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
+            </p>
+            <div class="foot__contact">
+              <span>04 15 45 83 06</span>
+              <span>contact@100p-location.fr</span>
+              <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
+            </div>
+          </div>
+
+          <div class="foot__col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="vehicules.html">Véhicules</a></li>
+              <li><a href="index.html#how">Réservation</a></li>
+              <li><a href="index.html#pricing">Tarifs</a></li>
+              <li><a href="index.html#about">À propos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Secteurs</h4>
+            <ul>
+              <li><a href="horaires.html">Clermont-Ferrand</a></li>
+              <li><a href="horaires.html">Riom</a></li>
+              <li><a href="horaires.html">Vichy</a></li>
+              <li><a href="horaires.html">Moulins</a></li>
+              <li><a href="horaires.html">Montluçon</a></li>
+              <li><a href="horaires.html">Horaires</a></li>
+            </ul>
+          </div>
+
+          <div class="foot__col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="conditions.html">Conditions</a></li>
+              <li><a href="assurance.html">Assurance</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>© 2026 100P Location · Tous droits réservés</span>
+          <div class="foot__legal">
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="confidentialite.html">Confidentialité</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="assets/site.js"></script>
+  <script>
+    /* ── Booking bar : stocker les valeurs au clic du bouton ──── */
+    (function () {
+      var bar = document.getElementById('booking-bar');
+      if (!bar) return;
+      var btn = bar.querySelector('.bb-cta');
+      if (!btn) return;
+
+      function fmtDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var dd = String(d.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + dd;
+      }
+
+      btn.addEventListener('click', function () {
+        var data = {
+          agence:       sessionStorage.getItem('bb_lieu') || '',
+          date_depart:  fmtDate(sessionStorage.getItem('bb_depart_date')),
+          heure_depart: sessionStorage.getItem('bb_depart_time') || '',
+          date_retour:  fmtDate(sessionStorage.getItem('bb_retour_date')),
+          heure_retour: sessionStorage.getItem('bb_retour_time') || ''
+        };
+        sessionStorage.setItem('bookingData', JSON.stringify(data));
+      }, true);
+    })();
+
+    /* ── Pré-remplit le formulaire de contact UNIQUEMENT si on
+       arrive depuis reservation.html OU le choix d'une formule
+       (flag fromReservation) ──────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', function () {
+      if (sessionStorage.getItem('fromReservation') !== 'true') return;
+
+      var data = {};
+      try { data = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+      var vehicle      = sessionStorage.getItem('selectedVehicle');
+      var formula      = sessionStorage.getItem('selectedFormula');
+      var formulaPrice = sessionStorage.getItem('selectedFormulaPrice');
+
+      var messageField = document.querySelector('textarea[name="message"], textarea#message, .contact-form textarea');
+      if (!messageField) return;
+
+      var preFill = 'Bonjour,\n\n';
+
+      if (formula) {
+        // Cas formule choisie depuis la section "Tarifs" d'index.html
+        preFill += 'Je souhaite souscrire à la formule "' + formula + '" (' + formulaPrice + ' €).\n\n';
+        if (data.agence) preFill += 'Secteur souhaité : ' + data.agence + '\n';
+      } else if (vehicle) {
+        // Cas réservation classique d'un véhicule depuis reservation.html
+        preFill += 'Je souhaite réserver :\n';
+        preFill += '- Véhicule : ' + vehicle + '\n';
+        if (data.agence)      preFill += '- Secteur : ' + data.agence + '\n';
+        if (data.date_depart) preFill += '- Départ : ' + data.date_depart + ' à ' + (data.heure_depart || '') + '\n';
+        if (data.date_retour) preFill += '- Retour : ' + data.date_retour + ' à ' + (data.heure_retour || '') + '\n';
+      }
+
+      preFill += '\nMerci de me confirmer la disponibilité.\n';
+      messageField.value = preFill;
+
+      // Consomme les flags : valables une seule fois
+      sessionStorage.removeItem('fromReservation');
+      sessionStorage.removeItem('selectedFormula');
+      sessionStorage.removeItem('selectedFormulaPrice');
+    });
+  </script>
+
+  <script>
+    (function () {
+      var form = document.getElementById('contact-form');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData(form);
+
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString()
+        }).then(function (response) {
+          if (response.ok) {
+            form.style.display = 'none';
+            var confirm = document.getElementById('contact-confirm');
+            if (confirm) confirm.style.display = 'block';
+          } else {
+            alert('Une erreur est survenue. Veuillez réessayer ou nous contacter au 04 15 45 83 06.');
+          }
+        }).catch(function () {
+          alert('Une erreur est survenue. Veuillez réessayer ou nous contacter au 04 15 45 83 06.');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

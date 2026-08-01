@@ -762,11 +762,11 @@
           </button>
         </div>
 
-        <!-- Encart retrait sur place : meetpoints + carte (visible si agency) -->
+        <!-- Encart retrait sur place : point unique (marché couvert de Vichy) + carte -->
         <div class="resa-pickup-info" id="resa-pickup-info" hidden>
           <h3 class="resa-pickup-info__title">Point de retrait</h3>
           <div class="resa-pickup-points" id="resa-pickup-points">
-            <!-- 2 meetpoints injectés en JS -->
+            <!-- Point de retrait unique injecté en JS -->
           </div>
           <div class="resa-pickup-map">
             <iframe id="resa-pickup-iframe" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Carte du point de retrait"></iframe>
@@ -1025,7 +1025,7 @@
       // Tarifs journaliers — grille officielle client du 17/07/2026.
       // Source de verite : offres.html. Toute modification doit y etre repercutee.
       var VEHICLES = [
-        { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.png' },
+        { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.jpg' },
         { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.jpg' },
         { name: 'Fiat Topolino',    brand: 'Fiat · Électrique',   gamme: 'electrique', price: 22, speed: '45 km/h', autonomy: 'Électrique · ville', seats: 2, img: 'topolino3.png' }
       ];
@@ -1038,28 +1038,13 @@
       var lede           = document.getElementById('resa-lede');
       var deliveryAgency = document.getElementById('resa-delivery-agency');
 
-      // ── Secteurs : 2 meetpoints par ville ──
-      var PRESENCES = {
-        'Vichy': [
-          { name: 'Centre-ville',   addr: '12 avenue de la Victoire, 03200 Vichy', q: '12+avenue+de+la+Victoire,+03200+Vichy' },
-          { name: 'Gare SNCF',      addr: '53 place de la Gare, 03200 Vichy',      q: '53+place+de+la+Gare,+03200+Vichy' }
-        ],
-        'Clermont-Ferrand': [
-          { name: 'Place de Jaude', addr: 'Place de Jaude, 63000 Clermont-Ferrand',     q: 'Place+de+Jaude,+63000+Clermont-Ferrand' },
-          { name: 'Gare SNCF',      addr: '43 avenue de l\'Union Soviétique, 63000 Clermont-Ferrand', q: '43+avenue+de+l%27Union+Sovietique,+63000+Clermont-Ferrand' }
-        ],
-        'Riom': [
-          { name: 'Centre-ville',   addr: 'Place de la Fédération, 63200 Riom', q: 'Place+de+la+Federation,+63200+Riom' },
-          { name: 'Gare SNCF',      addr: '1 boulevard Desaix, 63200 Riom',     q: '1+boulevard+Desaix,+63200+Riom' }
-        ],
-        'Moulins': [
-          { name: "Place d'Allier", addr: "Place d'Allier, 03000 Moulins",      q: 'Place+d%27Allier,+03000+Moulins' },
-          { name: 'Gare SNCF',      addr: '21 place de la Gare, 03000 Moulins', q: '21+place+de+la+Gare,+03000+Moulins' }
-        ],
-        'Montluçon': [
-          { name: 'Centre-ville',   addr: 'Place Jean Jaurès, 03100 Montluçon', q: 'Place+Jean+Jaures,+03100+Montlucon' },
-          { name: 'Gare SNCF',      addr: '17 avenue Marx Dormoy, 03100 Montluçon', q: '17+avenue+Marx+Dormoy,+03100+Montlucon' }
-        ]
+      // ── Retrait : point UNIQUE, le marché couvert de Vichy (décision client 01/08/2026).
+      // Quel que soit le secteur choisi, la voiture se récupère ici ;
+      // ailleurs, c'est la livraison à domicile (en option).
+      var PICKUP_POINT = {
+        name: 'Le Grand Marché — marché couvert de Vichy',
+        addr: 'Marché couvert, 03200 Vichy',
+        q: 'Grand+March%C3%A9+Vichy'
       };
       var pickupInfo     = document.getElementById('resa-pickup-info');
       var pickupPointsEl = document.getElementById('resa-pickup-points');
@@ -1071,66 +1056,53 @@
         idx:  parseInt(sessionStorage.getItem('pickupPointIdx') || '0', 10) || 0
       };
 
-      function applyPickupPoint(city, idx) {
-        var points = PRESENCES[city] || PRESENCES['Vichy'];
-        var i = Math.min(Math.max(idx | 0, 0), points.length - 1);
-        var p = points[i];
-        pickupState.city = city || 'Vichy';
-        pickupState.idx  = i;
+      function applyPickupPoint() {
+        var p = PICKUP_POINT;
+        pickupState.city = 'Vichy';
+        pickupState.idx  = 0;
 
         if (pickupIframe) pickupIframe.src = 'https://www.google.com/maps?q=' + p.q + '&output=embed';
         if (pickupLink)   pickupLink.href  = 'https://www.google.com/maps/search/?api=1&query=' + p.q;
 
-        // Met à jour l'état actif des boutons et persiste pour les pages suivantes
-        if (pickupPointsEl) {
-          pickupPointsEl.querySelectorAll('.resa-pickup-point').forEach(function (btn) {
-            btn.classList.toggle('is-active', parseInt(btn.dataset.idx, 10) === i);
-          });
-        }
-        sessionStorage.setItem('pickupPointIdx',     String(i));
+        sessionStorage.setItem('pickupPointIdx',     '0');
         sessionStorage.setItem('pickupPointName',    p.name);
         sessionStorage.setItem('pickupPointAddress', p.addr);
       }
 
       function updatePickupMap(city) {
         if (!pickupInfo) return;
-        var points = PRESENCES[city] || PRESENCES['Vichy'];
 
-        // Render des 2 meetpoints
+        // Point de retrait unique : une seule carte, toujours active
         if (pickupPointsEl) {
           pickupPointsEl.textContent = '';
-          points.forEach(function (p, idx) {
-            var btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'resa-pickup-point';
-            btn.dataset.idx = String(idx);
+          var p = PICKUP_POINT;
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'resa-pickup-point is-active';
+          btn.dataset.idx = '0';
 
-            var dot = document.createElement('span');
-            dot.className = 'resa-pickup-point__dot';
-            btn.appendChild(dot);
+          var dot = document.createElement('span');
+          dot.className = 'resa-pickup-point__dot';
+          btn.appendChild(dot);
 
-            var body = document.createElement('span');
-            body.className = 'resa-pickup-point__body';
-            var name = document.createElement('span');
-            name.className = 'resa-pickup-point__name';
-            name.textContent = p.name;
-            var addr = document.createElement('span');
-            addr.className = 'resa-pickup-point__addr';
-            addr.textContent = p.addr;
-            body.appendChild(name);
-            body.appendChild(addr);
-            btn.appendChild(body);
+          var body = document.createElement('span');
+          body.className = 'resa-pickup-point__body';
+          var name = document.createElement('span');
+          name.className = 'resa-pickup-point__name';
+          name.textContent = p.name;
+          var addr = document.createElement('span');
+          addr.className = 'resa-pickup-point__addr';
+          addr.textContent = p.addr;
+          body.appendChild(name);
+          body.appendChild(addr);
+          btn.appendChild(body);
 
-            btn.addEventListener('click', function () {
-              applyPickupPoint(city, idx);
-            });
-            pickupPointsEl.appendChild(btn);
-          });
+          btn.addEventListener('click', applyPickupPoint);
+          pickupPointsEl.appendChild(btn);
         }
 
-        // Sélection initiale : on garde l'index courant si on est sur la même ville, sinon on reset à 0
-        var startIdx = (pickupState.city === city) ? pickupState.idx : 0;
-        applyPickupPoint(city, startIdx);
+        // Point unique : toujours le marché couvert de Vichy
+        applyPickupPoint();
       }
 
       var mainEl  = document.getElementById('resa-main');

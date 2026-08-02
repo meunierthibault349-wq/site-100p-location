@@ -14,7 +14,7 @@
 (function () {
   'use strict';
 
-  var GA4_ID        = '';   // ex: 'G-XXXXXXXXXX'
+  var GA4_ID        = 'G-BNJ9TQJEHV';
   var META_PIXEL_ID = '';   // ex: '1234567890'
 
   if (!GA4_ID && !META_PIXEL_ID) return;
@@ -24,6 +24,10 @@
   try { choice = localStorage.getItem(KEY); } catch (e) {}
 
   /* ── Chargement des traceurs (apres consentement uniquement) ─── */
+  /* La page merci.html = demande de reservation aboutie : comptee
+     comme conversion (generate_lead cote GA4, Lead cote Meta). */
+  var IS_LEAD_PAGE = /\/merci(\.html)?$/.test(location.pathname);
+
   function loadTrackers() {
     if (GA4_ID) {
       var s = document.createElement('script');
@@ -34,6 +38,7 @@
       window.gtag = function () { dataLayer.push(arguments); };
       gtag('js', new Date());
       gtag('config', GA4_ID, { anonymize_ip: true });
+      if (IS_LEAD_PAGE) gtag('event', 'generate_lead');
     }
     if (META_PIXEL_ID) {
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -43,6 +48,7 @@
       document,'script','https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', META_PIXEL_ID);
       fbq('track', 'PageView');
+      if (IS_LEAD_PAGE) fbq('track', 'Lead');
     }
   }
 

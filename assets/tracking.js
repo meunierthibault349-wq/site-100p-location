@@ -15,7 +15,7 @@
   'use strict';
 
   var GA4_ID        = 'G-BNJ9TQJEHV';
-  var META_PIXEL_ID = '';   // ex: '1234567890'
+  var META_PIXEL_ID = '1442777971245421';   // dataset "100P Location — Site web" (portefeuille Meta Lumi)
 
   if (!GA4_ID && !META_PIXEL_ID) return;
 

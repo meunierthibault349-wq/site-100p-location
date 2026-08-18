@@ -680,9 +680,9 @@
       if (conducteurFee > 0) {
         insertTariffRow('tarif-conducteur-row', 'Conducteur supplémentaire · ' + days + ' jour' + (days > 1 ? 's' : ''), conducteurFee);
       }
-      // Livraison : le tarif depend de la distance (160 EUR sous 100 km, 300 EUR sous
-      // 200 km, devis au-dela, offerte des 4 mois). Il n'est jamais affiche en ligne :
-      // la ligne annonce un chiffrage a la confirmation, sans montant.
+      // Livraison : tarif variable selon la distance, jamais affiche en ligne,
+      // communique a la confirmation. Offerte des 4 mois de location.
+      // La ligne annonce un chiffrage a la confirmation, sans montant.
       if (deliveryFee > 0) {
         insertTariffRow('tarif-delivery-row', 'Livraison à domicile', deliveryFee);
       } else if (pickupMode === 'delivery') {

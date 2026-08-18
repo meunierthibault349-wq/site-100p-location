@@ -3489,7 +3489,7 @@
             <div class="plan__formulas" aria-label="Gammes disponibles">
               <span>Thermique</span>
               <span>Électrique</span>
-              <span>Km illimité en option</span>
+              <span>Km illimité en option (City Sport)</span>
             </div>
             <p class="plan__desc">La location longue durée pour un usage quotidien — choisissez votre gamme et votre kilométrage.</p>
             <ul class="plan__list">
@@ -4983,8 +4983,8 @@
         sessionStorage.setItem('pickupMode',           state.mode);
 
         // Frais de livraison + total (lus par reservation.html pour le récap tarif)
-        // La livraison n'est jamais chiffree en ligne (tarif variable selon la distance :
-        // 160 EUR sous 100 km, 300 EUR sous 200 km, devis au-dela, offerte des 4 mois).
+        // La livraison n'est jamais chiffree en ligne : tarif variable selon la distance,
+        // communique a la confirmation, offerte des 4 mois de location.
         // Elle est donc a 0 dans le total affiche, et annoncee comme chiffree a la confirmation.
         var deliveryFee = 0;
         var start = new Date(state.dateDepart + 'T' + (state.heureDepart || '00:00'));

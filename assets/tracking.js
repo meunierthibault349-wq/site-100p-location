@@ -17,6 +17,19 @@
   var GA4_ID        = 'G-BNJ9TQJEHV';
   var META_PIXEL_ID = '1442777971245421';   // dataset "100P Location — Site web" (portefeuille Meta Lumi)
 
+  /* ── Conversion pour les formulaires envoyes en AJAX ────────────
+     Les 4 formulaires du site sont interceptes en JavaScript et affichent
+     leur confirmation sur place : la redirection vers /merci n'a JAMAIS lieu,
+     donc le generate_lead declenche plus bas sur IS_LEAD_PAGE ne partait pas.
+     Chaque formulaire appelle cette fonction dans sa branche succes.
+     Elle ne fait rien si le visiteur a refuse les cookies (gtag/fbq absents),
+     ce qui respecte le consentement. */
+  window.trackLead = function (formName) {
+    var nom = formName || 'inconnu';
+    try { if (window.gtag) window.gtag('event', 'generate_lead', { form_name: nom }); } catch (e) {}
+    try { if (window.fbq)  window.fbq('track', 'Lead', { content_name: nom }); } catch (e) {}
+  };
+
   if (!GA4_ID && !META_PIXEL_ID) return;
 
   var KEY = '100p-consent';           // 'granted' | 'denied'

@@ -809,6 +809,7 @@
           body: new URLSearchParams(formData).toString()
         }).then(function (response) {
           if (response.ok) {
+            if (window.trackLead) window.trackLead('reservation-finale');
             form.hidden = true;
             successBlock.hidden = false;
             sessionStorage.removeItem('bookingData');

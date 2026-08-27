@@ -1392,6 +1392,7 @@
             body: new URLSearchParams(formData).toString()
           }).then(function (response) {
             if (response.ok) {
+              if (window.trackLead) window.trackLead('reservation-formule');
               form.hidden = true;
               if (successEl) successEl.hidden = false;
             } else {

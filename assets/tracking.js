@@ -115,6 +115,54 @@
 
     document.body.appendChild(box);
 
+    /* Ancre en haut, le bandeau ne bloquait plus le champ de date mais il
+       recouvrait l'en-tete et coupait le titre : au premier chargement le
+       visiteur ne voyait ni le logo, ni le menu, ni le debut de l'accroche
+       (releve du 28/08/2026, iPhone 390x844). On DECALE donc la page de la
+       hauteur du bandeau au lieu de la recouvrir. L'en-tete etant en
+       position sticky, il faut aussi repousser son point d'accroche, sinon
+       il repasse sous le bandeau des le premier defilement. */
+    var decale = null;
+    function decaler() {
+      if (!matchMedia('(max-width: 600px)').matches) return;
+      /* Mesurer le BAS reel du bandeau, pas sa hauteur supposee : le texte
+         se recompose quand la police de la page finit de charger, et un
+         calcul fait trop tot laissait l'en-tete passer dessous de 8px
+         (constate au test du 28/08). L'observateur ci-dessous rejoue le
+         calcul a chaque changement de hauteur. */
+      var h = box.getBoundingClientRect().bottom + 12;
+      document.documentElement.style.setProperty('--bandeau-h', h + 'px');
+      if (!decale) {
+        decale = document.createElement('style');
+        // !important necessaire : index.html impose .topnav{top:0 !important}
+        // dans ses styles en ligne, une regle normale ne passerait pas.
+        decale.textContent =
+          '@media(max-width:600px){' +
+          'body{padding-top:var(--bandeau-h) !important}' +
+          '.topnav{top:var(--bandeau-h) !important}}';
+        document.head.appendChild(decale);
+      }
+    }
+    var observateur = null;
+    function retablirDecalage() {
+      if (observateur) { observateur.disconnect(); observateur = null; }
+      if (decale) { decale.remove(); decale = null; }
+      document.documentElement.style.removeProperty('--bandeau-h');
+    }
+    decaler();
+    addEventListener('resize', decaler);
+    if (window.ResizeObserver) {
+      observateur = new ResizeObserver(decaler);
+      observateur.observe(box);
+    } else {
+      // Repli pour les navigateurs sans ResizeObserver : on recalcule une fois
+      // les polices chargees, moment ou la hauteur du bandeau se fige.
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(decaler);
+      setTimeout(decaler, 1200);
+    }
+    box.querySelector('.c-ok').addEventListener('click', retablirDecalage);
+    box.querySelector('.c-no').addEventListener('click', retablirDecalage);
+
     /* Sur mobile le bandeau (~184 px) tombait exactement sur le moteur de
        reservation : un tap sur « Date de depart » atterrissait sur le bouton
        « Continuer sans accepter ». Un padding sur le body ne resout rien, le

@@ -3186,3 +3186,29 @@ img, svg, video { max-width: 100%; height: auto; }
   margin: 6px 0 0;
   min-height: 14px;
 }
+
+/* ──────────────────────────────────────────────────────────────
+   ZOOM SAFARI SUR LES CHAMPS
+   Sur iOS, Safari zoome automatiquement des qu'un champ de saisie
+   passe sous 16px, puis ne dezoome pas : le visiteur doit pincer
+   entre chaque champ. Releve le 28/08/2026 en production : AUCUN
+   champ du site n'atteignait le seuil (13,5px sur secteur et gamme,
+   14px sur les dates, 15px sur les coordonnees), sur les 8 pages.
+   La regle vise les petits ecrans et les appareils tactiles. Condition
+   volontairement large : l'emulation de (pointer: coarse) n'est pas
+   fiable partout, un simple seuil de largeur l'est.
+   ────────────────────────────────────────────────────────────── */
+@media (max-width: 900px), (pointer: coarse) {
+  /* !important assume : les champs recoivent leur taille par des selecteurs
+     de classe plus specifiques (.final-form__field input, .bb-select ...).
+     Une regle d'element seule ne passe pas, et le seuil des 16px est une
+     contrainte d'utilisabilite, pas une preference de style. */
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* Le numero et l'adresse du pied de page sont devenus des liens le
+   28/08/2026 : sur 8 pages auditees, 7 n'offraient AUCUN moyen d'appeler
+   en un geste alors que 90 % du trafic est mobile. Ils gardent volontairement
+   l'apparence du texte qu'ils remplacent (a { color: inherit } plus haut),
+   il leur faut donc au moins une zone tactile utilisable. */
+.foot__contact a { display: inline-block; padding: 5px 0; }

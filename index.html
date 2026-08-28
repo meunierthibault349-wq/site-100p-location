@@ -1627,6 +1627,7 @@
     .foot__brand .topnav__logo { width: 210px; height: 56px; }
     .foot__brand p { color: var(--muted); font-size: 14px; max-width: 38ch; margin-top: 16px; }
     .foot__contact { margin-top: 18px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+    .foot__contact a { display: inline-block; padding: 5px 0; }
     .foot__col h4 {
       font-family: var(--mono);
       font-size: 11px;
@@ -3789,8 +3790,8 @@
               Loueur indépendant de voitures sans permis dans l'Allier et en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
             </p>
             <div class="foot__contact">
-              <span>04 15 45 83 06</span>
-              <span>contact@100p-location.fr</span>
+              <a href="tel:0415458306">04 15 45 83 06</a>
+              <a href="mailto:contact@100p-location.fr">contact@100p-location.fr</a>
               <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
             </div>
           </div>
@@ -4606,6 +4607,19 @@
     }
     @media (max-width: 980px) {
       .scroll-dots { display: none; }
+    }
+  </style>
+
+  <!-- Zoom Safari : iOS grossit la page des qu'un champ passe sous 16px, et
+       ne dezoome pas. Cette page ne charge pas assets/site.css, la regle y
+       est donc repetee. Voir le meme bloc en fin de site.css. -->
+  <style>
+    @media (max-width: 900px), (pointer: coarse) {
+      /* !important assume : les champs recoivent leur taille par des
+         selecteurs de classe plus specifiques. Une regle d'element seule
+         ne passe pas, et le seuil des 16px est une contrainte
+         d'utilisabilite, pas une preference de style. */
+      input, select, textarea { font-size: 16px !important; }
     }
   </style>
 

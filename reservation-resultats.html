@@ -125,8 +125,33 @@
       text-transform: uppercase;
       margin-left: 4px;
     }
+    /* Bouton de passage a l'etape suivante. Remplace un simple texte gris de
+       26px qui ne ressemblait pas a un bouton, au point exact ou le parcours
+       perd 84 % des visiteurs (audit mobile du 28/08/2026). */
+    .vcard__cta {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -.005em;
+      color: #FFFFFF;
+      background: var(--accent);
+      border: 0;
+      border-radius: 999px;
+      min-height: 48px;
+      padding: 12px 22px;
+      cursor: pointer;
+      transition: background .25s var(--ease);
+    }
+    .vcard__cta:hover { background: var(--accent-2); }
+    .vcard__cta.is-selected {
+      background: var(--pastel-green);
+      color: var(--pastel-green-tx);
+      box-shadow: inset 0 0 0 1px currentColor;
+    }
     @media (max-width: 480px) {
       .vcard__foot { flex-direction: column; align-items: stretch; }
+      /* Le prix d'abord, le bouton en pleine largeur dessous. */
+      .vcard__cta { width: 100%; }
     }
 
     /* ──────────────────────────────────────────────────────────────
@@ -894,8 +919,8 @@
               Loueur indépendant de voitures sans permis dans l'Allier et en Auvergne, accessible dès 14 ans. Assurance incluse, équipe disponible 7j/7.
             </p>
             <div class="foot__contact">
-              <span>04 15 45 83 06</span>
-              <span>contact@100p-location.fr</span>
+              <a href="tel:0415458306">04 15 45 83 06</a>
+              <a href="mailto:contact@100p-location.fr">contact@100p-location.fr</a>
               <span>Clermont-Ferrand · Riom · Vichy · Moulins · Montluçon</span>
             </div>
           </div>
@@ -1265,9 +1290,19 @@
           unit.className = 'unit';
           unit.textContent = '/ jour';
           price.appendChild(unit);
-          var ulink = document.createElement('span');
-          ulink.className = 'ulink';
-          ulink.textContent = selected ? 'Sélectionné ✓' : 'Choisir →';
+          // Le passage a l'etape suivante etait un <span class="ulink"> de
+          // 26px, gris, sans fond ni bordure : rien ne le distinguait d'une
+          // legende, alors que c'est ici que le parcours perd 84 % des
+          // visiteurs. Vrai bouton, pleine largeur, 48px de haut. Le clic sur
+          // toute la carte est conserve, ce bouton ne fait que le rendre
+          // visible (d'ou aria-hidden et tabindex -1 : la carte porte deja
+          // l'action pour le clavier et les lecteurs d'ecran).
+          var ulink = document.createElement('button');
+          ulink.type = 'button';
+          ulink.className = 'vcard__cta' + (selected ? ' is-selected' : '');
+          ulink.textContent = selected ? 'Sélectionné ✓' : 'Choisir ce véhicule';
+          ulink.tabIndex = -1;
+          ulink.setAttribute('aria-hidden', 'true');
           foot.appendChild(price);
           foot.appendChild(ulink);
           card.appendChild(foot);

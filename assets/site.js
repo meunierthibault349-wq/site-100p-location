@@ -326,14 +326,33 @@
           updateDisplay(id);
         });
       });
+
+      // Le contenu vient de changer, donc la hauteur aussi : selectionner un
+      // jour ajoute 20 creneaux horaires (+288px mesures), et un mois sur
+      // 6 lignes est plus haut qu'un mois sur 5. Sans ce recalcul, le bas du
+      // panneau sort de la fenetre et, en position:fixed, devient
+      // definitivement inatteignable.
+      positionCal(id);
     }
 
     function positionCal(id) {
       var field = document.getElementById('bb-' + id + '-field');
       var cal   = document.getElementById('bb-cal-' + id);
       if (!field || !cal) return;
+      // Fenetre etroite OU basse : la CSS prend la main, feuille ancree en bas.
+      // Condition identique a celle de la feuille dans la CSS.
+      if (window.matchMedia('(max-width: 600px), (max-height: 560px)').matches) return;
+
       var rect = field.getBoundingClientRect();
-      cal.style.top  = (rect.bottom + 8) + 'px';
+      // Borne a la hauteur reellement affichable : au-dela, max-height ecrete le
+      // panneau et raisonner sur offsetHeight fausserait le calcul de place.
+      var h    = Math.min(cal.offsetHeight || 360, window.innerHeight - 24);
+      var sous = window.innerHeight - rect.bottom - 8;   // place disponible dessous
+      // Pas la place dessous mais de la place dessus : on ouvre vers le haut.
+      var top  = (sous < h && rect.top > h + 8) ? rect.top - h - 8 : rect.bottom + 8;
+      // Et dans tous les cas on garde le panneau a l'interieur de l'ecran.
+      top = Math.max(8, Math.min(top, window.innerHeight - h - 8));
+      cal.style.top  = top + 'px';
       cal.style.left = Math.min(rect.left, window.innerWidth - 320 - 16) + 'px';
     }
 
@@ -352,8 +371,11 @@
       var field = document.getElementById('bb-' + id + '-field');
       var cal   = document.getElementById('bb-cal-' + id);
       renderCal(id);
-      positionCal(id);
+      // Ouvrir d'abord : tant que le panneau est en display:none, sa hauteur
+      // vaut 0 et le positionnement ne peut pas savoir s'il tient a l'ecran.
+      // Aucun scintillement, le navigateur ne peint pas entre deux instructions.
       cal.classList.add('is-open');
+      positionCal(id);
       field.classList.add('is-open');
       field.setAttribute('aria-expanded', 'true');
       openId = id;

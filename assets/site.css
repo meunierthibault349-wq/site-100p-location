@@ -555,6 +555,15 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   padding: 18px;
   width: 320px;
   display: none;
+  /* Plafond et defilement SANS CONDITION DE LARGEUR : le defaut est une
+     affaire de hauteur. Un portable 1366x768 n'offre que ~657px utiles et
+     un telephone en paysage 375px. Le panneau etant en position:fixed, ce
+     qui deborde du bas est definitivement inatteignable : aucun defilement
+     de page ne le ramene. Mesure du 28/08 : apres selection d'un jour la
+     copie site.js ajoute 20 creneaux et passe de 406 a 694px de haut. */
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .bb-cal-dropdown.is-open { display: block; }
 .bb-cal-header {
@@ -575,7 +584,12 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
-  padding: 6px 10px;
+  /* Les fleches de mois faisaient 27x30. */
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   color: var(--ink-soft);
   font-size: 16px;
@@ -603,7 +617,12 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   font-family: var(--sans);
   font-size: 13.5px;
   text-align: center;
-  padding: 8px 0;
+  /* 44px : les cases faisaient 45x38, sous le seuil confortable au doigt,
+     sur l'element le plus manipule du parcours (audit du 28/08/2026). */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   cursor: pointer;
   transition: background .15s, color .15s;
@@ -619,6 +638,39 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   font-weight: 500;
 }
 .bb-cal-day.empty { cursor: default; }
+
+/* ──────────────────────────────────────────────────────────────
+   CALENDRIER SUR MOBILE : FEUILLE ANCREE EN BAS
+   Le panneau s'ouvrait toujours vers le bas depuis le champ
+   (top = rect.bottom + 8), sans jamais verifier qu'il restait de la
+   place. Sur un ecran utile de 664px, il s'etendait jusqu'a 732px :
+   les dernieres lignes du mois tombaient sous le bord de l'ecran.
+   Or en fin de mois ce sont les SEULS jours encore selectionnables.
+   Releve du 28/08/2026 : jours 28 a 31 entre 628 et 707px, aucun
+   entierement visible, le visiteur ne voyait que des jours grises.
+   Sous 600px le panneau devient donc une feuille pleine largeur
+   ancree en bas, qui tient toujours dans l'ecran.
+   Le !important tient tete aux styles inline poses par positionCal :
+   ainsi la correction s'applique meme si un ancien JS est en cache.
+   ────────────────────────────────────────────────────────────── */
+/* La feuille se declenche aussi sur une fenetre BASSE, pas seulement etroite :
+   sinon le telephone en paysage (667x375) reste sur l'ancien comportement,
+   celui-la meme qu'on corrige. La condition doit rester identique mot pour
+   mot au matchMedia de positionCal, sans quoi la CSS ancre en bas pendant
+   que le JS positionne ailleurs. */
+@media (max-width: 600px), (max-height: 560px) {
+  .bb-cal-dropdown {
+    width: auto;
+    max-height: 78vh;
+  }
+  .bb-cal-dropdown.is-open {
+    top: auto !important;
+    left: 12px !important;
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
 .bb-cal-sep {
   height: 1px;
   background: var(--line);
@@ -642,6 +694,8 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   font-family: var(--mono);
   font-size: 12px;
   text-align: center;
+  /* Les creneaux horaires faisaient 36px de haut. */
+  min-height: 44px;
   padding: 7px 2px;
   border-radius: 4px;
   border: 1px solid var(--line);

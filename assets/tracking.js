@@ -82,7 +82,10 @@
       'padding:10px 18px;font:inherit;font-weight:600}' +
       '#consent-100p .c-ok{background:#E8640A;color:#fff}' +
       '#consent-100p .c-no{background:transparent;color:#d6d3d1;' +
-      'border:1px solid rgba(255,255,255,.25)}';
+      'border:1px solid rgba(255,255,255,.25)}' +
+      /* Mobile : en haut, pour ne pas recouvrir le moteur de reservation. */
+      '@media(max-width:600px){#consent-100p{top:12px;bottom:auto;padding:16px 18px;font-size:13px}' +
+      '#consent-100p p{margin:0 0 12px}}';
     var style = document.createElement('style');
     style.textContent = css;
     document.head.appendChild(style);
@@ -111,6 +114,19 @@
     });
 
     document.body.appendChild(box);
+
+    /* Sur mobile le bandeau (~184 px) tombait exactement sur le moteur de
+       reservation : un tap sur « Date de depart » atterrissait sur le bouton
+       « Continuer sans accepter ». Un padding sur le body ne resout rien, le
+       moteur est en milieu de page et ne bouge pas. Le bandeau est donc
+       ancre EN HAUT sous 600 px (regle CSS ci-dessus), ou il ne recouvre que
+       l'en-tete. On masque aussi le bouton de chat flottant, qui occupe la
+       meme bande basse. */
+    var chat = document.querySelector('.chatbot-toggle');
+    if (chat) chat.style.visibility = 'hidden';
+    function retablir() { if (chat) chat.style.visibility = ''; }
+    box.querySelector('.c-ok').addEventListener('click', retablir);
+    box.querySelector('.c-no').addEventListener('click', retablir);
   }
 
   if (document.readyState === 'loading') {

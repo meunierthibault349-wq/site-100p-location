@@ -188,17 +188,12 @@
     window.addEventListener('load', measure, { once: true });
   }
 
-  /* Contact form (page contact.html) ──────────────────────────── */
-  var form = document.getElementById('contact-form');
-  var confirmEl = document.getElementById('contact-confirm');
-  if (form && confirmEl) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      // Pretend submission OK — show confirm
-      form.style.display = 'none';
-      confirmEl.classList.add('is-on');
-    });
-  }
+  /* Contact form (page contact.html) ──────────────────────────────
+     Le vrai envoi est gere par le script en fin de contact.html : il poste
+     vers Netlify et n'affiche la confirmation qu'apres reponse du serveur.
+     Un second gestionnaire vivait ici, reliquat de maquette, qui simulait le
+     succes AVANT toute reponse : il affichait « Message envoye » meme quand
+     l'envoi echouait, et se doublait au vrai gestionnaire. Retire le 28/08/2026. */
 
   /* Booking bar : custom calendar dropdown (date + heure) ─────── */
   (function () {

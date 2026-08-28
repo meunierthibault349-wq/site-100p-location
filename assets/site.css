@@ -241,7 +241,7 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   display: inline-block;
   width: 158px;
   height: 42px;
-  background-image: url('../logo.png');
+  background-image: url('../logo.webp');
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;

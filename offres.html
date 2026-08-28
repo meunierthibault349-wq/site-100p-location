@@ -751,6 +751,7 @@
 
   <!-- Mesure d'audience (chargee apres consentement uniquement) -->
   <script src="assets/tracking.js" defer></script>
+  <script src="assets/forms.js" defer></script>
 
   <!-- Donnees structurees : FAQ tarifs -->
   <script type="application/ld+json">
@@ -1386,6 +1387,10 @@
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           var formData = new FormData(form);
+
+          // Verrou anti double-envoi : sans lui, un second tap pendant l'envoi
+          // cree une demande en double (jusqu'a 8 copies vues en spam Netlify).
+          if (window.formGuard && !window.formGuard.verrouiller(form)) return;
           fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1396,9 +1401,11 @@
               form.hidden = true;
               if (successEl) successEl.hidden = false;
             } else {
+              if (window.formGuard) window.formGuard.deverrouiller(form);
               alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
             }
           }).catch(function () {
+            if (window.formGuard) window.formGuard.deverrouiller(form);
             alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
           });
         });

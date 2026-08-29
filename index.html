@@ -548,6 +548,19 @@
       z-index: 998;
     }
 
+    /* Message du moteur de reservation : dit ce qui manque quand Continuer
+       ne peut pas aboutir. Un bouton muet est un cul-de-sac. */
+    .bb-message {
+      display: none;
+      margin: 0;
+      padding: 0 18px 16px;
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.45;
+      color: #A8331F;
+    }
+    .bb-message.is-visible { display: block; }
+
     .bb-wrap {
       display: flex;
       align-items: stretch;
@@ -823,8 +836,9 @@
       box-shadow: 0 12px 40px rgba(17,17,17,.1);
       padding: 8px;
       min-width: 240px;
-      max-height: 320px;
+      max-height: min(320px, calc(100vh - 24px));
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       display: none;
     }
     .bb-options-dropdown.is-open { display: block; }
@@ -989,6 +1003,24 @@
         left: 12px !important;
         right: 12px;
         bottom: 12px;
+      }
+      /* Meme traitement pour les listes Secteur et Gamme : ancrees en bas de
+         l ecran plutot que positionnees sous le champ, qui les faisait sortir
+         de la fenetre quand la barre etait basse dans la page. */
+      .bb-options-dropdown {
+        max-height: 60vh;
+      }
+      .bb-options-dropdown.is-open {
+        top: auto !important;
+        left: 12px !important;
+        right: 12px;
+        bottom: 12px;
+        min-width: 0 !important;
+      }
+      .bb-options-dropdown__item {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
       }
     }
     .bb-cal-sep {
@@ -4323,8 +4355,22 @@
 
         // 4) Position dynamique sous le label
         function positionDropdown() {
+          // Sous 600px de large ou 560px de haut, la CSS ancre la liste en bas
+          // de l'ecran. Toute position calculee ici serait soit ignoree, soit
+          // pire : c'est elle qui poussait la liste hors de la fenetre.
+          if (window.matchMedia('(max-width: 600px), (max-height: 560px)').matches) {
+            dropdown.style.top = '';
+            dropdown.style.left = '';
+            dropdown.style.minWidth = '';
+            return;
+          }
           var rect = label.getBoundingClientRect();
-          dropdown.style.top  = (rect.bottom + 8) + 'px';
+          var h    = Math.min(dropdown.offsetHeight || 320, window.innerHeight - 24);
+          var sous = window.innerHeight - rect.bottom - 8;
+          // Pas la place dessous mais la place dessus : on replie vers le haut
+          var top  = (sous < h && rect.top > h + 8) ? rect.top - h - 8 : rect.bottom + 8;
+          top = Math.max(8, Math.min(top, window.innerHeight - h - 8));
+          dropdown.style.top  = top + 'px';
           dropdown.style.left = Math.min(rect.left, window.innerWidth - dropdown.offsetWidth - 16) + 'px';
           dropdown.style.minWidth = rect.width + 'px';
         }
@@ -4475,11 +4521,18 @@
 
       // Validation : tous les champs doivent être remplis
       if (!agence || !dateDepart || !dateRetour) {
-        if (!agence && agenceSelect) {
-          flashEmpty(agenceSelect.closest('.bb-agency, .bb-place, .bb-field'));
-        }
-        if (!dateDepart) flashEmpty(document.getElementById('bb-depart-field'));
-        if (!dateRetour) flashEmpty(document.getElementById('bb-retour-field'));
+        var manque  = [];
+        var premier = null;
+        var champAgence = agenceSelect ? agenceSelect.closest('.bb-agency, .bb-place, .bb-field') : null;
+        var champDep    = document.getElementById('bb-depart-field');
+        var champRet    = document.getElementById('bb-retour-field');
+        if (!agence)     { manque.push('votre secteur');        premier = premier || champAgence; }
+        if (!dateDepart) { manque.push('la date de départ');    premier = premier || champDep; }
+        if (!dateRetour) { manque.push('la date de retour');    premier = premier || champRet; }
+        if (!agence && champAgence) flashEmpty(champAgence);
+        if (!dateDepart) flashEmpty(champDep);
+        if (!dateRetour) flashEmpty(champRet);
+        bbMessage('Il manque encore ' + listeFr(manque) + ' pour voir les véhicules disponibles.', premier);
         return; // STOP — ne sauvegarde rien, ne redirige pas
       }
 
@@ -4487,11 +4540,16 @@
       var depart = new Date(dateDepart + 'T' + (heureDepart || '00:00'));
       var retour = new Date(dateRetour + 'T' + (heureRetour || '00:00'));
       if (retour <= depart) {
-        flashEmpty(document.getElementById('bb-retour-field'));
+        var champR = document.getElementById('bb-retour-field');
+        flashEmpty(champR);
+        bbMessage('La date de retour doit être après la date de départ.', champR);
         return;
       }
 
-      // OK : sauvegarde dans sessionStorage et redirection
+      // OK : plus rien a signaler, on efface un eventuel message precedent
+      bbMessage('');
+
+      // Sauvegarde dans sessionStorage et redirection
       sessionStorage.setItem('bookingData', JSON.stringify({
         agence:       agence,
         date_depart:  dateDepart,
@@ -4514,6 +4572,56 @@
 
       window.location.href = 'reservation-resultats.html';
     }
+
+    /* Enumeration a la francaise : "a, b et c" */
+    function listeFr(items) {
+      if (items.length <= 1) return items[0] || '';
+      return items.slice(0, -1).join(', ') + ' et ' + items[items.length - 1];
+    }
+
+    /* Affiche (ou efface) le message du moteur de reservation, et ramene le
+       premier champ fautif a l'ecran : la barre etant collante, ce champ peut
+       tres bien se trouver hors de vue au moment du clic. */
+    function bbMessage(texte, champFautif) {
+      var bar = document.getElementById('booking-bar');
+      if (!bar) return;
+      var el = document.getElementById('bb-message');
+      if (!el) {
+        el = document.createElement('p');
+        el.id = 'bb-message';
+        el.className = 'bb-message';
+        el.setAttribute('role', 'alert');
+        bar.appendChild(el);
+      }
+      if (!texte) {
+        el.textContent = '';
+        el.classList.remove('is-visible');
+        return;
+      }
+      el.textContent = texte;
+      el.classList.add('is-visible');
+      // Le message doit etre LU avant tout : c'est lui qui nomme le champ
+      // manquant. Si toute la barre tient a l'ecran on la centre, ce qui
+      // montre le champ fautif ET le message. Sinon on garantit le message.
+      var tient = bar.offsetHeight <= window.innerHeight - 24;
+      var cible = tient ? bar : el;
+      var r = cible.getBoundingClientRect();
+      if (r.top < 8 || r.bottom > window.innerHeight - 8) {
+        cible.scrollIntoView({ block: tient ? 'center' : 'end', behavior: 'smooth' });
+      }
+    }
+
+    /* Le message disparait des que le visiteur touche a un champ : il ne doit
+       pas rester affiche alors qu'il vient justement de corriger. */
+    document.addEventListener('DOMContentLoaded', function () {
+      var bar = document.getElementById('booking-bar');
+      if (!bar) return;
+      bar.addEventListener('change', function () { bbMessage(''); });
+      bar.addEventListener('click', function (e) {
+        if (e.target.closest && e.target.closest('.bb-cta')) return;
+        bbMessage('');
+      });
+    });
 
     function flashEmpty(element) {
       if (!element) return;

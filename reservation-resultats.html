@@ -1049,10 +1049,11 @@
 
       // Tarifs journaliers — grille officielle client du 17/07/2026.
       // Source de verite : offres.html. Toute modification doit y etre repercutee.
+      // Fiat Topolino retiree du choix le 02/09/2026 : vehicule actuellement loue,
+      // non reservable tant qu'il n'est pas rendu (reintegrer l'entree pour la remettre).
       var VEHICLES = [
         { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.webp' },
-        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.webp' },
-        { name: 'Fiat Topolino',    brand: 'Fiat · Électrique',   gamme: 'electrique', price: 22, speed: '45 km/h', autonomy: 'Électrique · ville', seats: 2, img: 'topolino3.webp' }
+        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.webp' }
       ];
 
       var grid           = document.getElementById('resa-vehicles');

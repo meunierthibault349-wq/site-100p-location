@@ -11,7 +11,7 @@
   --surface-3:    #EFEBE3;
   --ink:          #111111;
   --ink-soft:     #2F3437;
-  --muted:        #787774;
+  --muted:        #6B6A67;
   --muted-2:      #9B9A96;
   --line:         #EAEAEA;
   --line-soft:    rgba(17,17,17,.06);
@@ -21,7 +21,7 @@
   --accent-soft:  #FBEEDD;
 
   --pastel-green:    #EDF3EC;
-  --pastel-green-tx: #4A7A4E;
+  --pastel-green-tx: #44704A;
   --pastel-sand:     #FBF3DB;
   --pastel-sand-tx:  #956400;
   --pastel-blue:     #E1F3FE;
@@ -866,7 +866,10 @@ h3.display { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.02em; }
   font-family: var(--serif);
   font-weight: 500;
   letter-spacing: -.02em;
-  font-size: clamp(22px, 2.4vw, 32px);
+  /* Plancher a 24px et non 22px : l'emphase orange de ce titre tombe alors
+     dans le texte large (seuil WCAG 3:1) et devient conforme sur mobile,
+     sans modifier l'orange de marque. */
+  font-size: clamp(24px, 2.4vw, 32px);
   color: var(--ink);
   line-height: 1.15;
 }
@@ -3096,12 +3099,15 @@ img, svg, video { max-width: 100%; height: auto; }
   gap: 8px;
   padding: 10px 18px;
   background: var(--accent);
-  color: var(--surface);
+  /* Texte en encre et non en blanc : le blanc sur l'orange de marque plafonne a
+     3,36:1, sous le seuil WCAG AA de 4,5:1. L'encre donne 5,63:1 et laisse
+     l'orange intact. Arbitrage Thibault du 07/09/2026. */
+  color: var(--ink);
   border: none;
   border-radius: 999px;
   font-family: var(--sans);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   transition: background .2s, transform .2s;

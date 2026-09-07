@@ -12,7 +12,11 @@
   --ink:          #111111;
   --ink-soft:     #2F3437;
   --muted:        #6B6A67;
-  --muted-2:      #9B9A96;
+  /* Remonte de #9B9A96 (2,82:1, sous AA) : cette teinte ne sert pas qu'aux
+     champs vides, elle colore aussi un label de 10px en capitales. Le texte
+     saisi restant a #111111 (18,24:1), l'ecart entre champ vide et champ
+     rempli demeure tres lisible. */
+  --muted-2:      #777672;
   --line:         #EAEAEA;
   --line-soft:    rgba(17,17,17,.06);
 

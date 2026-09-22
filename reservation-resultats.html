@@ -1078,7 +1078,7 @@
       // la Citroen Ami le 24/12). Tant que ce drapeau est vrai, aucune voiture n'est
       // reservable : la page propose de laisser ses dates. Repasser a false pour rouvrir.
       var FLEET_ALL_RENTED = true;
-      var FLEET_RETURNS = 'Prochains retours : une Aixam le 17 décembre, la Citroën Ami le 24 décembre.';
+      var FLEET_RETURNS = 'De nouveaux véhicules arrivent prochainement pour compléter la flotte.';
 
       var grid           = document.getElementById('resa-vehicles');
       var optionsSection = document.getElementById('resa-options-section');
@@ -1489,7 +1489,7 @@
         em.textContent = 'louée';
         title.appendChild(em);
         title.appendChild(document.createTextNode(' pour le moment.'));
-        lede.textContent = FLEET_RETURNS + ' Laissez-nous vos dates, nous vous rappelons dès qu\'un véhicule rentre.';
+        lede.textContent = FLEET_RETURNS + ' Laissez-nous vos dates, nous vous rappelons dès qu\'un véhicule est disponible.';
 
         grid.textContent = '';
         var box = document.createElement('article');

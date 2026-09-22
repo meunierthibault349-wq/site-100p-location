@@ -213,6 +213,24 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
     }
+    /* Etat flotte complete (22/09/2026) */
+    .resa-empty {
+      grid-column: 1 / -1;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 28px 24px;
+      background: var(--surface);
+    }
+    .resa-empty__dates {
+      margin: 0 0 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .resa-empty__actions { display: flex; flex-wrap: wrap; gap: 12px; }
     /* En mode pré-sélection, la grille n'a qu'une colonne (1 seul véhicule) */
     #resa-main.is-preselected .resa-vehicles {
       grid-template-columns: 1fr;
@@ -1056,6 +1074,12 @@
         { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.webp' }
       ];
 
+      // 22/09/2026 : toute la flotte est louee (retours annonces : une Aixam le 17/12,
+      // la Citroen Ami le 24/12). Tant que ce drapeau est vrai, aucune voiture n'est
+      // reservable : la page propose de laisser ses dates. Repasser a false pour rouvrir.
+      var FLEET_ALL_RENTED = true;
+      var FLEET_RETURNS = 'Prochains retours : une Aixam le 17 décembre, la Citroën Ami le 24 décembre.';
+
       var grid           = document.getElementById('resa-vehicles');
       var optionsSection = document.getElementById('resa-options-section');
       var summarySection = document.getElementById('resa-summary-section');
@@ -1443,7 +1467,63 @@
         });
       }
 
+      function fmtFr(iso) {
+        var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+        return m ? m[3] + '/' + m[2] + '/' + m[1] : (iso || '');
+      }
+
+      // Etat "flotte complete" : aucune voiture proposee, on capte les dates.
+      function renderAllRented() {
+        var d = {};
+        try { d = JSON.parse(sessionStorage.getItem('bookingData') || '{}'); } catch (e) {}
+        var main = document.getElementById('resa-main');
+        if (main) main.classList.remove('is-preselected');
+        if (backWrap)       backWrap.hidden = true;
+        if (optionsSection) optionsSection.hidden = true;
+        if (summarySection) summarySection.hidden = true;
+
+        eyebrow.textContent = 'Flotte complète';
+        title.textContent = '';
+        title.appendChild(document.createTextNode('Toute notre flotte est '));
+        var em = document.createElement('em');
+        em.textContent = 'louée';
+        title.appendChild(em);
+        title.appendChild(document.createTextNode(' pour le moment.'));
+        lede.textContent = FLEET_RETURNS + ' Laissez-nous vos dates, nous vous rappelons dès qu\'un véhicule rentre.';
+
+        grid.textContent = '';
+        var box = document.createElement('article');
+        box.className = 'resa-empty';
+
+        var dates = document.createElement('p');
+        dates.className = 'resa-empty__dates';
+        dates.textContent = (d.date_depart && d.date_retour)
+          ? 'Vos dates : du ' + fmtFr(d.date_depart) + ' au ' + fmtFr(d.date_retour) + (d.agence ? ' · secteur ' + d.agence : '')
+          : 'Indiquez-nous vos dates et votre secteur, nous revenons vers vous.';
+        box.appendChild(dates);
+
+        var actions = document.createElement('div');
+        actions.className = 'resa-empty__actions';
+        var leave = document.createElement('a');
+        leave.className = 'btn btn--primary';
+        leave.href = 'contact.html';
+        leave.textContent = 'Laisser mes dates';
+        leave.addEventListener('click', function () {
+          sessionStorage.setItem('fromReservation', 'true');
+          sessionStorage.setItem('listeAttente', 'true');
+        });
+        actions.appendChild(leave);
+        var tarifs = document.createElement('a');
+        tarifs.className = 'btn btn--ghost';
+        tarifs.href = 'offres.html';
+        tarifs.textContent = 'Voir les tarifs';
+        actions.appendChild(tarifs);
+        box.appendChild(actions);
+        grid.appendChild(box);
+      }
+
       // Init
+      if (FLEET_ALL_RENTED) { renderAllRented(); return; }
       renderVehiclesGrid();
       updateUI();
     })();

@@ -100,6 +100,20 @@
       margin: 0;
       max-width: 60ch;
     }
+    /* Flotte complete (22/09/2026) : encart sous le lede */
+    .offres-hero__notice {
+      margin: 22px 0 0;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      font-family: var(--sans);
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 60ch;
+    }
+    .offres-hero__notice a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
     /* CHAPITRES OFFRE — zigzag image/texte, sobre */
     .offre-chapter {
@@ -848,6 +862,7 @@
             assurance tous risques incluse, retrait gratuit au marché
             couvert de Vichy — paiement sur place, aucun débit en ligne.
           </p>
+          <p class="offres-hero__notice">Toute notre flotte est louée en ce moment. Prochains retours : une Aixam le 17 décembre, la Citroën Ami le 24 décembre. <a href="contact.html" onclick="sessionStorage.setItem('fromReservation','true');sessionStorage.setItem('listeAttente','true')">Laissez-nous vos dates</a>, nous vous rappelons dès qu'un véhicule rentre.</p>
         </div>
       </div>
     </section>
@@ -877,24 +892,24 @@
                 <span class="pricing-row__car">Aixam City Sport</span>
                 <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">30&thinsp;€<small>/ jour</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Aixam City Sport', 30)">Réserver</button>
+                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
               </div>
               <div class="pricing-row">
                 <span class="pricing-row__car">Aixam Minauto</span>
                 <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">25&thinsp;€<small>/ jour</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Aixam Minauto', 25)">Réserver</button>
+                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Fiat Topolino</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Indisponible · actuellement louée</span>
+                <span class="pricing-row__price pricing-row__price--soon">Indisponible pour le moment</span>
                 <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Citroën Ami</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Bientôt · début octobre</span>
+                <span class="pricing-row__price pricing-row__price--soon">Retour prévu le 24 décembre</span>
                 <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
             </div>
@@ -934,24 +949,24 @@
                 <span class="pricing-row__car">Aixam City Sport</span>
                 <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">200&thinsp;€<small>/ semaine</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Aixam City Sport', 200)">Réserver</button>
+                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
               </div>
               <div class="pricing-row">
                 <span class="pricing-row__car">Aixam Minauto</span>
                 <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">170&thinsp;€<small>/ semaine</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Aixam Minauto', 170)">Réserver</button>
+                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Fiat Topolino</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Indisponible · actuellement louée</span>
+                <span class="pricing-row__price pricing-row__price--soon">Indisponible pour le moment</span>
                 <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Citroën Ami</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Bientôt · début octobre</span>
+                <span class="pricing-row__price pricing-row__price--soon">Retour prévu le 24 décembre</span>
                 <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
             </div>
@@ -994,24 +1009,24 @@
                   <span class="pricing-row__badge">Km illimité +60&thinsp;€</span>
                 </span>
                 <span class="pricing-row__price">690&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Aixam City Sport', 690)">Réserver</button>
+                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
               </div>
               <div class="pricing-row">
                 <span class="pricing-row__car">Aixam Minauto</span>
                 <span class="pricing-row__badge">Thermique · 1&thinsp;500 km</span>
                 <span class="pricing-row__price">540&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Aixam Minauto', 540)">Réserver</button>
+                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Fiat Topolino</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Indisponible · actuellement louée</span>
+                <span class="pricing-row__price pricing-row__price--soon">Indisponible pour le moment</span>
                 <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Citroën Ami</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Bientôt · début octobre</span>
+                <span class="pricing-row__price pricing-row__price--soon">Retour prévu le 24 décembre</span>
                 <button type="button" class="pricing-row__cta" disabled>Réserver</button>
               </div>
             </div>

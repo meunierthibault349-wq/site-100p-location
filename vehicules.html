@@ -493,6 +493,17 @@
       text-transform: lowercase;
       margin-left: 4px;
     }
+    /* Flotte complete (22/09/2026) : CTA neutralise + note de retour */
+    .chapter__cta--off { opacity: .5; cursor: default; pointer-events: none; }
+    .chapter__note {
+      margin: 16px 0 0;
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 48ch;
+    }
+    .chapter__note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
     .chapter__cta {
       display: inline-flex;
       align-items: center;
@@ -1129,11 +1140,9 @@
                 <span class="chapter__price-from">À partir de</span>
                 <span class="chapter__price-amount">30&thinsp;€<span class="unit">/ jour</span></span>
               </div>
-              <button type="button" class="chapter__cta vcard__availability-btn" data-vehicle="Aixam City Sport">
-                Voir les disponibilités
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
-              </button>
+              <span class="chapter__cta chapter__cta--off" aria-disabled="true">Actuellement louée</span>
             </div>
+            <p class="chapter__note">Prochains retours : une Aixam le 17 décembre, la Citroën Ami le 24 décembre. <a href="contact.html" onclick="sessionStorage.setItem('fromReservation','true');sessionStorage.setItem('listeAttente','true')">Laissez-nous vos dates</a>, nous vous rappelons dès qu'un véhicule rentre.</p>
           </div>
 
         </div>
@@ -1151,7 +1160,7 @@
         </header>
         <div class="teaser-fleet__grid">
           <article class="teaser-card" data-reveal style="--i:1">
-            <span class="teaser-card__soon">Actuellement louée</span>
+            <span class="teaser-card__soon">Indisponible pour le moment</span>
             <div class="teaser-card__media">
               <img src="topolino3.webp" alt="Fiat Topolino — 100P Location" loading="lazy" />
             </div>
@@ -1161,6 +1170,7 @@
             </div>
           </article>
           <article class="teaser-card" data-reveal style="--i:2">
+            <span class="teaser-card__soon">Actuellement louée</span>
             <div class="teaser-card__media">
               <img src="minauto.webp" alt="Aixam Minauto — 100P Location" loading="lazy" />
             </div>
@@ -1170,9 +1180,9 @@
             </div>
           </article>
           <article class="teaser-card" data-reveal style="--i:3">
-            <span class="teaser-card__soon">Disponible début octobre</span>
+            <span class="teaser-card__soon">Retour prévu le 24 décembre</span>
             <div class="teaser-card__media">
-              <img src="voiture.jpg" alt="Citroën Ami — bientôt disponible chez 100P Location" loading="lazy" />
+              <img src="voiture.jpg" alt="Citroën Ami — 100P Location" loading="lazy" />
             </div>
             <div class="teaser-card__body">
               <div class="teaser-card__brand">Citroën · Électrique</div>

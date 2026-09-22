@@ -316,6 +316,21 @@
 
       var preFill = 'Bonjour,\n\n';
 
+      // Flotte complete (22/09/2026) : le visiteur laisse ses dates pour etre rappele
+      if (sessionStorage.getItem('listeAttente') === 'true') {
+        var objetField = document.getElementById('objet');
+        if (objetField) objetField.value = 'reservation';
+        preFill += 'Toute votre flotte étant louée, je souhaite être prévenu(e) dès qu\'un véhicule est disponible.\n\n';
+        if (data.date_depart) preFill += '- Départ souhaité : ' + data.date_depart + (data.heure_depart ? ' à ' + data.heure_depart : '') + '\n';
+        if (data.date_retour) preFill += '- Retour souhaité : ' + data.date_retour + (data.heure_retour ? ' à ' + data.heure_retour : '') + '\n';
+        if (data.agence)      preFill += '- Secteur : ' + data.agence + '\n';
+        preFill += '\nMerci de me recontacter.\n';
+        messageField.value = preFill;
+        sessionStorage.removeItem('listeAttente');
+        sessionStorage.removeItem('fromReservation');
+        return;
+      }
+
       if (formula) {
         // Cas formule choisie depuis la section "Tarifs" d'index.html
         preFill += 'Je souhaite souscrire à la formule "' + formula + '" (' + formulaPrice + ' €).\n\n';

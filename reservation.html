@@ -818,6 +818,7 @@
         }).then(function (response) {
           if (response.ok) {
             if (window.trackLead) window.trackLead('reservation-finale');
+            if (window.formGuard) window.formGuard.accuser();
             form.hidden = true;
             successBlock.hidden = false;
             sessionStorage.removeItem('bookingData');

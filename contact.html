@@ -374,6 +374,7 @@
         }).then(function (response) {
           if (response.ok) {
             if (window.trackLead) window.trackLead('contact');
+            if (window.formGuard) window.formGuard.accuser();
             form.style.display = 'none';
             var confirm = document.getElementById('contact-confirm');
             if (confirm) confirm.style.display = 'block';

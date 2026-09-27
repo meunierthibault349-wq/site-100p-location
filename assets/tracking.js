@@ -30,6 +30,18 @@
     try { if (window.fbq)  window.fbq('track', 'Lead', { content_name: nom }); } catch (e) {}
   };
 
+  /* ── Clics sur le telephone (et WhatsApp s'il est ajoute) ────────
+     Une partie des clients appelle au lieu d'ecrire, et ces appels
+     etaient invisibles dans la mesure (axe 5 de l'analyse du 22/09/2026).
+     Meme regle que trackLead : rien ne part sans consentement. */
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="tel:"], a[href*="wa.me/"]') : null;
+    if (!a) return;
+    var canal = /^tel:/.test(a.getAttribute('href')) ? 'telephone' : 'whatsapp';
+    try { if (window.gtag) window.gtag('event', 'clic_' + canal, { page_path: location.pathname }); } catch (err) {}
+    try { if (window.fbq)  window.fbq('track', 'Contact', { content_name: canal }); } catch (err) {}
+  }, true);
+
   if (!GA4_ID && !META_PIXEL_ID) return;
 
   var KEY = '100p-consent';           // 'granted' | 'denied'

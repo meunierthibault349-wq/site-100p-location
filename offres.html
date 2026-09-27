@@ -1414,6 +1414,7 @@
           }).then(function (response) {
             if (response.ok) {
               if (window.trackLead) window.trackLead('reservation-formule');
+              if (window.formGuard) window.formGuard.accuser();
               form.hidden = true;
               if (successEl) successEl.hidden = false;
             } else {

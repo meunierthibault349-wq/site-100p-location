@@ -78,5 +78,59 @@
     }
   }, true);
 
-  window.formGuard = { verrouiller: verrouiller, deverrouiller: deverrouiller };
+  /* ── Accuse de reception qui survit au rechargement ──────────────
+     Le verrou ci-dessus ne vit que le temps d'une page. Le 02/09/2026,
+     Melissa a envoye la meme demande 6 fois en 6 minutes : a chaque
+     rechargement le formulaire revenait vierge, et rien ne lui disait
+     que sa demande etait deja partie. Chaque branche succes appelle
+     accuser() ; pendant 24 h, tout formulaire du site affiche au-dessus
+     de lui l'heure de l'envoi precedent. Le visiteur peut toujours
+     envoyer une autre demande, on ne bloque rien.
+     Seule l'heure est gardee (aucun nom, aucun telephone) : cookie
+     strictement necessaire au service demande, hors consentement. */
+  var CLE_ACCUSE = '100p-derniere-demande';
+  var DUREE_ACCUSE = 24 * 60 * 60 * 1000;
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+  function accuser() {
+    try { localStorage.setItem(CLE_ACCUSE, String(Date.now())); } catch (e) {}
+  }
+
+  function quand(t) {
+    var d = new Date(t), maintenant = new Date();
+    var hier = new Date(); hier.setDate(hier.getDate() - 1);
+    // Espaces insecables : « 4 h 37 » ne doit jamais se couper en fin de ligne
+    var heure = d.getHours() + ' h ' + String(d.getMinutes()).padStart(2, '0');
+    if (d.toDateString() === maintenant.toDateString()) return "aujourd'hui à " + heure;
+    if (d.toDateString() === hier.toDateString()) return 'hier à ' + heure;
+    return 'le ' + d.getDate() + ' ' + MOIS[d.getMonth()] + ' à ' + heure;
+  }
+
+  function afficherAccuse() {
+    var t = 0;
+    try { t = parseInt(localStorage.getItem(CLE_ACCUSE), 10) || 0; } catch (e) {}
+    if (!t || Date.now() - t > DUREE_ACCUSE) return;
+
+    var css = document.createElement('style');
+    css.textContent =
+      '.accuse-demande{margin:0 0 18px;padding:14px 16px;border:1px solid var(--line,#E5E2DA);' +
+      'border-radius:10px;background:var(--surface-2,#F4F1EA);' +
+      'color:var(--ink,#111);font-size:14.5px;line-height:1.5}' +
+      '.accuse-demande a{color:inherit;font-weight:600;white-space:nowrap}';
+    document.head.appendChild(css);
+
+    document.querySelectorAll('form[data-netlify]').forEach(function (form) {
+      var p = document.createElement('p');
+      p.className = 'accuse-demande';
+      p.setAttribute('role', 'status');
+      p.innerHTML = 'Votre demande envoyée ' + quand(t) + ' est bien arrivée chez nous, ' +
+        'inutile de la renvoyer. Pour toute urgence : <a href="tel:0415458306">04 15 45 83 06</a>.';
+      form.parentNode.insertBefore(p, form);
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', afficherAccuse);
+  else afficherAccuse();
+
+  window.formGuard = { verrouiller: verrouiller, deverrouiller: deverrouiller, accuser: accuser };
 })();

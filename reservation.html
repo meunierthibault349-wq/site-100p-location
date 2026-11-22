@@ -243,7 +243,7 @@
                 </span>
                 <span class="booking-vehicle__spec">
                   <svg viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                  Diesel
+                  <span id="resa-spec-energie">Diesel</span>
                 </span>
                 <span class="booking-vehicle__spec">
                   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -517,17 +517,17 @@
         'Aixam City Sport': {
           img: 'Aixam.webp',
           sub: 'Quadricycle · ou similaire',
-          places: 2, autonomy: '4.3 L/100 km', luggage: 2
+          places: 2, autonomy: '4.3 L/100 km', luggage: 2, energie: 'Diesel'
         },
         'Aixam Minauto': {
           img: 'minauto.webp',
           sub: 'Quadricycle · ou similaire',
-          places: 2, autonomy: '4.3 L/100 km', luggage: 2
+          places: 2, autonomy: '4.3 L/100 km', luggage: 2, energie: 'Diesel'
         },
         'Fiat Topolino': {
           img: 'topolino3.webp',
           sub: 'Quadricycle léger électrique · ville et proximité',
-          places: 2, autonomy: 'Électrique', luggage: 1
+          places: 2, autonomy: 'Électrique', luggage: 1, energie: 'Électrique'
         }
       };
 
@@ -568,6 +568,8 @@
           setText('resa-vehicule-sub',     v.sub);
           setText('resa-spec-places',      v.places + ' place' + (v.places > 1 ? 's' : ''));
           setText('resa-spec-autonomy',    'Consommation ' + v.autonomy);
+          // 22/11/2026 : l'énergie était écrite en dur (« Diesel »), y compris pour la Topolino électrique.
+          setText('resa-spec-energie',     v.energie || (/lectrique/i.test(v.autonomy || '') ? 'Électrique' : 'Diesel'));
           setText('resa-spec-luggage',     v.luggage + ' bagage' + (v.luggage > 1 ? 's' : ''));
         }
       }

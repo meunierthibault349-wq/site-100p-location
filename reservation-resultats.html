@@ -1071,14 +1071,16 @@
       // Fiat Topolino retiree du choix le 02/09/2026 : vehicule actuellement loue,
       // non reservable tant qu'il n'est pas rendu (reintegrer l'entree pour la remettre).
       var VEHICLES = [
-        { name: 'Aixam City Sport', brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 30, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'Aixam.webp' },
-        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.webp' }
+        // 22/11/2026 : reouverture de la Fiat Topolino et de l'Aixam Minauto (libres depuis le 15/11, JC).
+        // L'Aixam City Sport reste louee : la reintegrer ici quand elle rentre.
+        { name: 'Aixam Minauto',    brand: 'Aixam · Thermique',   gamme: 'thermique',  price: 25, speed: '45 km/h', autonomy: '4.3 L/100 km', seats: 2, img: 'minauto.webp' },
+        { name: 'Fiat Topolino',    brand: 'Fiat · Électrique',   gamme: 'electrique', price: 22, speed: '45 km/h', autonomy: 'Électrique · ville', seats: 2, img: 'topolino3.webp' }
       ];
 
       // 22/09/2026 : toute la flotte est louee (retours annonces : une Aixam le 17/12,
       // la Citroen Ami le 24/12). Tant que ce drapeau est vrai, aucune voiture n'est
       // reservable : la page propose de laisser ses dates. Repasser a false pour rouvrir.
-      var FLEET_ALL_RENTED = true;
+      var FLEET_ALL_RENTED = false; // 22/11/2026 : Topolino et Minauto de nouveau reservables
       var FLEET_RETURNS = 'De nouveaux véhicules arrivent prochainement pour compléter la flotte.';
 
       var grid           = document.getElementById('resa-vehicles');

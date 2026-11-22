@@ -862,7 +862,7 @@
             assurance tous risques incluse, retrait gratuit au marché
             couvert de Vichy — paiement sur place, aucun débit en ligne.
           </p>
-          <p class="offres-hero__notice">Toute notre flotte est louée en ce moment. De nouveaux véhicules arrivent prochainement pour compléter la flotte. <a href="contact.html" onclick="sessionStorage.setItem('fromReservation','true');sessionStorage.setItem('listeAttente','true')">Laissez-nous vos dates</a>, nous vous rappelons dès qu'un véhicule est disponible.</p>
+          <p class="offres-hero__notice">La Fiat Topolino et l'Aixam Minauto sont de nouveau disponibles. L'Aixam City Sport est louée en ce moment : <a href="contact.html" onclick="sessionStorage.setItem('fromReservation','true');sessionStorage.setItem('listeAttente','true')">laissez-nous vos dates</a>, nous vous rappelons dès qu'elle rentre.</p>
         </div>
       </div>
     </section>
@@ -898,13 +898,13 @@
                 <span class="pricing-row__car">Aixam Minauto</span>
                 <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">25&thinsp;€<small>/ jour</small></span>
-                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Aixam Minauto', 25)">Réserver</button>
               </div>
-              <div class="pricing-row pricing-row--soon">
+              <div class="pricing-row">
                 <span class="pricing-row__car">Fiat Topolino</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Indisponible pour le moment</span>
-                <button type="button" class="pricing-row__cta" disabled>Réserver</button>
+                <span class="pricing-row__price">22&thinsp;€<small>/ jour</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Journée · Fiat Topolino', 22)">Réserver</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Citroën Ami</span>
@@ -955,13 +955,13 @@
                 <span class="pricing-row__car">Aixam Minauto</span>
                 <span class="pricing-row__badge">Thermique</span>
                 <span class="pricing-row__price">170&thinsp;€<small>/ semaine</small></span>
-                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Aixam Minauto', 170)">Réserver</button>
               </div>
-              <div class="pricing-row pricing-row--soon">
+              <div class="pricing-row">
                 <span class="pricing-row__car">Fiat Topolino</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Indisponible pour le moment</span>
-                <button type="button" class="pricing-row__cta" disabled>Réserver</button>
+                <span class="pricing-row__price">140&thinsp;€<small>/ semaine</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Semaine · Fiat Topolino', 140)">Réserver</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Citroën Ami</span>
@@ -1015,13 +1015,13 @@
                 <span class="pricing-row__car">Aixam Minauto</span>
                 <span class="pricing-row__badge">Thermique · 1&thinsp;500 km</span>
                 <span class="pricing-row__price">540&thinsp;€<small>/ mois</small></span>
-                <button type="button" class="pricing-row__cta" disabled>Actuellement louée</button>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Aixam Minauto', 540)">Réserver</button>
               </div>
-              <div class="pricing-row pricing-row--soon">
+              <div class="pricing-row">
                 <span class="pricing-row__car">Fiat Topolino</span>
                 <span class="pricing-row__badge">Électrique</span>
-                <span class="pricing-row__price pricing-row__price--soon">Indisponible pour le moment</span>
-                <button type="button" class="pricing-row__cta" disabled>Réserver</button>
+                <span class="pricing-row__price">490&thinsp;€<small>/ mois</small></span>
+                <button type="button" class="pricing-row__cta" onclick="selectFormula('Mois · Fiat Topolino', 490)">Réserver</button>
               </div>
               <div class="pricing-row pricing-row--soon">
                 <span class="pricing-row__car">Citroën Ami</span>
